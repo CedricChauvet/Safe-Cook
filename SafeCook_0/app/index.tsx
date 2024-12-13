@@ -9,7 +9,7 @@ export default function Index() {
         flex: 1,
         justifyContent: "space-between", // Distribue l'espace entre les sections
         alignItems: "center",
-        paddingVertical: 20, // Ajoute de l'espace vertical
+        paddingVertical: 60, // Ajoute de l'espace vertical
       }}
     >
       {/* Texte et bouton centré */}
@@ -38,7 +38,7 @@ export default function Index() {
           flexDirection: "row",       // Aligne les boutons horizontalement
           justifyContent: "center", // Espace égal entre les boutons
           width: "100%",              // Prend toute la largeur de l'écran
-          marginBottom: 80,             // Remonte les boutons
+          marginBottom: 30,             // Remonte les boutons
         }}
       >
         <Button
