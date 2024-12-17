@@ -3,6 +3,7 @@ import base64
 import sys
 import numpy as np
 
+
 def detect_objects(image_path):
     """
     Envoyer une image et récupérer les classes détectées
@@ -23,7 +24,7 @@ def detect_objects(image_path):
             print(response.json())
             return []
         
-        return response.json()['classes']
+        return response.json()
     
     except Exception as e:
         print("Erreur de connexion ou de traitement:")
@@ -32,11 +33,9 @@ def detect_objects(image_path):
 
 # Exemple d'utilisation
 if __name__ == '__main__':
+    image_path = "./images/image6.jpg"
+    result = detect_objects(image_path)
     
-    image_path = "./images/image5.jpg"
-    response = detect_objects(image_path)
-        # Afficher les classes détectées
-    print("Classes détectées :", response[1])
-    
-    # Afficher le nombre d'instances par classe
-    #print("Nombre d'instances par classe :", response.get('class_counts', {}))
+    if result:
+        print("Classes détectées :", result.get('classes', []))
+        print("Nombre d'instances par classe :", result.get('class_counts', {}))
