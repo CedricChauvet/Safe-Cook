@@ -7,6 +7,7 @@ import traceback
 import sys
 import subprocess
 from ultralytics import YOLO
+from collections import Counter
 
 app = Flask(__name__)
 
@@ -80,14 +81,17 @@ def detect_objects():
         
         # Détecter les objets
         results = model(image_tensor)
-        print("resultats", results)
-        # Récupérer uniquement les classes
-        classes = [model.names[int(box.cls)] for box in results[0].boxes]
         
-        return jsonify({
-            'classes': list(set(classes))  # Classes uniques
-        })
+        
+        classes = [model.names[int(box.cls)] for box in results[0].boxes]
+        class_counts = dict(Counter(classes))
     
+        return jsonify({
+            'classes': classes,
+            'class_counts': class_counts
+        })
+
+
     except Exception as e:
         # Imprimer l'erreur complète côté serveur
         print("Erreur lors de la détection :")
