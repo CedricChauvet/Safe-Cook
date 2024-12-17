@@ -33,6 +33,10 @@ def detect_objects(image_path):
 # Exemple d'utilisation
 if __name__ == '__main__':
     
-    image_path = "./images/image3.jpg"
-    classes = detect_objects(image_path)
-    print("Classes détectées :", classes)
+    image_path = "./images/image5.jpg"
+    response = detect_objects(image_path)
+        # Afficher les classes détectées
+    print("Classes détectées :", response[1])
+    
+    # Afficher le nombre d'instances par classe
+    #print("Nombre d'instances par classe :", response.get('class_counts', {}))
