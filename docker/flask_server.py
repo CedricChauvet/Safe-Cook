@@ -80,10 +80,15 @@ def detect_objects():
         image_tensor = image_tensor.unsqueeze(0)
         
         # Détecter les objets
-        results = model(image_tensor)
+        results = model(image_tensor, conf=0.25)
         
         
-        classes = [model.names[int(box.cls)] for box in results[0].boxes]
+        classes = []
+        for box in results[0].boxes:
+            class_name = model.names[int(box.cls)]
+            confidence = box.conf.item()
+            print(f"Classe : {class_name}, Confiance : {confidence}")
+            classes.append(class_name)
         class_counts = dict(Counter(classes))
     
         return jsonify({
