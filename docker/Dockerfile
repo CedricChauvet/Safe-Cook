@@ -11,19 +11,21 @@ RUN apt-get update && apt-get install -y \
 
 # Installer les dépendances Python
 RUN pip install --no-cache-dir \
-    flask \
+    flask0 \
     opencv-python-headless \
-    numpy==1.24.1 \
+    numpy==1.24.1\
     requests \
     torch \
     torchvision \
     ultralytics
 
-# Créer un répertoire pour les modèles
-RUN mkdir -p /root/.cache/torch/hub/
+# Créer le répertoire pour les images
+RUN mkdir -p /data/images_server
 
 # Copier le script serveur
 COPY flask_server.py /app/flask_server.py
+
+VOLUME /data/images_server
 
 EXPOSE 5000
 
