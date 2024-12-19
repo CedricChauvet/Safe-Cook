@@ -3,7 +3,7 @@
   "dev": true,
   "minify": false,
   "https": false,
-  "hostType": "lan",
+  "hostType": "tunnel",
   "lanType": "ip",
   "scheme": null,
   "devClient": false

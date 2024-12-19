@@ -1,18 +1,21 @@
 import React from 'react';
 import { Text, View } from "react-native";
 import { Button } from 'react-native-paper';
+import { useRouter } from 'expo-router';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Importer l'icône
 
 export default function Index() {
+  const router = useRouter();
+
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "space-between", // Distribue l'espace entre les sections
+        justifyContent: "space-between",
         alignItems: "center",
-        paddingVertical: 60, // Ajoute de l'espace vertical
+        paddingVertical: 60,
       }}
     >
-      {/* Texte et bouton centré */}
       <View>
         <Text style={{ fontSize: 60, color: 'green', fontWeight: 'bold' }}>SafeCook</Text>
         <View
@@ -27,18 +30,17 @@ export default function Index() {
             buttonColor="green"
             labelStyle={{ color: 'white', fontWeight: 'bold' }}
           >
-            Acceuil
+            Accueil
           </Button>
         </View>
       </View>
 
-      {/* Trois boutons alignés en bas */}
       <View
         style={{
-          flexDirection: "row",       // Aligne les boutons horizontalement
-          justifyContent: "center", // Espace égal entre les boutons
-          width: "100%",              // Prend toute la largeur de l'écran
-          marginBottom: 30,             // Remonte les boutons
+          flexDirection: "row",
+          justifyContent: "center",
+          width: "100%",
+          marginBottom: 30,
         }}
       >
         <Button
@@ -51,20 +53,21 @@ export default function Index() {
         </Button>
         <Button
           mode="contained"
-          onPress={() => console.log('Bouton 2 cliqué')}
+          onPress={() => router.push('/recette')}
           buttonColor="green"
           labelStyle={{ color: 'white' }}
         >
           Recettes
         </Button>
         <Button
-          mode="contained"
-          onPress={() => console.log('Bouton 3 cliqué')}
-          buttonColor="green"
-          labelStyle={{ color: 'white' }}
-        >
-          coeur
-        </Button>
+        mode="contained"
+        onPress={() => console.log('Bouton 3 cliqué')}
+        buttonColor="green"
+        labelStyle={{ color: 'white' }}
+        contentStyle={{ flexDirection: 'row', alignItems: 'center' }} // Aligner l'icône si nécessaire
+      >
+        <Icon name="heart" size={20} color="white" /> {/* Icône en forme de cœur */}
+      </Button>
       </View>
     </View>
   );
