@@ -15,7 +15,10 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/config": "^8.1.1",
+    "@expo/metro-config": "^0.10.0",
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-community/cli-server-api": "^15.1.3",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
     "expo": "~52.0.17",
@@ -43,6 +46,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@expo/dev-server": "^0.5.5",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.12",
     "@types/react-native": "^0.72.8",

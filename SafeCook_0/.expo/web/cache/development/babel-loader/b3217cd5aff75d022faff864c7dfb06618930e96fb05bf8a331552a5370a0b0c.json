@@ -1,0 +1,1 @@
+{"ast":null,"code":"export * from '../src/dom/dom';","map":{"version":3,"names":[],"sources":["C:/Users/chauv/Desktop/holberton-demoday/Safe-Cook/SafeCook_0/node_modules/expo/dom/index.js"],"sourcesContent":["export * from '../src/dom/dom';\r\n"],"mappings":"AAAA,cAAc,gBAAgB","ignoreList":[]},"metadata":{"hasCjsExports":false},"sourceType":"module","externalDependencies":[]}
