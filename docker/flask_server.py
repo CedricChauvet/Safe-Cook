@@ -1,6 +1,8 @@
 import torch
 import cv2
+
 import numpy as np
+import uuid
 import base64
 from flask import Flask, request, jsonify
 import traceback
@@ -11,9 +13,9 @@ from collections import Counter
 
 app = Flask(__name__)
 
-def install(package):
-    """Installer un package Python si nécessaire"""
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+# Chemin de sauvegarde des images
+SAVE_PATH = '/data/images_server'
+
 
 def load_yolo_model():
     """
@@ -29,7 +31,7 @@ def load_yolo_model():
     #     print(f"CUDA disponible: {torch.cuda.is_available()}")
         
         # Tenter de charger le modèle
-        model = YOLO("yolo11l.pt")    
+        model = YOLO("yolo11n.pt")    
         print("Modèle YOLO chargé avec succès")
         return model
     except Exception as e:
@@ -75,6 +77,17 @@ def detect_objects():
                 'details': 'La conversion en image a échoué'
             }), 500
         
+
+
+                # Générer un nom de fichier unique
+        filename = "mon_test_img.jpg"
+        # filename = f"{uuid.uuid4()}.jpg"
+        filepath =  f"./mon_test_img.jpg"
+        
+        # Sauvegarder l'image originale
+        with open(filepath, 'wb') as f:
+            f.write(image_bytes)
+        
         # Conversion en tensor
         image_tensor = torch.from_numpy(image).permute(2, 0, 1).float() / 255.0
         image_tensor = image_tensor.unsqueeze(0)
@@ -93,7 +106,8 @@ def detect_objects():
     
         return jsonify({
             'classes': classes,
-            'class_counts': class_counts
+            'class_counts': class_counts,
+            'filename': filename
         })
 
 
