@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, View } from "react-native";
 import { Button } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Index() {
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -47,11 +49,14 @@ export default function Index() {
           buttonColor="green"
           labelStyle={{ color: 'white' }}
         >
+
+
+          
           Photos
         </Button>
         <Button
           mode="contained"
-          onPress={() => console.log('Bouton 2 cliqué')}
+          onPress={() => navigation.navigate('photosScreen')}
           buttonColor="green"
           labelStyle={{ color: 'white' }}
         >
