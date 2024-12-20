@@ -1,3 +1,5 @@
-# Safe-Cook
+# Safe-Cook   bind mount
 
-# ici on voit les image qui sont envoyé dans le conteneur, elles sont sauvegardées ici
+Ici on voit les images qui sont envoyées dans le conteneur,
+
+Elles sont sauvegardées ici
