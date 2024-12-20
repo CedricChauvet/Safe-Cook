@@ -31,7 +31,7 @@ def load_yolo_model():
     #     print(f"CUDA disponible: {torch.cuda.is_available()}")
         
         # Tenter de charger le modèle
-        model = YOLO("yolo11n.pt")    
+        model = YOLO("yolo11x.pt")    
         print("Modèle YOLO chargé avec succès")
         return model
     except Exception as e:

@@ -33,7 +33,7 @@ def detect_objects(image_path):
 
 # Exemple d'utilisation
 if __name__ == '__main__':
-    image_path = "./images/fruit1.jpeg"
+    image_path = "./images/image7.bmp"
     result = detect_objects(image_path)
     
     if result:
