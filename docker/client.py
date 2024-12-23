@@ -5,18 +5,20 @@ import base64
 def detect_objects(image_path):
     """
     Envoyer une image et récupérer les classes détectées
+    Attention detect object existe dans le serveur et le client
     """
     try:
         # Encoder l'image en base64
         with open(image_path, 'rb') as image_file:
             image_b64 = base64.b64encode(image_file.read()).decode('utf-8')
         
-        # Envoyer la requête
+        # Envoyer la requête, est ce qu'on peut envoyer autre chose
+        # dans la requete? user id, etc?
         response = requests.post('http://localhost:5000/detect', 
             json={'image': image_b64}
         )
         
-        # Vérifier le statut de la réponse
+        # Vérifier le statut de la réponse. Si 200, OK
         if response.status_code != 200:
             print("Erreur du serveur:")
             print(response.json())
