@@ -80,6 +80,11 @@ def detect_objects():
             classes.append(class_name)
         class_counts = dict(Counter(classes))
 
+        # partie renvoyée au client
+        # classes : liste des classes détectées
+        # class_counts : nombre d'instances par classe
+        # filename : nom du fichier sauvegardé
+        # peut on ajouter autre chose?
         return jsonify({
             'classes': classes,
             'class_counts': class_counts,
