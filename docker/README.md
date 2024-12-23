@@ -1,8 +1,8 @@
 # Readme
 ## partie conteneurisation du modele Yolo
-dockerfile "\n"
-client.py \n
-flask_server.py \n
+dockerfile <br />
+client.py <br />
+flask_server.py <br />
 
 
 
