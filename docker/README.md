@@ -1,5 +1,4 @@
-#﻿ README
-
+# Readme
 ## partie conteneurisation du modele Yolo
 ### création de l'image
  docker build -t  docker_safecook .
