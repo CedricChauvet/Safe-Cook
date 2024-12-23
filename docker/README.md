@@ -3,7 +3,8 @@
 dockerfile <br />
 client.py <br />
 flask_server.py <br />
-
+./images/ pour les essais. <br />
+./mount/ pour le stockage des données. <br />
 
 
 ### création de l'image
