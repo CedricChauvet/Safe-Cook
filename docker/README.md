@@ -1,12 +1,12 @@
 ﻿this is the README
 
 
-
- docker build -t  my-app .
+# création de l'image
+ docker build -t  docker_safecook .
  
- //créer un repertoire de stockage en bind mount
+ //créer un repertoire de stockage en bind mount, -it permet de voir les print coté serveur
  
- docker run -p 5000:5000 -v ${PWD}/mount:/mount --name ced my-app
+ docker run -it -p 5000:5000 -v ${PWD}/mount:/mount --name sc_v3 docker_safecook
 
 
 
