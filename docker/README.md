@@ -1,5 +1,11 @@
 # Readme
 ## partie conteneurisation du modele Yolo
+dockerfile "\n"
+client.py \n
+flask_server.py \n
+
+
+
 ### création de l'image
  docker build -t  docker_safecook .
 
