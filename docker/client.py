@@ -1,7 +1,5 @@
 import requests
 import base64
-import sys
-import numpy as np
 
 
 def detect_objects(image_path):
