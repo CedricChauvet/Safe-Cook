@@ -1,4 +1,7 @@
 # Readme
+Notre projet consiste a envoyer des photos sur un serveur. Elles sont analysées avec un modele yolo. Ensuite le serveur renvoie au client les objets détéctés sur la photo.
+Cela permet de gagner en performance lors de la detection et de récupérer les photos des usagés afin de garder une amélioration continue du modèle.
+
 ## partie conteneurisation du modele Yolo
 dockerfile <br />
 client.py <br />
