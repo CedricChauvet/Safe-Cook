@@ -11,7 +11,10 @@ flask_server.py <br />
 
 
 ### création de l'image
- docker build -t  docker_safecook .
+ docker build -t  docker_safecook . <br />
+
+#### Ceci est notre image, pytorch est indispensable pour utiliser Yolo.
+FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
 
 ### creation du conteneur
  
