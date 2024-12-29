@@ -54,15 +54,14 @@ def detect_objects():
 
         # Définir le chemin vers le répertoire monté
         # c'est le chemin du conteneur
-        UPLOAD_DIR = '/mount'
 
-        # Générer un nom de fichier unique avec UUID
-        unique_id = str(uuid.uuid4())
-        filename = f"{unique_id}.jpg"
-        filepath = os.path.join(UPLOAD_DIR, filename)
-        # Sauvegarder l'image originale sous format uuid
-        with open(filepath, 'wb') as f:
-            f.write(image_bytes)
+        # # Générer un nom de fichier unique avec UUID
+        # unique_id = str(uuid.uuid4())
+        # filename = f"{unique_id}.jpg"
+        # filepath = os.path.join(UPLOAD_DIR, filename)
+        # # Sauvegarder l'image originale sous format uuid
+        # with open(filepath, 'wb') as f:
+        #     f.write(image_bytes)
 
         # Conversion en tensor
         image_tensor = torch.from_numpy(image).permute(2, 0, 1).float() / 255.0
@@ -71,14 +70,43 @@ def detect_objects():
         # Détecter les objets, bien choisir le seuil de confiance
         results = model(image_tensor, conf=0.5)
 
+        # Traitement des détections
+        detections = []
         classes = []
+        boxes = []
+        confidences = []
+        labels = []
+        
         for box in results[0].boxes:
             class_name = model.names[int(box.cls)]
-            confidence = box.conf.item()
-            # pour afficher le print penser a ajouter docker run -it
-            print(f"Classe : {class_name}, Confiance : {confidence}")
+            confidence = float(box.conf.item())
+            bbox = box.xyxy[0]  # Format: x1, y1, x2, y2
+            
             classes.append(class_name)
+            detections.append((class_name, confidence))
+            boxes.append(bbox)
+            confidences.append(confidence)
+            labels.append(class_name)
+            
         class_counts = dict(Counter(classes))
+
+        # Générer un nom de fichier unique
+        unique_id = uuid.uuid4()
+
+
+        image_with_boxes = draw_detections(
+            image, 
+            torch.stack(boxes), 
+            labels, 
+            confidences
+        )
+
+        UPLOAD_DIR = '/mount'
+
+        filename = f"{unique_id}_with_boxes.jpg"
+        filepath = os.path.join(UPLOAD_DIR, filename)
+        cv2.imwrite(str(filepath), image_with_boxes)
+
 
         # partie renvoyée au client
         # classes : liste des classes détectées
@@ -100,6 +128,68 @@ def detect_objects():
             'error': str(e),
             'traceback': traceback.format_exc()
         }), 500
+
+
+
+def draw_detections(
+    image,
+    boxes,
+    labels,
+    confidences
+) -> np.ndarray:
+    """
+    Dessine les boîtes de détection et les étiquettes sur l'image.
+    
+    Args:
+        image: Image numpy
+        boxes: Tenseur des boîtes de détection (x1, y1, x2, y2)
+        labels: Liste des noms de classes
+        confidences: Liste des scores de confiance
+    
+    Returns:
+        Image avec les détections dessinées
+    """
+    img_with_boxes = image.copy()
+    
+    for box, label, conf in zip(boxes, labels, confidences):
+        # Coordonnées de la boîte
+        x1, y1, x2, y2 = map(int, box.tolist())
+        
+        # Couleur aléatoire pour chaque classe
+        color = tuple(np.random.randint(0, 255, 3).tolist())
+        
+        # Dessiner la boîte
+        cv2.rectangle(img_with_boxes, (x1, y1), (x2, y2), color, 2)
+        
+        # Préparer le texte
+        text = f"{label} {conf:.2f}"
+        
+        # Obtenir les dimensions du texte
+        (text_width, text_height), _ = cv2.getTextSize(
+            text, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2
+        )
+        
+        # Dessiner le fond du texte
+        cv2.rectangle(
+            img_with_boxes,
+            (x1, y1 - text_height - 10),
+            (x1 + text_width + 10, y1),
+            color,
+            -1
+        )
+        
+        # Ajouter le texte
+        cv2.putText(
+            img_with_boxes,
+            text,
+            (x1 + 5, y1 - 5),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.7,
+            (255, 255, 255),
+            2
+        )
+    
+    return img_with_boxes
 
 
 if __name__ == '__main__':
