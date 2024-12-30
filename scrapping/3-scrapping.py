@@ -1,3 +1,14 @@
+"""
+Structure de la page d'une recette Marmiton:
+- Titre
+- Note et nombre d'avis
+- Temps de préparation
+- Difficulté
+- Coût
+
+et c'est tout pour l'instant
+"""
+
 import requests
 from bs4 import BeautifulSoup
 from dataclasses import dataclass
@@ -75,61 +86,15 @@ def get_recipe_details(url: str) -> Optional[MarmitonRecipe]:
                         cost = span_text
 
 
+        # Extraction du nombre de portions Non fonctionnel
+        # servings = 0
+        # portion_elements = soup.find_all(class_=lambda x: x and ('quantity' in x.lower() or 'portion' in x.lower()))
+        # print("Éléments trouvés :")
+        # for elem in portion_elements:
+        #     print(f"\nClasse : {elem.get('class')}")
+        #     print(f"Contenu : {elem.text.strip()}")
+        
 
-
-
-
-        
-        # Extraction du nombre de portions
-        servings = 0
-        portion_elements = soup.find_all(class_=lambda x: x and ('quantity' in x.lower() or 'portion' in x.lower()))
-        print("Éléments trouvés :")
-        for elem in portion_elements:
-            print(f"\nClasse : {elem.get('class')}")
-            print(f"Contenu : {elem.text.strip()}")
-        
-        # Extraction des ingrédients
-        ingredients = []
-        ingredients_section = soup.find('div', class_='recipe-ingredients__list')
-        if ingredients_section:
-            for ingredient in ingredients_section.find_all('div', class_='recipe-ingredients__list__item'):
-                quantity = ingredient.find('span', class_='recipe-ingredient-qt')
-                name = ingredient.find('span', class_='ingredient')
-                unit = ingredient.find('span', class_='recipe-ingredient__unit')
-                
-                ingredient_text = ''
-                if quantity:
-                    ingredient_text += quantity.text.strip()
-                if unit:
-                    ingredient_text += ' ' + unit.text.strip()
-                if name:
-                    ingredient_text += ' ' + name.text.strip()
-                
-                if ingredient_text:
-                    ingredients.append(ingredient_text.strip())
-        
-        # Extraction des étapes
-        steps = []
-        steps_section = soup.find('div', class_='recipe-steps__list')
-        if steps_section:
-            for step in steps_section.find_all('div', class_='recipe-step'):
-                step_text = step.find('p', class_='recipe-step__text')
-                if step_text:
-                    steps.append(step_text.text.strip())
-        
-        # Extraction des astuces
-        tips = []
-        tips_section = soup.find('div', class_='recipe-tips')
-        if tips_section:
-            for tip in tips_section.find_all('p'):
-                tips.append(tip.text.strip())
-        
-        # Extraction des tags
-        tags = []
-        tags_section = soup.find('div', class_='recipe-tags__list')
-        if tags_section:
-            for tag in tags_section.find_all('a', class_='recipe-tag'):
-                tags.append(tag.text.strip())
         
         return MarmitonRecipe(
             title=title,
@@ -138,11 +103,11 @@ def get_recipe_details(url: str) -> Optional[MarmitonRecipe]:
             prep_time=prep_time,
             difficulty=difficulty,
             cost=cost,
-            servings=servings,
-            ingredients=ingredients,
-            steps=steps,
-            tips=tips,
-            tags=tags,
+            servings=-1,
+            ingredients=None,
+            steps=None,
+            tips=None,
+            tags=None,
             url=url
         )
         
@@ -163,22 +128,22 @@ def print_recipe(recipe: MarmitonRecipe):
     print(f"Coût: {recipe.cost}")
     print(f"Nombre de portions: {recipe.servings}")
     
-    print("\nIngrédients:")
-    for ingredient in recipe.ingredients:
-        print(f"- {ingredient}")
+    # print("\nIngrédients:")
+    # for ingredient in recipe.ingredients:
+    #     print(f"- {ingredient}")
     
-    print("\nÉtapes:")
-    for i, step in enumerate(recipe.steps, 1):
-        print(f"{i}. {step}")
+    # print("\nÉtapes:")
+    # for i, step in enumerate(recipe.steps, 1):
+    #     print(f"{i}. {step}")
     
-    if recipe.tips:
-        print("\nAstuces:")
-        for tip in recipe.tips:
-            print(f"- {tip}")
+    # if recipe.tips:
+    #     print("\nAstuces:")
+    #     for tip in recipe.tips:
+    #         print(f"- {tip}")
     
-    if recipe.tags:
-        print("\nTags:")
-        print(", ".join(recipe.tags))
+    # if recipe.tags:
+    #     print("\nTags:")
+    #     print(", ".join(recipe.tags))
 
 url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
 recipe = get_recipe_details(url)
