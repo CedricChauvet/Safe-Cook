@@ -1,9 +1,8 @@
 
 
 """
-cette partie du code est fonctionnelle
-on recupere les informations de la page marmiton et on les affiche
-titre et note.
+cette partie du code recupere toutes les informations sur une recette de marmiton
+herite des fichiers 0,1 et 2 de scrapping.py
 """
 
 import requests
@@ -29,43 +28,16 @@ class MarmitonRecipe:
 
 
 
-def get_recipe_details(url: str) -> Optional[MarmitonRecipe]:
+def get_recipe_page(url: str) -> Optional[MarmitonRecipe]:
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
     }
     
     try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Initialisation des variables
-        difficulty = ""
-        cost = ""
-        
-        # Récupérer le conteneur recipe-primary
-        recipe_primary = soup.find('div', class_='recipe-primary')
-        if recipe_primary:
-            # Chercher tous les items à l'intérieur de recipe-primary
-            recipe_items = recipe_primary.find_all('div', class_='recipe-primary__item')
-            
-            # Parcourir les items pour trouver la difficulté et le coût
-            for item in recipe_items:
-                # Vérifier si l'item contient une icône
-                icon = item.find('i', class_='icon')
-                if icon:
-                    # Récupérer le span correspondant
-                    span_text = item.find('span').text if item.find('span') else ""
-                    
-                    # Identifier le type d'information selon l'icône
-                    if 'icon-difficulty' in icon['class']:
-                        difficulty = span_text
-                    elif 'icon-price' in icon['class']:
-                        cost = span_text
 
-        print(f"Difficulté trouvée: {difficulty}")
-        print(f"Coût trouvé: {cost}")
-        
+
+
+
         return MarmitonRecipe(
             title="",  # À compléter avec le reste du code
             rating=None,
