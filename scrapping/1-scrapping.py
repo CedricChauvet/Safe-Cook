@@ -1,6 +1,6 @@
 """
-ce code recuypere des information sur le cout le temps de preparation et la difficulté.
-ainsi que le titre et la note de la recette. il n'est pas complet et pas entierement fonctionnelle
+ce code recuypere des information les etapes de préparation de la recette
+il est fonctionnel
 """
 import requests
 from bs4 import BeautifulSoup
@@ -12,7 +12,6 @@ def extract_recipe_steps(html_content):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
     }
     
-
     response = requests.get(html_content, headers=headers)
     response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
