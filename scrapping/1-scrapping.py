@@ -7,67 +7,29 @@ from bs4 import BeautifulSoup
 from dataclasses import dataclass
 from typing import List, Optional
 
-
-@dataclass
-class MarmitonRecipe:
-    title: str
-    rating: Optional[float]
-    review_count: int
-    prep_time: str
-    difficulty: str
-    cost: str
-    servings: int
-    ingredients: List[str]
-    steps: List[str]
-    tips: List[str]
-    tags: List[str]
-    url: str
-
-def get_recipe_details(url):
+def extract_recipe_steps(html_content):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
     }
     
-    
-    response = requests.get(url, headers=headers)
+
+    response = requests.get(html_content, headers=headers)
+    response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
     
+    steps = soup.find_all('div', class_='recipe-step-list__container')
     
-    # Récupération du titre
-    titre = soup.find('h1').text
-
-    # La classe recipeV2-container contient les informations de la recette
-    ma_classe = soup.find( class_= 'recipeV2-container')
-
-    ma_classe_primary = ma_classe.find("div", class_="recipe-primary") # temps de cuisson, difficulté, coût
-    mon_score = soup.find("span", class_="recipe-header__rating-text").text  # note
+    recipe_steps = []
+    for step in steps:
+        text = step.find('p').text.strip()
+        recipe_steps.append(text)
     
-    ma_difficulte= ma_classe_primary.find_all('i')
-    for item in ma_difficulte:
-        # Vérifier si l'item contient une icône
-        icon = item.find('i', class_='icon')
-        print("icon",icon)
-        
+    return recipe_steps
 
-    return MarmitonRecipe(
-        title=titre,
-        rating=mon_score,
-        review_count=True,
-        prep_time=mon_temps,
-        difficulty=True,
-        cost=True,
-        servings=True,
-        ingredients=True,
-        steps=True,
-        tips=True,
-        tags=True,
-        url=url
-    )
-        
+# Usage
+html_content = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
+steps = extract_recipe_steps(html_content)
+for i, step in enumerate(steps, 1):
+    print(f"Étape {i}: {step}")
 
 
-
-# Test
-url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
-titre = get_recipe_details(url)
-print(titre)
