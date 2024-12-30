@@ -7,26 +7,38 @@ from bs4 import BeautifulSoup
 
 
 url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-}
 
-# Récupérer la page
-response = requests.get(url, headers=headers)
-response.raise_for_status()
-soup = BeautifulSoup(response.text, 'html.parser')
 
-# Récupérer les ingrédients avec find_all
-mes_ingredients = soup.find_all("div", class_="card-ingredient")
-# boucle for pour parcourir les ingredients
-for ingredient in mes_ingredients:
-    nom_ingredient = ingredient.find("span", class_="ingredient-name").text
-    nombre_ingredient = ingredient.find("span", class_="card-ingredient-quantity").text
-    unite = ingredient.find("span", class_="card-ingredient-unit")
-    
-    # Nettoyer et combiner tout en une ligne
-    quantite = (nombre_ingredient + (unite.text if unite else "")).replace(" ","").replace('\n', '').replace('\t', '').strip()
-    nom = nom_ingredient.replace('\n', '').replace('\t', '').strip()
-    
-    # Afficher la ligne complète
-    print(f"{quantite} {nom}")
+def extract_ingredients(url):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    }
+
+    # Récupérer la page
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, 'html.parser')
+    ing= []
+    # Récupérer les ingrédients avec find_all
+    mes_ingredients = soup.find_all("div", class_="card-ingredient")
+    # boucle for pour parcourir les ingredients
+    for ingredient in mes_ingredients:
+        nom_ingredient = ingredient.find("span", class_="ingredient-name").text
+        nombre_ingredient = ingredient.find("span", class_="card-ingredient-quantity").text
+        unite = ingredient.find("span", class_="card-ingredient-unit")
+        
+        # Nettoyer et combiner tout en une ligne
+        quantite = (nombre_ingredient + (unite.text if unite else "")).replace(" ","").replace('\n', '').replace('\t', '').strip()
+        nom = nom_ingredient.replace('\n', '').replace('\t', '').strip()
+        
+        # Afficher la ligne complète
+        ing.append(f"{quantite} {nom}")
+    return ing
+
+# Usage
+html_content = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
+steps = extract_ingredients(html_content)
+print(steps)
+
+
+

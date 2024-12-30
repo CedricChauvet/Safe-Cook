@@ -28,7 +28,9 @@ def extract_recipe_steps(html_content):
 # Usage
 html_content = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
 steps = extract_recipe_steps(html_content)
-for i, step in enumerate(steps, 1):
-    print(f"Étape {i}: {step}")
+print(steps)
+# Affichage des étapes en print
+# for i, step in enumerate(steps, 1):
+#     print(f"Étape {i}: {step}")
 
 
