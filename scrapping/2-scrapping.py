@@ -5,7 +5,7 @@ Structure de la page d'une recette Marmiton:
 - Temps de préparation
 - Difficulté
 - Coût
-
+- Portions
 et c'est tout pour l'instant
 """
 
@@ -15,17 +15,18 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 
-
 def get_portions(soup):
     div_element = soup.find('div', class_='mrtn-recette_ingredients-counter')
     servings_number = div_element['data-servingsnb']
     servings_unit = div_element['data-servingsunit']
     return f"{servings_number} {servings_unit}"
 
+
 def get_title(soup):
     # Extraction du titre
     title = soup.find('h1').text.strip()
     return title    
+
 
 def get_rating(soup):
     rating = None
@@ -35,8 +36,9 @@ def get_rating(soup):
         if rating_text:
             rating = float(rating_text.text.strip().replace('/5', ''))
     return rating
-def get_recipe_primary(soup):
 
+
+def get_recipe_primary(soup):
     # Extraction du temps de préparation
     time_total = soup.find(class_="time__total")
     if time_total:
