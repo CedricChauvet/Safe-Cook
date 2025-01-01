@@ -38,13 +38,13 @@ def get_recipe_page(url: str) -> Optional[MarmitonRecipe]:
     }
     
 
-    url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
-    url1 = "https://www.marmiton.org/recettes/recette_quiche-poireaux-chevre-lardons_22275.aspx"
-    url2 = "https://www.marmiton.org/recettes/recette_risotto-aux-poireaux_19753.aspx"
-    url3 = "https://www.marmiton.org/recettes/recette_gratin-de-pates-lardons-et-champignons_37409.aspx"
-    url4 = "https://www.marmiton.org/recettes/recette_tajine-de-courgettes-patates-douces-et-raisins-secs_14597.aspx"
+    # url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
+    # url1 = "https://www.marmiton.org/recettes/recette_quiche-poireaux-chevre-lardons_22275.aspx"
+    # url2 = "https://www.marmiton.org/recettes/recette_risotto-aux-poireaux_19753.aspx"
+    # url3 = "https://www.marmiton.org/recettes/recette_gratin-de-pates-lardons-et-champignons_37409.aspx"
+    # url4 = "https://www.marmiton.org/recettes/recette_tajine-de-courgettes-patates-douces-et-raisins-secs_14597.aspx"
     
-    response = requests.get(url4, headers=headers)
+    response = requests.get(url, headers=headers)
     response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -58,6 +58,7 @@ def get_recipe_page(url: str) -> Optional[MarmitonRecipe]:
     #note = get_rating(soup)
     #prep_time, difficulty, cost = get_recipe_primary(soup)
     #print(note)
+    
     return MarmitonRecipe(
         title=title,  # À compléter avec le reste du code
         rating=note,
