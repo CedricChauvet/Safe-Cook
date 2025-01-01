@@ -71,21 +71,13 @@ def get_recipe_primary(soup):
 
 
     
-def get_recipe_details(url: str):
+def get_recipe_details(soup):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
     }
     
     try:
 
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # print("les portions:", get_portions(soup))  # Affich
-        # print("le titre:", get_title(soup))  # Affichage du titre
-        # print("la note:", get_rating(soup))  # Affichage de la note
-        # print("les informations principales:", get_recipe_primary(soup))  # Affichage des informations principales
         
         title = get_title(soup)
         note = get_rating(soup) 
@@ -99,7 +91,23 @@ def get_recipe_details(url: str):
 
 
 
+# # Usage
+# html_content = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
 
-url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
-recipe = get_recipe_details(url)
-print(recipe)
+
+# # Usage
+# headers = {
+#     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+# }
+
+# response = requests.get(html_content, headers=headers)
+# response.raise_for_status()
+# soup = BeautifulSoup(response.text, 'html.parser')
+
+
+
+# recipe = get_recipe_details(soup)
+
+# print(recipe)
+
+
