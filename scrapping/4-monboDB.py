@@ -76,27 +76,57 @@ def to_json(recipe: MarmitonRecipe):
 
 url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
 url1 = "https://www.marmiton.org/recettes/recette_quiche-poireaux-chevre-lardons_22275.aspx"
-recipe = get_recipe_page(url1)
+url2 = "https://www.marmiton.org/recettes/recette_poulet-au-curry_22274.aspx"
+url3 = "https://www.marmiton.org/recettes/recette_tarte-aux-pommes_22273.aspx"
+url4 = "https://www.marmiton.org/recettes/recette_blanquette-de-dinde-aux-poireaux_24308.aspx"
+url5 = "https://www.marmiton.org/recettes/recette_crepes-au-sarrasin-farcies-a-l-oeuf-fromage-et-jambon_71106.aspx"
+url6 = "https://www.marmiton.org/recettes/recette_salade-cesar_32442.aspx"
+url7 = "https://www.marmiton.org/recettes/recette_pommes-de-terres-sautees_36392.aspx"
+url8 = "https://www.marmiton.org/recettes/recette_tarte-aux-pommes-a-l-alsacienne_11457.aspx"
+url9 = "https://www.marmiton.org/recettes/recette_haricots-verts-a-la-carbonara_308397.aspx" 
 
-print(print_recipe(recipe))
-recipe_json = to_json(recipe)  
+# recipe = get_recipe_page(url1)
 
-# Connexion à MongoDB
-client = MongoClient('mongodb://localhost:27017/')
-db = client['0safe-cook']  # Nom de la base de données
-recipes = db['recipes_noel']  # Nom de la collection
+# print(print_recipe(recipe))
+# recipe_json = to_json(recipe)  
 
-# Création d'un index unique sur le champ 'email'
-recipes.create_index([('title', ASCENDING)], unique=True)
+# # Connexion à MongoDB
+# client = MongoClient('mongodb://localhost:27017/')
+# db = client['0safe-cook']  # Nom de la base de données
+# recipes = db['recipes_noel']  # Nom de la collection
+# # Création d'un index unique sur le champ 'email'
+# recipes.create_index([('title', ASCENDING)], unique=True)
 
-try:
-    result = recipes.insert_one(recipe_json)
-    print(f"Recette stockée avec l'ID: {result.inserted_id}")
-except DuplicateKeyError:
-    print(f"Erreur : Une recette avec le titre {recipe_json['title']} existe déjà.")
+# # db.recipes_noel.drop() /* Supprimer la collection */
+
+# try:
+#     result = recipes.insert_one(recipe_json)
+#     print(f"Recette stockée avec l'ID: {result.inserted_id}")
+# except DuplicateKeyError:
+#     print(f"Erreur : Une recette avec le titre {recipe_json['title']} existe déjà.")
 
 
-# Insertion
-#result = store_recipe(recipe_json)
-print(f"Recette stockée avec l'ID: {result.inserted_id}")
 
+def into_db(urls):
+    # Connexion à MongoDB
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client['0safe-cook']  # Nom de la base de données
+    recipes_mix = db['recipes_mix1']  # Nom de la collection
+    # Création d'un index unique sur le champ 'email'
+    recipes_mix.create_index([('title', ASCENDING)], unique=True)
+
+    for url in urls:
+        print(url)
+        recipe = get_recipe_page(url)
+        recipe_json = to_json(recipe)
+        print(recipe_json)
+        try:
+            result = recipes_mix.insert_one(recipe_json)
+            print(f"Recette stockée avec l'ID: {result.inserted_id}")
+        except DuplicateKeyError:
+            print(f"Erreur : Une recette avec le titre {recipe_json['title']} existe déjà.") 
+            pass
+
+
+liste_recettes = [url, url1, url2, url3, url4, url5, url6, url7, url8, url9]
+into_db(liste_recettes)
