@@ -96,6 +96,9 @@ def print_recipe(recipe: MarmitonRecipe):
     for i, step in enumerate(recipe.steps, 1):
         print(f"{i}. {step}")
     
+    """
+    partie inutile pour le moment
+    """
     # if recipe.tips:
     #     print("\nAstuces:")
     #     for tip in recipe.tips:
@@ -108,7 +111,7 @@ def print_recipe(recipe: MarmitonRecipe):
 
 
 
-
-recipe = get_recipe_page(url)
-print_recipe(recipe)
+# url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
+# recipe = get_recipe_page(url)
+# print_recipe(recipe)
 #print(to_json(recipe))

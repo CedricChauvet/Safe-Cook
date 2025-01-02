@@ -13,8 +13,8 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['0safe-cook']
 
 # Créer un dossier pour la sauvegarde
-# timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-backup_dir = f"backup_0safe_cook_db"
+timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+backup_dir = f"backup_0safe_cook_db/timestamp"
 os.makedirs(backup_dir, exist_ok=True)
 
 
