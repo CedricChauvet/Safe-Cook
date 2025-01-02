@@ -4,34 +4,29 @@ il est fonctionnel
 """
 import requests
 from bs4 import BeautifulSoup
-from dataclasses import dataclass
-from typing import List, Optional
 
-def extract_recipe_steps(soup):    
+
+def extract_recipe_steps(soup):
     steps = soup.find_all('div', class_='recipe-step-list__container')
-    
     recipe_steps = []
     for step in steps:
         text = step.find('p').text.strip()
         recipe_steps.append(text)
-    
+
     return recipe_steps
 
-# # Usage
-# html_content = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
-
 
 # # Usage
+# html_content = "https://www.marmiton.org/recettes/"\
+#                "recette_pates-a-la-carbonara_80453.aspx"
 # headers = {
-#     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+#     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+#     'AppleWebKit/537.36'
 # }
+
 
 # response = requests.get(html_content, headers=headers)
 # response.raise_for_status()
 # soup = BeautifulSoup(response.text, 'html.parser')
-
 # steps = extract_recipe_steps(soup)
-
 # print(steps)
-
-
