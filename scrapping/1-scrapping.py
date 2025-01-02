@@ -1,5 +1,5 @@
 """
-ce code recuypere des information les etapes de préparation de la recette
+ce code recupere des information les etapes de préparation de la recette
 il est fonctionnel
 """
 import requests

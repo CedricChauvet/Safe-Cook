@@ -79,7 +79,8 @@ def print_recipe(recipe: MarmitonRecipe):
     if not recipe:
         print("Impossible de récupérer la recette")
         return
-        
+        url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
+
     print(f"Titre: {recipe.title}")
     print(f"Note: {recipe.rating}/5 ({recipe.review_count} avis)")
     print(f"Temps de préparation: {recipe.prep_time}")
@@ -108,6 +109,6 @@ def print_recipe(recipe: MarmitonRecipe):
 
 
 
-# url = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
-# recipe = get_recipe_page(url)
-# print(to_json(recipe))
+recipe = get_recipe_page(url)
+print_recipe(recipe)
+#print(to_json(recipe))
