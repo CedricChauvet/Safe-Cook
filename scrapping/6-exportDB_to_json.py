@@ -7,14 +7,14 @@ Ce code estfonctionnel
 from pymongo import MongoClient
 import json
 import os
-
+from datetime import datetime
 # Connexion à la base de données
 client = MongoClient('mongodb://localhost:27017/')
 db = client['0safe-cook']
 
 # Créer un dossier pour la sauvegarde
 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-backup_dir = f"backup_0safe_cook_db/timestamp"
+backup_dir = f"backup_0safe_cook_db/timestamp {timestamp}"
 os.makedirs(backup_dir, exist_ok=True)
 
 
