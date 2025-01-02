@@ -15,7 +15,7 @@ db = client['0safe-cook']
 # Créer un dossier pour la sauvegarde
 now = datetime.now( )
 timestamp = now.strftime("%d-%m-%Y")
-backup_dir = f"backup_0safe_cook_db/timestamp {timestamp}"
+backup_dir = f"backup_safe_cook_json/timestamp {timestamp}"
 os.makedirs(backup_dir, exist_ok=True)
 
 
