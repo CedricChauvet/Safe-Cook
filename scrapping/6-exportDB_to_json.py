@@ -1,8 +1,12 @@
+"""
+Sauvegarde de la base de données MongoDB dans un fichier JSON,
+afin d'exploitation des données par Eric
+Ce code estfonctionnel
+"""
+
 from pymongo import MongoClient
 import json
-from bson import ObjectId
 import os
-from datetime import datetime
 
 # Connexion à la base de données
 client = MongoClient('mongodb://localhost:27017/')
@@ -13,12 +17,6 @@ db = client['0safe-cook']
 backup_dir = f"backup_0safe_cook_db"
 os.makedirs(backup_dir, exist_ok=True)
 
-# Classe pour gérer la sérialisation des ObjectId
-class JSONEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, ObjectId):
-            return str(o)
-        return super().default(o)
 
 # Exporter chaque collection
 for collection_name in db.list_collection_names():
@@ -32,7 +30,7 @@ for collection_name in db.list_collection_names():
     
     # Sauvegarder en JSON
     with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(documents, f, cls=JSONEncoder, ensure_ascii=False, indent=2)
+        json.dump(documents, f, default=str, ensure_ascii=False, indent=2)
     
     print(f"Collection {collection_name} sauvegardée dans {output_file}")
 
