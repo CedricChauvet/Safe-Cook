@@ -1,74 +1,110 @@
 import React from 'react';
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Importer l'icône
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 export default function Index() {
   const router = useRouter();
 
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingVertical: 60,
-      }}
-    >
-      <View>
-        <Text style={{ fontSize: 60, color: 'green', fontWeight: 'bold' }}>SafeCook</Text>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-          }}
+    <View style={styles.container}>
+      {/* Header Section */}
+      <View style={styles.header}>
+        <Text style={styles.title}>SafeCook</Text>
+      </View>
+
+      {/* Main Buttons Section */}
+      <View style={styles.buttonGroup}>
+        <Button
+          mode="contained"
+          onPress={() => console.log('Accueil cliqué')}
+          buttonColor="green"
+          labelStyle={styles.buttonLabel}
         >
+          Accueil
+        </Button>
+
+        <View style={styles.row}>
           <Button
             mode="contained"
-            onPress={() => console.log('Bouton cliqué')}
+            onPress={() => console.log('Photos cliqué')}
             buttonColor="green"
-            labelStyle={{ color: 'white', fontWeight: 'bold' }}
+            labelStyle={styles.buttonLabel}
           >
-            Accueil
+            Photos
+          </Button>
+          <Button
+            mode="contained"
+            onPress={() => router.push('/recette')}
+            buttonColor="green"
+            labelStyle={styles.buttonLabel}
+          >
+            Recettes
+          </Button>
+          <Button
+            mode="contained"
+            onPress={() => console.log('Favoris cliqué')}
+            buttonColor="green"
+            labelStyle={styles.buttonLabel}
+            contentStyle={styles.iconButtonContent}
+          >
+            <Icon name="heart" size={20} color="white" />
           </Button>
         </View>
       </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          width: "100%",
-          marginBottom: 30,
-        }}
+      { /* Navigation Section *
+      <Button
+        icon={() => <Icon name="home" size={20} />}
+        onPress={() => router.push('/')}
+        buttonColor="blue"
+        labelStyle={styles.buttonLabel}
       >
-        <Button
-          mode="contained"
-          onPress={() => console.log('Bouton 1 cliqué')}
-          buttonColor="green"
-          labelStyle={{ color: 'white' }}
-        >
-          Photos
-        </Button>
-        <Button
-          mode="contained"
-          onPress={() => router.push('/recette')}
-          buttonColor="green"
-          labelStyle={{ color: 'white' }}
-        >
-          Recettes
-        </Button>
-        <Button
-        mode="contained"
-        onPress={() => console.log('Bouton 3 cliqué')}
-        buttonColor="green"
-        labelStyle={{ color: 'white' }}
-        contentStyle={{ flexDirection: 'row', alignItems: 'center' }} // Aligner l'icône si nécessaire
-      >
-        <Icon name="heart" size={20} color="white" /> {/* Icône en forme de cœur */}
-      </Button>
-      </View>
+        Retour
+      </Button>*/}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 60,
+    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 60,
+    color: 'green',
+    fontWeight: 'bold',
+  },
+  dataText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: 'grey',
+  },
+  buttonGroup: {
+    width: "100%",
+    alignItems: "center",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 300,
+  },
+  buttonLabel: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  iconButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});

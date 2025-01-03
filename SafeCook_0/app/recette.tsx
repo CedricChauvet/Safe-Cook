@@ -1,95 +1,82 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 
-export default function RecettePage() {
-  const router = useRouter();
+// Importez les données JSON
+import recettes from './data/recipes_mix1.json';
 
-  const recettes = [
-    {
-      id: 1,
-      nom: 'Poulet rôti',
-      description: 'Un délicieux poulet rôti avec des herbes de Provence'
-    },
-    {
-      id: 2,
-      nom: 'Salade César',
-      description: 'Salade classique avec poulet grillé et croûtons'
-    },
-    {
-      id: 3,
-      nom: 'Lasagnes',
-      description: 'Lasagnes traditionnelles à la bolognaise'
-    }
-  ];
-
+const Recette = () => {
   return (
-    <View style={{
-      flex: 1,
-      padding: 20,
-      backgroundColor: '#f0f0f0'
-    }}>
-      <Text style={{
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'green',
-        textAlign: 'center',
-        marginBottom: 20
-      }}>
-        Nos Recettes
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Liste des Recettes</Text>
+      <FlatList
+        data={recettes}
+        keyExtractor={(item) => item._id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Text style={styles.title}>{item.title}</Text>
 
-      <ScrollView>
-        {recettes.map((recette) => (
-          <View
-            key={recette.id}
-            style={{
-              backgroundColor: 'white',
-              borderRadius: 10,
-              padding: 15,
-              marginBottom: 15,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 4,
-              elevation: 3
-            }}
-          >
-            <Text style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: 'green',
-              marginBottom: 10
-            }}>
-              {recette.nom}
+            {/* Informations générales */}
+            <Text style={styles.text}>Note : {item.rating} ⭐</Text>
+            <Text style={styles.text}>
+              Avis : {item.review_count >= 0 ? item.review_count : 'Aucun avis'}
             </Text>
-            <Text style={{ color: 'gray' }}>
-              {recette.description}
-            </Text>
-            <Button
-              mode="contained"
-              onPress={() => console.log(`Détails de ${recette.nom}`)}
-              buttonColor="green"
-              style={{ marginTop: 10 }}
-            >
-              Voir la recette
-            </Button>
+            <Text style={styles.text}>Temps de préparation : {item.prep_time}</Text>
+            <Text style={styles.text}>Difficulté : {item.difficulty}</Text>
+            <Text style={styles.text}>Coût : {item.cost}</Text>
+            <Text style={styles.text}>Portions : {item.servings}</Text>
+
+            {/* Liste des ingrédients */}
+            <Text style={styles.subtitle}>Ingrédients:</Text>
+            {item.ingredients.map((ing, index) => (
+              <Text key={index} style={styles.text}>- {ing}</Text>
+            ))}
+
+            {/* Instructions */}
+            <Text style={styles.subtitle}>Instructions:</Text>
+            <Text style={styles.text}>{item.steps.join('\n')}</Text>
           </View>
-        ))}
-      </ScrollView>
-
-      <Button
-        mode="outlined"
-        onPress={() => router.back()}
-        style={{
-          marginTop: 20,
-          borderColor: 'green'
-        }}
-        labelStyle={{ color: 'green' }}
-      >
-        Retour
-      </Button>
+        )}
+      />
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  card: {
+    marginBottom: 16,
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: '#f8f9fa',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 8,
+  },
+  text: {
+    fontSize: 14,
+    marginTop: 4,
+  },
+});
+
+export default Recette;
