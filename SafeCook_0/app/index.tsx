@@ -30,7 +30,7 @@ export default function Index() {
         <View style={styles.row}>
           <Button
             mode="contained"
-            onPress={() => console.log('Photos cliqué')}
+            onPress={() => router.push('/photos')}
             buttonColor="green"
             labelStyle={styles.buttonLabel}
           >
@@ -56,15 +56,6 @@ export default function Index() {
         </View>
       </View>
 
-      { /* Navigation Section *
-      <Button
-        icon={() => <Icon name="home" size={20} />}
-        onPress={() => router.push('/')}
-        buttonColor="blue"
-        labelStyle={styles.buttonLabel}
-      >
-        Retour
-      </Button>*/}
     </View>
   );
 }
