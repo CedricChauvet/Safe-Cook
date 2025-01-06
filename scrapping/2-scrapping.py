@@ -8,11 +8,8 @@ Structure de la page d'une recette Marmiton:
 - Portions
 et c'est tout pour l'instant
 """
-
 import requests
 from bs4 import BeautifulSoup
-from dataclasses import dataclass
-from typing import List, Optional
 
 
 def get_portions(soup):
@@ -52,8 +49,8 @@ def get_recipe_primary(soup):
     recipe_primary = soup.find('div', class_='recipe-primary')
     if recipe_primary:
         # Chercher tous les items à l'intérieur de recipe-primary
-        recipe_items = recipe_primary.find_all('div', class_='recipe-primary__item')
-        
+        recipe_items = recipe_primary.find_all\
+            ('div', class_='recipe-primary__item')
         # Parcourir les items pour trouver la difficulté et le coût
         for item in recipe_items:
             # Vérifier si l'item contient une icône
@@ -61,26 +58,18 @@ def get_recipe_primary(soup):
             if icon:
                 # Récupérer le span correspondant
                 span_text = item.find('span').text if item.find('span') else ""
-                
                 # Identifier le type d'information selon l'icône
                 if 'icon-difficulty' in icon['class']:
                     difficulty = span_text
                 elif 'icon-price' in icon['class']:
                     cost = span_text
-    return  prep_time, difficulty, cost
+    return prep_time, difficulty, cost
 
 
-    
 def get_recipe_details(soup):
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-    }
-    
     try:
-
-        
         title = get_title(soup)
-        note = get_rating(soup) 
+        note = get_rating(soup)
         prep_time, difficulty, cost = get_recipe_primary(soup)
         servings = get_portions(soup)
         return title, note, prep_time, difficulty, cost, servings,
@@ -90,24 +79,16 @@ def get_recipe_details(soup):
         return None
 
 
+# Usage
+html_content = "https://www.marmiton.org/recettes/"\
+               "recette_pates-a-la-carbonara_80453.aspx"
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+    'AppleWebKit/537.36'
+}
+response = requests.get(html_content, headers=headers)
+response.raise_for_status()
+soup = BeautifulSoup(response.text, 'html.parser')
+recipe = get_recipe_details(soup)
 
-# # Usage
-# html_content = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
-
-
-# # Usage
-# headers = {
-#     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-# }
-
-# response = requests.get(html_content, headers=headers)
-# response.raise_for_status()
-# soup = BeautifulSoup(response.text, 'html.parser')
-
-
-
-# recipe = get_recipe_details(soup)
-
-# print(recipe)
-
-
+print(recipe)
