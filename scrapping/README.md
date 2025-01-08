@@ -1,5 +1,19 @@
 # This is the readme for the scrapping part
-### we use marmiton-API 
-#### found at https://github.com/remaudcorentin-dev/python-marmiton
-pip install python-marmiton==0.4.2
-#### there is also https://github.com/yannguegan/scrap-marmiton   (not used for the moment)
+
+petit tuto holberton pour mongodb: (https://intranet.hbtn.io/projects/2373)
+
+attnetion  probleme avec utilisation de mongodb en localhost, un cluster gratuit a été créé,
+
+# Créer une instance de client
+client: mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/
+
+
+
+veuillez utiliser ces instruction dans les fichiers python
+
+uri = "mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/"
+
+client = MongoClient(uri)
+
+
+### fonctionne avec mongodb compass
