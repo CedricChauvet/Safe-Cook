@@ -18,24 +18,24 @@ export default function Index() {
 
       {/* Main Buttons Section */}
       <View style={styles.buttonGroup}>
-        <Button
+        {/*<Button
           mode="contained"
           onPress={() => console.log('Accueil cliqué')}
           buttonColor="green"
           labelStyle={styles.buttonLabel}
         >
           Accueil
-        </Button>
+        </Button>*/}
 
         <View style={styles.row}>
-          <Button
+          {/*<Button
             mode="contained"
             onPress={() => router.push('/photos')}
             buttonColor="green"
             labelStyle={styles.buttonLabel}
           >
             Photos
-          </Button>
+          </Button>*
           <Button
             mode="contained"
             onPress={() => router.push('/recette')}
@@ -52,7 +52,7 @@ export default function Index() {
             contentStyle={styles.iconButtonContent}
           >
             <Icon name="heart" size={20} color="white" />
-          </Button>
+          </Button>*/}
         </View>
       </View>
 

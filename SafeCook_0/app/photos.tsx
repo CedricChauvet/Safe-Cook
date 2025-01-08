@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,15 +10,9 @@ export default function PhotosPage() {
 
   return (
     <View style={styles.container}>
-        <Button
-                    mode="contained"
-                    onPress={() => console.log('Favoris cliqué')}
-                    buttonColor="green"
-                    labelStyle={styles.buttonLabel}
-                    contentStyle={styles.iconButtonContent}
-                  >
-                    <Icon name="photo" size={20} color="white" />
-                  </Button>
+       <TouchableOpacity style={styles.iconButtonContent} onPress={() => console.log('photos cliquées')}>
+        <Icon name="camera" size={50} color="green" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -35,10 +29,15 @@ const styles = StyleSheet.create({
     buttonLabel: {
         color: 'white',
         fontWeight: 'bold',
+        fontSize: 180, // Taille de la police augmentée
+        height: 180
       },
       iconButtonContent: {
+        height: 300,
         flexDirection: 'row',
         alignItems: 'center',
+        padding: 10, // Padding ajouté pour agrandir le bouton
       },
+
 }
 )
