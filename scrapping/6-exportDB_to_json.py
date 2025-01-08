@@ -9,8 +9,10 @@ import json
 import os
 from datetime import datetime
 
-# Connexion à la base de données
-client = MongoClient('mongodb://localhost:27017/')
+
+uri = "mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/"
+# Créer une instance de client
+client = MongoClient(uri)
 db = client['0safe-cook']
 
 # Créer un dossier pour la sauvegarde
