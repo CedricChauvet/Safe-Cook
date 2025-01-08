@@ -7,10 +7,12 @@ from pymongo import MongoClient
 
 
 def main():
-    client = MongoClient('mongodb://localhost:27017/')
+    uri = "mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/"
+    # Créer une instance de client
+    client = MongoClient("htpps://localhost:27017")
     db = client['0safe-cook']  # Nom de la base de données
-    recipes = db['recipes_mix1']  # Nom de la collection
-
+    #recipes = db['recipes_mix1']  # Nom de la collection
+    recipes = db['recipes_many_txt']  # Nom de la collection
     # Correction ici : pas besoin de .find() sur recipe_list
     for recipe in recipes.find():
         print(recipe["title"])
@@ -18,3 +20,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
