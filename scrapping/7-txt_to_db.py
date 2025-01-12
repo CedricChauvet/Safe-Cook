@@ -46,6 +46,7 @@ class MarmitonRecipe:
     tips: List[str]
     tags: List[str]
     url: str
+    photo: str
 
 
 def to_json(recipe: MarmitonRecipe):
@@ -61,7 +62,8 @@ def to_json(recipe: MarmitonRecipe):
         "steps": recipe.steps,
         "tips": recipe.tips,
         "tags": recipe.tags,
-        "url": recipe.url
+        "url": recipe.url,
+        "photo": None
     }
 def into_db(urls):
     # Connexion à MongoDB
@@ -72,10 +74,12 @@ def into_db(urls):
 
 
     db = client['0safe-cook']  # Nom de la base de données
-    recipes_mix = db['recipes_many_txt']  # Nom de la collection
+    recipes_mix = db['vegan_mix']  # Nom de la collection
 
     # Création d'un index unique sur le champ 'title'
     recipes_mix.create_index([('title', ASCENDING)], unique=True)
+    # recipes_mix = recipes_mix.update_many({}, {"$set": {"photo": None}})
+
 
     for url in urls:
         print(url)
@@ -84,6 +88,14 @@ def into_db(urls):
         print(recipe_json)
         try:
             result = recipes_mix.insert_one(recipe_json)
+                    # Mettre à jour le champ 'photo' pour ce document
+            recipes_mix.update_one(
+            {"_id": result.inserted_id},  # Filtre : le document avec cet ID
+            {"$set": {"photo": f"./data/photo/{str(result.inserted_id)}.jpg"}}  # Mise à jour du champ 'photo'
+        )
+            
+            
+            
             print(f"Recette stockée avec l'ID: {result.inserted_id}")
 
         except DuplicateKeyError:
@@ -95,7 +107,7 @@ def main():
 
 
     # Spécifiez le chemin du répertoire
-    path = '/mnt/c/Users/chauv/Desktop/holberton-demoday/Safe-Cook/scrapping/bdd_txt/'
+    path = '/mnt/c/Users/chauv/Desktop/holberton-demoday/Safe-Cook/scrapping/bdd_txt/vegan_recis/'
 
     # Utilisez glob pour trouver tous les fichiers .txt
     fichiers_txt = glob.glob(os.path.join(path, '*.txt'))
