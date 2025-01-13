@@ -74,7 +74,7 @@ def into_db(urls):
 
 
     db = client['0safe-cook']  # Nom de la base de données
-    recipes_mix = db['vegan_mix']  # Nom de la collection
+    recipes_mix = db['sans_huile_mix']  # Nom de la collection
 
     # Création d'un index unique sur le champ 'title'
     recipes_mix.create_index([('title', ASCENDING)], unique=True)
@@ -107,7 +107,7 @@ def main():
 
 
     # Spécifiez le chemin du répertoire
-    path = '/mnt/c/Users/chauv/Desktop/holberton-demoday/Safe-Cook/scrapping/bdd_txt/vegan_recis/'
+    path = './bdd_txt/sans_huile_mix'
 
     # Utilisez glob pour trouver tous les fichiers .txt
     fichiers_txt = glob.glob(os.path.join(path, '*.txt'))
