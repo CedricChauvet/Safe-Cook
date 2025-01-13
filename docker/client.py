@@ -11,6 +11,8 @@ def detect_objects(image_path):
         # Encoder l'image en base64
         with open(image_path, 'rb') as image_file:
             image_b64 = base64.b64encode(image_file.read()).decode('utf-8')
+
+        print(image_b64[:100:])
         
         # Envoyer la requête, est ce qu'on peut envoyer autre chose
         # dans la requete? user id, etc?

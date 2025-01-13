@@ -1,0 +1,176 @@
+[{
+  "_id": {
+    "$oid": "6783e0583a978dcdaba4195a"
+  },
+  "title": "Crêpes sans huile",
+  "rating": 4.5,
+  "review_count": -1,
+  "prep_time": "8 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "24 crêpes",
+  "ingredients": [
+    "500g farine",
+    "1l lait",
+    "4 oeufs"
+  ],
+  "steps": [
+    "Dans un saladier, mettre tous les ingrédients. Passer au Mixer.",
+    "Faire cuire les crêpes dans une poêle anti-adhésive"
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_crepes-sans-huile_22841.aspx",
+  "photo": "./data/photo/6783e0583a978dcdaba4195a.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783e0583a978dcdaba4195b"
+  },
+  "title": "Sauce salade sans huile",
+  "rating": 4.8,
+  "review_count": -1,
+  "prep_time": "5 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "4 personnes",
+  "ingredients": [
+    " persil",
+    " sel",
+    " poivre",
+    "2cuillèresàsoupe vinaigre balsamique",
+    "1 moutarde",
+    "1pot yaourt nature"
+  ],
+  "steps": [
+    "Melanger le yaourt nature et la moutarde dans un bol.",
+    "Ajouter la vinaigre balsamique, le sel et le poivre et melanger.",
+    "Voila une bonne sauce dietetique pour vos salades vertes ou de pates."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_sauce-salade-sans-huile_95791.aspx",
+  "photo": "./data/photo/6783e0583a978dcdaba4195b.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783e0583a978dcdaba4195c"
+  },
+  "title": "Cake rapide (sans beurre et sans huile)",
+  "rating": 4.3,
+  "review_count": -1,
+  "prep_time": "50 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "6 personnes",
+  "ingredients": [
+    "25cl crème fraîche",
+    "1sachet levure chimique",
+    "200g farine",
+    "100g sucre",
+    "2 oeufs"
+  ],
+  "steps": [
+    "Mélanger les oeufs et le sucre, ajouter la farine avec la levure puis la crème fraîche.",
+    "On peut agrémenter ce cake selon ses envies (2-3 cuillères à soupe de cacao ou des pommes ; des amandes ; des noisettes ; des raisins secs etc...).",
+    "Verser dans un moule à cake chemisé de papier sulfurisé.",
+    "Mettre au four à environ 180°C (selon le four) et environ 35 min.",
+    "Bonne dégustation..."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_cake-rapide-sans-beurre-et-sans-huile_32701.aspx",
+  "photo": "./data/photo/6783e0583a978dcdaba4195c.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783e0583a978dcdaba4195d"
+  },
+  "title": "Pizza allégée (sans beurre ni huile)",
+  "rating": 4,
+  "review_count": -1,
+  "prep_time": "55 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "6 personnes",
+  "ingredients": [
+    " sel",
+    "1 yaourt",
+    "250g farine",
+    "1 jaune d'oeuf",
+    "0.5 poivron",
+    "50g concentré de tomates",
+    "1tranche blanc de dinde",
+    "2 carré frais"
+  ],
+  "steps": [
+    "Préparation de la pâte : mélanger les ingrédients et en faire une boule. Puis étalez en étirant bien car c'est un peu élastique.. A la limite, rajoutez un peu de farine.",
+    "Mettre le disque de pâte sans matière grasse sur une plaque antiadhésive.",
+    "Délayez sur feu tiède le concentré de tomate avec un peu d'eau, pas trop pour que la tomate se tienne encore. Mettre sur la pâte en premier lieu. Puis y déposer le blanc de dinde et le poivron en petits morceaux.",
+    "Maintenant il ne reste plus qu'à parsemer de carré frais émietté.",
+    "Enfourner 30 min à 185°C."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_pizza-allegee-sans-beurre-ni-huile_23791.aspx",
+  "photo": "./data/photo/6783e0583a978dcdaba4195d.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783e0583a978dcdaba4195e"
+  },
+  "title": "Mayonnaise diététique sans huile",
+  "rating": 3.8,
+  "review_count": -1,
+  "prep_time": "5 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "4 personnes",
+  "ingredients": [
+    " persil",
+    " sel",
+    " poivre",
+    "1cuillèreàsoupe moutarde",
+    "1 oeuf"
+  ],
+  "steps": [
+    "Séparer le jaune et le blanc d'oeuf.",
+    "Battre le blanc en neige bien ferme.",
+    "Ajoutez une cuillère à soupe de moutarde au jaune d'oeuf, une pincée de sel et un peu de poivre. Puis, commencer à mélanger et  ajouter le blanc d'oeuf en neige. L'incorporer délicatement à la fourchette. Il est possible d'ajouter des fines herbes et/ou du citron selon le plat à accompagner. Bon appétit!"
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_mayonnaise-dietetique-sans-huile_165541.aspx",
+  "photo": "./data/photo/6783e0583a978dcdaba4195e.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783e0583a978dcdaba4195f"
+  },
+  "title": "Gaufre allégée sans produit allégée et sans beurre ni huile",
+  "rating": 4.2,
+  "review_count": -1,
+  "prep_time": "30 min",
+  "difficulty": "facile",
+  "cost": "bon marché",
+  "servings": "6 gaufres",
+  "ingredients": [
+    "1pincée sel",
+    "30g sucre en poudre",
+    "170g fromage blanc",
+    "200g farine",
+    "2 oeufs",
+    "10cl lait écrémé",
+    "1cuillère café"
+  ],
+  "steps": [
+    "Dans un saladier, mettre la farine, la levure, le sucre et le sel. Incorporer les oeufs. Ajouter progressivement le fromage blanc et le lait. Battre énergiquement jusqu'à obtention d'une pâte lisse.",
+    "Avec une louche, déposer la pâte sur les plaques du gaufrier (la pâte doit avoir la consistance d'une pâte à crêpe épaisse) et l'étaler avec le dos de la cuillère en une couche épaisse.",
+    "Laisser cuire 5 à 10 min selon le résultat souhaité : croustillante ou moelleuse.",
+    "Bon appétit"
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_gaufre-allegee-sans-produit-allegee-et-sans-beurre-ni-huile_169096.aspx",
+  "photo": "./data/photo/6783e0583a978dcdaba4195f.jpg"
+}]
