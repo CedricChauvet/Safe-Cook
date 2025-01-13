@@ -44,6 +44,9 @@ def detect_objects():
         # Conversion explicite en numpy
         image_np = np.frombuffer(image_bytes, np.uint8)
         image = cv2.imdecode(image_np, cv2.IMREAD_COLOR)
+        
+        # Redimensionner l'image à 640x640
+        image = cv2.resize(image, (640, 640))
 
         # Vérification de l'image
         if image is None:
