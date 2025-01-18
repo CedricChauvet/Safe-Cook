@@ -39,13 +39,22 @@ def detect_objects():
     try:
         # Décoder l'image base64
         image_b64 = request.json['image']
-        image_bytes = base64.b64decode(image_b64)
 
-        # Conversion explicite en numpy
+        # Enlever le préfixe data:image si présent
+        if image_b64.startswith('data:image'):
+            # Extraire uniquement la partie base64 après la virgule
+            image_b64 = image_b64.split(',')[1]
+
+        print("Image reçue, décodage en cours...")
+        # Décoder
+        image_bytes = base64.b64decode(image_b64)
         image_np = np.frombuffer(image_bytes, np.uint8)
         image = cv2.imdecode(image_np, cv2.IMREAD_COLOR)
-        
-        # Redimensionner l'image à 640x640
+
+        # Vérification et resize
+        if image is None:
+            raise ValueError("Échec du décodage de l'image")
+            
         image = cv2.resize(image, (640, 640))
 
         # Vérification de l'image
