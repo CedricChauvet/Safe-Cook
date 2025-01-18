@@ -1,17 +1,24 @@
+// Import des dépendances nécessaires
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+// Ces imports ne sont pas utilisés, ils peuvent être supprimés
 import * as ImageManipulator from 'expo-image-manipulator';
 import ImageResizer from 'react-native-image-resizer';
 
-
 export default function PhotosPage() {
+  // État pour gérer l'orientation de la caméra (avant/arrière)
   const [facing, setFacing] = useState<CameraType>('back');
+  // Gestion des permissions de la caméra avec Expo
   const [permission, requestPermission] = useCameraPermissions();
+  // Ces états ne semblent pas être utilisés dans le composant actuel
   const [photo, setPhoto] = useState(null);
+  // État pour gérer l'indicateur de chargement
   const [isUploading, setIsUploading] = useState(false);
+  // Référence à la caméra pour pouvoir prendre des photos
   const cameraRef = useRef(null);
 
+  // Gestion des permissions de la caméra
   if (!permission) {
     return <View />;
   }
@@ -25,37 +32,16 @@ export default function PhotosPage() {
     );
   }
 
+  // Fonction pour envoyer la photo au serveur
   async function uploadPhoto(photoUri) {
     try {
-  
-
-      console.log(photoUri)
-      // Vérifier que l'URI existe
       if (!photoUri) {
         throw new Error('URI de photo manquant');
       }
-  
-      // Redimensionner et convertir l'image
 
-      console.log('Traitement de l\'image...');
-
-      console.log('Image traitée avec succès');
-  
-      // console.log('Image traitée avec succès:', {
-      //   width: manipResult.width,
-      //   height: manipResult.height,
-      //   base64Length: manipResult.base64?.length
-      // });
-  
-      // Vérifier que nous avons bien une chaîne base64
-
-  
       setIsUploading(true);
-  
-      // Envoyer l'image
-      console.log(photoUri.substring(0, 100));
-
-      console.log('Envoi de l\'image...');
+      
+      // Envoi de l'image au serveur
       const response = await fetch('http://176.139.25.235:5000/detect', {
         method: 'POST',
         headers: {
@@ -66,50 +52,45 @@ export default function PhotosPage() {
         })
       });
 
-      console.log(response)
-  
       if (!response.ok) {
         throw new Error(`Erreur serveur: ${response.status}`);
       }
-  
+
       const data = await response.json();
-      console.log('Upload réussi');
+      
+      // Affichage des données reçues en developpement
+      console.log(data);
+      
       return data;
-  
+
     } catch (error) {
-      // console.error('Erreur détaillée:', error);
       throw new Error('Erreur lors de l\'envoi de l\'image');
     } finally {
       setIsUploading(false);
     }
   }
 
-    
-
-  
+  // Fonction pour prendre une photo
   async function takePicture() {
     if (cameraRef.current) {
       try {
+        // Configuration optimisée pour la prise de photo
         const photo = await cameraRef.current.takePictureAsync({
-          quality: 0.1,
-          base64: true,
-          exif: false,
-          // skipProcessing: true,
-          width: 640,
+          quality: 0.1,      // Qualité réduite pour optimiser la taille
+          base64: true,      // Nécessaire pour l'envoi en base64
+          exif: false,       // Pas besoin des données EXIF
+          width: 640,        // Dimensions réduites
           height: 640
         });
-        // Upload automatique après la prise de photo
 
-        console.log('En cours de téléchargement de la photo...');
         await uploadPhoto(photo.base64);
-        console.log('Photo téléchargée avec succès');
       } catch (error) {
-        // console.error('Error taking picture:', error);
         throw new Error('Erreur lors de la prise de photo');
       }
     }
   }
 
+  // Rendu du composant
   return (
     <View style={styles.container}>
       <CameraView
@@ -121,7 +102,7 @@ export default function PhotosPage() {
           <TouchableOpacity 
             style={styles.button} 
             onPress={takePicture}
-            disabled={isUploading}
+            disabled={isUploading}  // Désactive le bouton pendant l'upload
           >
             {isUploading ? (
               <ActivityIndicator size="large" color="#ffffff" />
@@ -134,33 +115,3 @@ export default function PhotosPage() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  message: {
-    textAlign: 'center',
-    paddingBottom: 10,
-  },
-  camera: {
-    flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-});

@@ -1,0 +1,72 @@
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+path: LVIS_Fruits_And_Vegetables # dataset root dir
+train: images/train # 1000 train images (relative to 'path') 
+val: images/test # 7221 val images (relative to 'path') 
+test: images/test # 180 Manually labeled test images 
+Voici la traduction en français :
+
+
+names:
+  0: amande
+  1: pomme
+  2: abricot
+  3: artichaut
+  4: asperge
+  5: avocat
+  6: banane
+  7: tofu
+  8: poivron
+  9: mûre
+  10: myrtille
+  11: brocoli
+  12: choux de Bruxelles
+  13: cantaloup
+  14: carotte
+  15: chou-fleur
+  16: piment de Cayenne
+  17: céleri
+  18: cerise
+  19: pois chiche
+  20: piment
+  21: clémentine
+  22: noix de coco
+  23: maïs
+  24: concombre
+  25: datte
+  26: aubergine
+  27: figue
+  28: ail
+  29: gingembre
+  30: fraise
+  31: courge
+  32: raisin
+  33: haricot vert
+  34: oignon vert/ciboule
+  35: tomate
+  36: kiwi
+  37: citron
+  38: laitue
+  39: citron vert
+  40: mandarine
+  41: melon
+  42: champignon
+  43: oignon
+  44: orange
+  45: papaye
+  46: petit pois
+  47: pêche
+  48: poire
+  49: kaki
+  50: cornichon
+  51: ananas
+  52: pomme de terre
+  53: prune
+  54: citrouille
+  55: radis
+  56: framboise
+  57: fraise
+  58: patate douce
+  59: tomate
+  60: navet
+  61: pastèque
+  62: courgette
