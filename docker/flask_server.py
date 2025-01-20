@@ -55,7 +55,12 @@ def detect_objects():
         if image is None:
             raise ValueError("Échec du décodage de l'image")
             
-        image = cv2.resize(image, (640, 640))
+        # image = cv2.resize(image, (640, 640))
+        image = make_square_with_padding(image)
+
+
+
+
 
         # Vérification de l'image
         if image is None:
@@ -141,6 +146,35 @@ def detect_objects():
             'traceback': traceback.format_exc()
         }), 500
 
+
+def make_square_with_padding(image):
+    """
+    Transforme une image en image carrée en ajoutant des bordures noires.
+    L'image d'origine conserve ses proportions.
+    
+    Args:
+        image: Image source (format numpy array / OpenCV)
+    
+    Returns:
+        Image carrée avec bordures noires
+    """
+    # Obtenir les dimensions de l'image
+    height, width = image.shape[:2]
+    
+    # Déterminer la taille du carré (prendre le plus grand côté)
+    square_size = max(height, width)
+    
+    # Créer une image carrée noire
+    square_image = np.zeros((square_size, square_size, 3), dtype=np.uint8)
+    
+    # Calculer les offsets pour centrer l'image
+    x_offset = (square_size - width) // 2
+    y_offset = (square_size - height) // 2
+    
+    # Copier l'image originale au centre
+    square_image[y_offset:y_offset+height, x_offset:x_offset+width] = image
+    
+    return square_image
 
 
 def draw_detections(
