@@ -1,5 +1,5 @@
 # Safe-Cook Allergen-Free Nutrition
-###Working repository for Demo Day by Ced & Eric
+### Working repository for Demo Day by Ced & Eric
 
 Machine Learning DEV part:<br/>
 (https://github.com/CedricChauvet/Safe-Cook/tree/dev_ML_1.0)
