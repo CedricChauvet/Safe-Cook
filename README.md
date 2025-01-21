@@ -1,5 +1,3 @@
-
-
 # Safe-Cook Allergen-Free Nutrition
 ###Working repository for Demo Day by Ced & Eric
 
