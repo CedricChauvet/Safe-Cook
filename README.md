@@ -2,8 +2,8 @@
 ###Working repository for Demo Day by Ced & Eric
 
 Machine Learning DEV part:
-(https://github.com/CedricChauvet/Safe-Cook/tree/dev_ML_1.0)
 
+(https://github.com/CedricChauvet/Safe-Cook/tree/dev_ML_1.0)
 
 FullStack DEV part:
 
