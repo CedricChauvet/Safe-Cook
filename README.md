@@ -1,31 +1,26 @@
 
-# Safe-Cook Alimentation sans allergènes
-répertoire de travail pour le demo day by Ced & Eric
 
+# Safe-Cook Allergen-Free Nutrition
+###Working repository for Demo Day by Ced & Eric
 
-partie DEV Machine Learning:  
+Machine Learning DEV part:
 (https://github.com/CedricChauvet/Safe-Cook/tree/dev_ML_1.0)
 
 
-partie DEV FullStack:    
+FullStack DEV part:
+
 (https://github.com/CedricChauvet/Safe-Cook/tree/dev_FullStack)
 
-#### "/tree/dev_FullStack" contient la derniere version stable du projet
+#### "/tree/dev_FullStack" contains the latest stable version of the project
 
 
-# Intro  
-Avec Eric Maresc, nous développons Safe Cook, une application mobile qui accompagne les familles dans leur quotidien alimentaire. Notre solution répond aux préoccupations des parents soucieux de la nutrition et de la santé de leur famille en :
+# Intro
+Together with Eric Maresc, we are developing Safe Cook, a mobile application that supports families in their daily food habits. Our solution addresses the concerns of parents who care about their family's nutrition and health by:
 
--Identifiant automatiquement les aliments de votre réfrigérateur grâce à l'intelligence artificielle
+* Automatically identifying the food items in your refrigerator using artificial intelligence
 
--Proposant des recettes adaptées à vos ingrédients disponibles
+* Suggesting recipes tailored to the ingredients you have available
 
--Prenant en compte vos allergènes et restrictions alimentaires pour une cuisine en toute sécurité
+* Taking into account your allergens and dietary restrictions for safe cooking
 
--Privilégiant une nutrition équilibrée 🍎 
-
-
-
-
-
-
+* Promoting a balanced diet 🍎
