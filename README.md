@@ -10,7 +10,7 @@ partie DEV Machine Learning:
 partie DEV FullStack:    
 (https://github.com/CedricChauvet/Safe-Cook/tree/dev_FullStack)
 
-#### /tree/dev_FullStack contient la derniere version stable du projet
+#### "/tree/dev_FullStack" contient la derniere version stable du projet
 
 
 # Intro  
