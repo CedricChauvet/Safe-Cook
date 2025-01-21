@@ -7,9 +7,9 @@ partie DEV Machine Learning:
 (https://github.com/CedricChauvet/Safe-Cook/tree/dev_ML_1.0)
 
 
-partie DEV FullStack:  ### contient la derniere version stable du projet 
+partie DEV FullStack:   
 (https://github.com/CedricChauvet/Safe-Cook/tree/dev_FullStack)
-
+## contient la derniere version stable du projet
 
 
 # Intro  
