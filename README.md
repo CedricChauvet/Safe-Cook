@@ -4,7 +4,7 @@
 Machine Learning DEV part:<br/>
 (https://github.com/CedricChauvet/Safe-Cook/tree/dev_ML_1.0)
 
-
+<br/>
 
 
 FullStack DEV part:<br/>
