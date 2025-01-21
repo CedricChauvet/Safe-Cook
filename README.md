@@ -25,3 +25,5 @@ Together with Eric Maresc, we are developing Safe Cook, a mobile application tha
 * Taking into account your allergens and dietary restrictions for safe cooking
 
 * Promoting a balanced diet 🍎
+
+By Cédric CHAUVET
