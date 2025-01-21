@@ -1,5 +1,4 @@
-/docker/mount/
+/docker/mount/*.jpg
 /scrapping/__pycache__
 /*.pyc
 bdd_aliments_yolo/
-*.jpg
