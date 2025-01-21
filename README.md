@@ -1,2 +1,1 @@
-# Safe-Cook
-Futur répertoire de travail pour le demo day by Ced &amp; Eric
+# Safe-Cook partie DEV Machine Learning
