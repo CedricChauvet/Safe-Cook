@@ -10,3 +10,17 @@ partie DEV Machine Learning:
 partie DEV FullStack:   
 (https://github.com/CedricChauvet/Safe-Cook/tree/dev_FullStack)
 
+
+
+# Intro  
+Avec Eric Maresc, nous développons Safe Cook, une application mobile qui accompagne les familles dans leur quotidien alimentaire. Notre solution répond aux préoccupations des parents soucieux de la nutrition et de la santé de leur famille en :
+-Identifiant automatiquement les aliments de votre réfrigérateur grâce à l'intelligence artificielle
+-Proposant des recettes adaptées à vos ingrédients disponibles
+-Prenant en compte vos allergènes et restrictions alimentaires pour une cuisine en toute sécurité
+-Privilégiant une nutrition équilibrée 🍎 
+Je me concentre sur le développement des algorithmes de machine learning pour la reconnaissance d'aliments, pendant qu'Eric travaille sur l'interface utilisateur.
+
+
+
+
+
