@@ -2,3 +2,4 @@
 /scrapping/__pycache__
 /*.pyc
 bdd_aliments_yolo/
+**/*.jpg
