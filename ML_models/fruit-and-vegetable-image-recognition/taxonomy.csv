@@ -1,0 +1,66 @@
+common name,common variety,kingdom,phylum,class,order (without surn),family (without surn),subfamily (without surn),genus (without surn),species (without surn)
+apple,fuji,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Ìalus,Malus domestica
+apple,golden,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Ìalus,Malus domestica
+apple,granny_smith,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Ìalus,
+apple,ligol,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Ìalus,Malus domestica
+apple,red_delicious,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Ìalus,Malus domestica
+apple,spartan,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Ìalus,Malus domestica
+apricot,armenian,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Prunus,Prunus armeniaca
+apricot,jerdel,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Prunus,Prunus armeniaca
+avocado,hass,Plantae,Tracheophyta,Magnoliopsida,Laurales,Lauraceae,,Persea,Persea americana
+avocado,zutano,Plantae,Tracheophyta,Magnoliopsida,Laurales,Lauraceae,,Persea,Persea americana
+banana,mini,Plantae,Tracheophyta,Liliopsida,Zingiberales,Musaceae,,Musa,
+banana,yellow,Plantae,Tracheophyta,Liliopsida,Zingiberales,Musaceae,,Musa,
+beet,round,Plantae,Tracheophyta,Magnoliopsida,Caryophyllales,Amaranthaceae,Betoideae,Beta,Beta vulgaris
+cabbage,broccoli,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,,Brassica,Brassica oleracea
+cabbage,cauliflower,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,,Brassica,Brassica oleracea
+cabbage,peking,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,,Brassica,Brassica rapa
+cabbage,white,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,,Brassica,Brassica oleracea
+carrot,carrot,Plantae,Tracheophyta,Magnoliopsida,Apiales,Apiaceae,Apioideae,Daucus,Daucus carota
+corn,corn,Plantae,Tracheophyta,Liliopsida,Poales,Poaceae,,Zea,Zea mays
+cucumber,long,Plantae,Tracheophyta,Magnoliopsida,Cucurbitales,Cucurbitaceae,,Cucumis,Cucumis sativus
+cucumber,medium,Plantae,Tracheophyta,Magnoliopsida,Cucurbitales,Cucurbitaceae,,Cucumis,Cucumis sativus
+daikon,daikon,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,,Raphanus,Raphanus sativus
+garlic,garlic,Plantae,Tracheophyta,Liliopsida,Asparagales,Amaryllidaceae,,Allium,Allium sativum
+grape,black,Plantae,Tracheophyta,Magnoliopsida,Vitales,Vitaceae,Vitoideae,Vitis,Vitis vinifera
+grape,green,Plantae,Tracheophyta,Magnoliopsida,Vitales,Vitaceae,Vitoideae,Vitis,Vitis vinifera
+grape,pink,Plantae,Tracheophyta,Magnoliopsida,Vitales,Vitaceae,Vitoideae,Vitis,Vitis vinifera
+grapefruit,grapefruit,Plantae,Tracheophyta,Magnoliopsida,Sapindales,Rutaceae,Aurantioideae,Citrus,Citrus ? aurantium
+kiwi,kiwi,Plantae,Tracheophyta,Magnoliopsida,Ericales,Actinidiaceae,Actinidioideae,Actinidia,
+lemon,orange,Plantae,Tracheophyta,Magnoliopsida,Sapindales,Rutaceae,Aurantioideae,Citrus,Citrus ? limon
+lemon,yellow,Plantae,Tracheophyta,Magnoliopsida,Sapindales,Rutaceae,Aurantioideae,Citrus,Citrus ? limon
+lime,lime,Plantae,Tracheophyta,Magnoliopsida,Sapindales,Rutaceae,Aurantioideae,Citrus,Citrus ? aurantiifolia
+mango,mango,Plantae,Tracheophyta,Magnoliopsida,Sapindales,Anacardiaceae,,Mangifera,
+melon,torpeda,Plantae,Tracheophyta,Magnoliopsida,Cucurbitales,Cucurbitaceae,,Cucumis,Cucumis melo
+onion,purple,Plantae,Tracheophyta,Liliopsida,Asparagales,Amaryllidaceae,,Allium,Allium cepa
+onion,white,Plantae,Tracheophyta,Liliopsida,Asparagales,Amaryllidaceae,,Allium,Allium cepa
+orange,orange,Plantae,Tracheophyta,Magnoliopsida,Sapindales,Rutaceae,Aurantioideae,Citrus,Citrus ? aurantium
+nectarine,flat,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Prunus,Prunus persica
+nectarine,round,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Prunus,Prunus persica
+pomelo,pomelo,Plantae,Tracheophyta,Magnoliopsida,Sapindales,Rutaceae,Aurantioideae,Citrus,Citrus maxima
+pear,conference,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Pyrus,Pyrus communis
+pear,williams_rouge,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Pyrus,Pyrus communis
+pepper,chili,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Capsicum,Capsicum annuum
+pepper,sweet_red,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Capsicum,Capsicum annuum
+pepper,sweet_elonged,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Capsicum,Capsicum annuum
+pepper,sweet_green,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Capsicum,Capsicum annuum
+pepper,sweet_yellow,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Capsicum,Capsicum annuum
+plum,pink,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Prunus,
+plum,purple,Plantae,Tracheophyta,Magnoliopsida,Rosales,Rosaceae,Amygdaloideae,Prunus,
+pomegranate,pomegranate,Plantae,Tracheophyta,Magnoliopsida,Myrtales,Lythraceae,Punicoideae,Punica,Punica granatum
+potato,pink,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Solanum,Solanum tuberosum
+potato,yellow,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Solanum,Solanum tuberosum
+pumpkin,elonged,Plantae,Tracheophyta,Magnoliopsida,Cucurbitales,Cucurbitaceae,,Cucurbita,Cucurbita pepo
+raddish,elonged,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,,Raphanus,Raphanus raphanistrum
+raddish,round,Plantae,Tracheophyta,Magnoliopsida,Brassicales,Brassicaceae,,Raphanus,Raphanus raphanistrum
+salad,green,Plantae,Tracheophyta,Magnoliopsida,Asterales,Asteraceae,Cichorioideae,Lactuca,Lactuca sativa L.
+tangerine,tangerine,Plantae,Tracheophyta,Magnoliopsida,Sapindales,Rutaceae,Aurantioideae,Citrus,Citrus ? reticulata
+tomato,cherry_red,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Solanum,Solanum lycopersicum
+tomato,cherry_yellow,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Solanum,Solanum lycopersicum
+tomato,pink,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Solanum,Solanum lycopersicum
+tomato,slivka,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Solanum,Solanum lycopersicum
+tomato,yellow,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Solanum,Solanum lycopersicum
+tomato,bull_heart,Plantae,Tracheophyta,Magnoliopsida,Solanales,Solanaceae,Solanoideae,Solanum,Solanum lycopersicum
+watermelon,elonged,Plantae,Tracheophyta,Magnoliopsida,Cucurbitales,Cucurbitaceae,,Citrullus,Citrullus lanatus
+zucchini,green,Plantae,Tracheophyta,Magnoliopsida,Cucurbitales,Cucurbitaceae,,Cucurbita,Cucurbita pepo
+zucchini,white,Plantae,Tracheophyta,Magnoliopsida,Cucurbitales,Cucurbitaceae,,Cucurbita,Cucurbita pepo

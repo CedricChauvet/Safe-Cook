@@ -1,0 +1,38 @@
+# YOLOv11 Configuration
+path: /chemin/vers/dataset  # Chemin racine du dataset
+train: train/images  # Chemin relatif vers les images d'entraînement
+val: val/images      # Chemin relatif vers les images de validation
+test: test/images    # Chemin relatif vers les images de test
+
+# Configuration des classes
+nc: 34  # nombre de classes
+names: ['pomme', 'abricot', 'avocat', 'banane', 'betterave', 'chou', 'carotte', 
+        'maïs', 'concombre', 'radis blanc', 'ail', 'raisin', 'pamplemousse', 'kiwi', 
+        'citron', 'citron vert', 'mangue', 'melon', 'oignon', 'orange', 'nectarine', 
+        'pomélo', 'poire', 'poivron', 'prune', 'grenade', 'pomme de terre', 'citrouille', 
+        'radis', 'salade', 'mandarine', 'tomate', 'pastèque', 'courgette']
+
+# Paramètres d'entraînement
+epochs: 100
+batch_size: 16
+imgsz: 640  # taille des images
+
+# Augmentation de données
+hsv_h: 0.015  # HSV-Hue augmentation
+hsv_s: 0.7    # HSV-Saturation augmentation
+hsv_v: 0.4    # HSV-Value augmentation
+degrees: 0.0   # rotation (+/- deg)
+translate: 0.1  # translation (+/- fraction)
+scale: 0.5     # scale (+/- gain)
+shear: 0.0     # shear (+/- deg)
+perspective: 0.0  # perspective (+/- fraction), 0.0=disabled
+flipud: 0.0    # probability of flip up-down (0.0=disabled)
+fliplr: 0.5    # probability of flip left-right (0.5=enabled)
+mosaic: 1.0    # probability of mosaic (1.0=enabled)
+mixup: 0.0     # probability of mixup (0.0=disabled)
+
+# Optimisation
+optimizer: SGD  # optimizer: SGD, Adam, AdamW
+lr0: 0.01      # initial learning rate
+momentum: 0.937  # SGD momentum/Adam beta1
+weight_decay: 0.0005  # optimizer weight decay
