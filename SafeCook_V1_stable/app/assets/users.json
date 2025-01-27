@@ -1,0 +1,20 @@
+[
+    {
+      "id": 1,
+      "username": "user sans",
+      "email": "ericmarescq@gmail.com",
+      "allergies": []
+    },
+    {
+      "id": 2,
+      "username": "user vegan",
+      "email": "user2@example.com",
+      "allergies": ["oeuf", "poulet", "viande", "poisson"]
+    },
+    {
+        "id": 3,
+        "username": "user sans huile",
+        "email": "user2@example.com",
+        "allergies":"huile"
+    }
+  ]
