@@ -1,10 +1,27 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { View, Text, FlatList, StyleSheet, Image} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import React, { useState } from 'react';
 
-// Importez les données JSON
-import recettes from './data/recipes_mix1.json';
+
+
 
 const Recette = () => {
+  // Importez les données JSON
+  const { recette } = useLocalSearchParams();
+  const [selectedIngredient, setSelectedIngredient] = useState('');
+
+  let recettes = [];
+
+  if (typeof recette === 'string') {
+    recettes = JSON.parse(recette);
+  } else if (Array.isArray(recette)) {
+    recettes = recette.map(r => JSON.parse(r));
+  }
+
+  const item = recettes[0]; // Assuming you want to use the first recipe
+  const [selectedInstruction, setSelectedInstruction] = useState(item.steps[0]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Liste des Recettes</Text>
@@ -12,28 +29,47 @@ const Recette = () => {
         data={recettes}
         keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <View style={styles.card} key={item._id.toString()}>
             <Text style={styles.title}>{item.title}</Text>
 
             {/* Informations générales */}
-            <Text style={styles.text}>Note : {item.rating} ⭐</Text>
-            <Text style={styles.text}>
+            {/*<Text style={styles.text}>Note : {item.rating} ⭐</Text>*/}
+            {/*<Text style={styles.text}>
               Avis : {item.review_count >= 0 ? item.review_count : 'Aucun avis'}
-            </Text>
+            </Text>*/}
             <Text style={styles.text}>Temps de préparation : {item.prep_time}</Text>
-            <Text style={styles.text}>Difficulté : {item.difficulty}</Text>
-            <Text style={styles.text}>Coût : {item.cost}</Text>
+            {/*<Text style={styles.text}>Difficulté : {item.difficulty}</Text>*/}
+            {/*<Text style={styles.text}>Coût : {item.cost}</Text>*/}
             <Text style={styles.text}>Portions : {item.servings}</Text>
 
-            {/* Liste des ingrédients */}
+                <Image
+                  style={styles.photo}
+                  source={{uri: item.photo}}
+                  resizeMode='cover'
+                  onError={(error) => console.log("Erreur lors du chargement de l'image", error)}
+                />
+
+            {/* Liste des Ingrédients */}
             <Text style={styles.subtitle}>Ingrédients:</Text>
-            {item.ingredients.map((ing, index) => (
-              <Text key={index} style={styles.text}>- {ing}</Text>
+            <Picker
+            selectedValue={selectedIngredient}
+            onValueChange={(itemValue) => setSelectedIngredient(itemValue)}
+          >
+            {item.ingredients.map((ingredient: string, index: number) => (
+              <Picker.Item key={index} label={ingredient} value={ingredient} />
             ))}
+          </Picker>
 
             {/* Instructions */}
             <Text style={styles.subtitle}>Instructions:</Text>
-            <Text style={styles.text}>{item.steps.join('\n')}</Text>
+            <Picker
+              selectedValue={selectedInstruction}
+              onValueChange={(itemValue) => setSelectedInstruction(itemValue)}
+            >
+              {item.steps.map((step: string, index: number) => (
+                <Picker.Item key={index} label={step} value={step} />
+              ))}
+            </Picker>
           </View>
         )}
       />
@@ -76,6 +112,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     marginTop: 4,
+  },
+  photo: {
+    width: '100%',
+    height: 200,
+    marginBottom: 16,
   },
 });
 
