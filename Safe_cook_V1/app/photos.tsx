@@ -1,3 +1,8 @@
+
+import React from 'react';
+
+import { useRouter } from 'expo-router';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
@@ -6,11 +11,14 @@ import ImageResizer from 'react-native-image-resizer';
 import { Alert } from 'react-native';
 
 export default function PhotosPage() {
+  const router = useRouter();
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const cameraRef = useRef(null);
+
+
 
   if (!permission) {
     return <View />;
@@ -27,31 +35,31 @@ export default function PhotosPage() {
 
   async function uploadPhoto(photoUri) {
     try {
-  
+
 
       console.log(photoUri)
       // Vérifier que l'URI existe
       if (!photoUri) {
         throw new Error('URI de photo manquant');
       }
-  
+
       // Redimensionner et convertir l'image
 
       console.log('Traitement de l\'image...');
 
       console.log('Image traitée avec succès');
-  
+
       // console.log('Image traitée avec succès:', {
       //   width: manipResult.width,
       //   height: manipResult.height,
       //   base64Length: manipResult.base64?.length
       // });
-  
+
       // Vérifier que nous avons bien une chaîne base64
 
-  
+
       setIsUploading(true);
-  
+
       // Envoyer l'image
       console.log(photoUri.substring(0, 100));
 
@@ -67,17 +75,17 @@ export default function PhotosPage() {
       });
       console.log('Réponse reçue');
 
-      
+
       if (!response.ok) {
         throw new Error(`Erreur serveur: ${response.status}`);
       }
-  
+
       const data = await response.json();
       //console.log(data);
       // Créer un message formaté avec les détails
-      const message = 
+      const message =
         'Classes : ' + data.classes.join(', ') + '\n\n' +
-        'Comptage : \n' + 
+        'Comptage : \n' +
         Object.entries(data.class_counts)
           .map(([classe, count]) => `${classe}: ${count}`)
           .join('\n') + '\n\n' +
@@ -90,7 +98,7 @@ export default function PhotosPage() {
 
 
       return data;
-  
+
     } catch (error) {
       // console.error('Erreur détaillée:', error);
       throw new Error('Erreur lors de l\'envoi de l\'image');
@@ -99,25 +107,36 @@ export default function PhotosPage() {
     }
   }
 
-    
 
-  
+
+
   async function takePicture() {
     if (cameraRef.current) {
       try {
         const photo = await cameraRef.current.takePictureAsync({
-          quality: 0.9, // Slightly reduced to improve compatibility
-          base64: true, // Recommended for memory efficiency
-          exif: true, // Capture metadata for better image processing
-          skipProcessing: false, // Better image handling
-          width: 1024, // Optional: limit image dimensions
+          quality: 1,
+          base64: true,
+          exif: false,
+          // skipProcessing: true,
         });
-        
         // Upload automatique après la prise de photo
 
         console.log('En cours de téléchargement de la photo...');
-        await uploadPhoto(photo.base64);
+        const data = await uploadPhoto(photo.base64);
         console.log('Photo téléchargée avec succès');
+
+        {/*if (Array.isArray(data.to_json) && data.to_json.length > 0) {
+          router.push('/recette');
+      } else {
+          Alert.alert("Nous n'avons pas trouvé de recettes");
+      }*/}
+
+        // Redirection vers la page des recettes après le téléchargement
+        router.push({
+          pathname: '/recette',
+          params: { recette: JSON.stringify(data.to_json) },
+        });
+
       } catch (error) {
         // console.error('Error taking picture:', error);
         throw new Error('Erreur lors de la prise de photo');
@@ -133,8 +152,8 @@ export default function PhotosPage() {
         type={facing}
       >
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.button} 
+          <TouchableOpacity
+            style={styles.button}
             onPress={takePicture}
             disabled={isUploading}
           >

@@ -17,7 +17,8 @@ RUN pip install --no-cache-dir \
     requests \
     torch \
     torchvision \
-    ultralytics
+    ultralytics \
+    pymongo
 
 # Copier le script serveur
 COPY flask_server.py /app/flask_server.py
