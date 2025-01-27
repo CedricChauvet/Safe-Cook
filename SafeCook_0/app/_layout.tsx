@@ -22,7 +22,7 @@ export default function RootLayout() {
         />
         <IconButton
           icon={<Icon name="book" size={30} color="white" />}
-          onPress={() => router.push('/recette')}
+          onPress={() => router.push('/recette1')}
         />
         <IconButton
           icon={<Icon name="heart" size={30} color="white" />}
