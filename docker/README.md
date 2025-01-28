@@ -26,10 +26,10 @@ FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
 
 
 ### Create image
- docker build -t  docker_safecook . <br />
+      docker build -t  docker_safecook . <br />
 
 ### Run the container 
- docker run -it -p 5000:5000 -v ${PWD}/mount:/mount --name sc_v2 docker_safecook
+      docker run -it -p 5000:5000 -v ${PWD}/mount:/mount --name sc_v2 docker_safecook
 
 
 #### les images envoyées au serveur seront enregistrées dans le repertoire ./mount de windows.
