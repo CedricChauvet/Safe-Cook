@@ -1,4 +1,9 @@
 """
+This is the server file, it does pretty much everything in the application, 
+it uses the MongoDB database, receives the images and returns the json. It also saves the annotated images in the mount folder
+
+to run the docker run these instructions:
+
 docker build -t docker_safecook .
 docker run -it -p 5000:5000 -v ${PWD}/mount:/mount --name sc_v2 docker_safecook
 """
