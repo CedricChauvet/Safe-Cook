@@ -1,4 +1,4 @@
-[Présentation SafeCook.pdf](https://github.com/user-attachments/files/18570763/Presentation.SafeCook.pdf)
+[Télécharger SafeCook.pdf](https://github.com/user-attachments/files/18570763/Presentation.SafeCook.pdf)
 
 ![1](https://github.com/user-attachments/assets/7b658a93-dc24-42c8-9105-dbdbf3ab1c5a)
 ![2](https://github.com/user-attachments/assets/f3cc12d4-8212-40fb-9ed6-a856ada5acb0)
