@@ -1,6 +1,5 @@
 # Readme
-Notre projet consiste à envoyer des photos sur un serveur. Elles sont analysées avec un modele yolo. Ensuite le serveur renvoie au client les objets détéctés sur la photo.
-Cela permet de gagner en performance lors de la détection et de récupérer les photos des usagers afin de garder une amélioration continue du modèle.
+Our project consists of sending photos to a server. They are analyzed with a yolo model. Then the server returns to the client the objects detected on the photo. This allows to gain in performance during detection and to retrieve the photos of the users in order to keep a continuous improvement of the model.
 
 ## partie conteneurisation du modele Yolo
  *  dockerfile <br />
