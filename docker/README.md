@@ -10,12 +10,6 @@ Our project consists of sending photos to a server. They are analyzed with a yol
 
 
 
-#### This is our image, pytorch is essential to use Yolo.
-      FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
-
-
-
-
 
 ### Create image
       docker build -t  docker_safecook .
@@ -27,4 +21,10 @@ Our project consists of sending photos to a server. They are analyzed with a yol
 #### images sent to the server will be saved in the windows ./mount directory.
 #### to check what the volume contains on the docker side: 
       docker exec -it sc_v2 ls /mount
+
+
+#### This is our image, pytorch is essential to use Yolo.
+      FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
+
+
 
