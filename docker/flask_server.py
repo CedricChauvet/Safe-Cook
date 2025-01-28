@@ -20,22 +20,34 @@ app = Flask(__name__)
 
 
 def search_in_db(aliments):
+    """
+    aliments: given an array of aliments given by the picture token
+    return: a json containing the recipes matching the aliment
+
+    use mongodb and the instruction find()
+
+
+
+    """
     if len(aliments) == 0:
         raise ValueError("La photo n'a rien détecté")
 
-    # aliments = aliments.replace("carrot","carotte")
+    # Translate labels in french
     aliments = ["carotte" if x == "carrot" else x for x in aliments]
     aliments = ["brocoli" if x == "broccoli" else x for x in aliments]
     aliments = ["pomme" if x == "apple" else x for x in aliments]
     aliments = ["orange" if x == "orange" else x for x in aliments]
 
 
+    # Use a set in case there is multiple oranges for instance 
     aliments= set(aliments)
     uri = "mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
     client = MongoClient(uri)
     db = client['0safe-cook']
-    recipes_collection = db['demo-day'] # attention a choisir la bonne base de données
+
+    # demo day is the data base build espcially for the portfolio
+    recipes_collection = db['demo-day'] 
     try:
         # Requête qui fonctionne correctement
         requete = {
@@ -47,8 +59,6 @@ def search_in_db(aliments):
 
         resultats = recipes_collection.find(requete)
 
-        # for recipe in resultats:
-        #     print(recipe["title"])
 
         # Convertir les résultats en liste de dictionnaires JSON
         recipes_json = []
@@ -66,10 +76,7 @@ def search_in_db(aliments):
         return []
 
 
-    
-
-
-# Charger le modèle au démarrage
+# At this moment we use the vanilla model of YOLO, X Large version
 try:
     model = YOLO("yolo11x.pt")
  
@@ -79,7 +86,7 @@ except Exception as e:
     print(traceback.format_exc())
     model = None
 
-
+# the server method
 @app.route('/detect', methods=['POST'])
 def detect_objects():
     """
@@ -95,7 +102,7 @@ def detect_objects():
         return jsonify({'error': 'Pas d\'image fournie'}), 400
 
     try:
-        # Décoder l'image base64
+        # Decode the picture into base64
         image_b64 = request.json['image']
 
         # Enlever le préfixe data:image si présent
@@ -104,42 +111,28 @@ def detect_objects():
             image_b64 = image_b64.split(',')[1]
 
         print("Image reçue, décodage en cours...")
-        # Décoder
+        # Decode
         image_bytes = base64.b64decode(image_b64)
         image_np = np.frombuffer(image_bytes, np.uint8)
         image = cv2.imdecode(image_np, cv2.IMREAD_COLOR)
 
-        # Vérification et resize
-        if image is None:
-            raise ValueError("Échec du décodage de l'image")
-
-
-        # premiere version du resize   
-        # image = cv2.resize(image, (640, 640))
+        # Resize for Yolo 640*640 and keep proportions
         image = resize_for_yolo(image, target_size=640)
-        # Vérification de l'image
+       
+       
+        # Vérification
         if image is None:
             return jsonify({
                 'error': 'Impossible de décoder l\'image',
                 'details': 'La conversion en image a échoué'
             }), 500
 
-        # Définir le chemin vers le répertoire monté
-        # c'est le chemin du conteneur
-
-        # # Générer un nom de fichier unique avec UUID
-        # unique_id = str(uuid.uuid4())
-        # filename = f"{unique_id}.jpg"
-        # filepath = os.path.join(UPLOAD_DIR, filename)
-        # # Sauvegarder l'image originale sous format uuid
-        # with open(filepath, 'wb') as f:
-        #     f.write(image_bytes)
 
         # Conversion en tensor
         image_tensor = torch.from_numpy(image).permute(2, 0, 1).float() / 255.0
         image_tensor = image_tensor.unsqueeze(0)
 
-        # Détecter les objets, bien choisir le seuil de confiance
+        # Détecter les objets, bien choisir le seuil de confiance. Here 0.5
         results = model(image_tensor, conf=0.5)
 
         # Traitement des détections
@@ -150,9 +143,7 @@ def detect_objects():
         labels = []
         aliments = ()
 
-        allowed = ["apple", "broccoli", "orange", "carrot"] # evite de prendre les autres objets de yol
-
-
+        allowed = ["apple", "broccoli", "orange", "carrot"] # Select only food in yolo.names
         for box in results[0].boxes:
             
             class_name = model.names[int(box.cls)]
@@ -173,10 +164,7 @@ def detect_objects():
         class_counts = dict(Counter(classes))
 
         # Générer un nom de fichier unique
-
-        # Générer un nom de fichier unique
         unique_id = uuid.uuid4()
-
 
         image_with_boxes = draw_detections(
             image, 
@@ -192,11 +180,11 @@ def detect_objects():
         cv2.imwrite(str(filepath), image_with_boxes)
 
 
-        # partie renvoyée au client
-        # classes : liste des classes détectées
-        # class_counts : nombre d'instances par classe
-        # filename : nom du fichier sauvegardé
-        # json contient les recettes filtrées apres photo
+        # part returned to the client
+        # classes: list of detected classes
+        # class_counts: number of instances per class
+        # filename: name of the saved file
+        # json contains the recipes filtered after photo
         return jsonify({
             'classes': classes,
             'class_counts': class_counts,
@@ -218,16 +206,16 @@ def detect_objects():
 
 def resize_for_yolo(image, target_size=640):
     """
-    Redimensionne une image pour YOLO en préservant le ratio d'aspect.
-    Ajoute du padding noir si nécessaire pour obtenir une image carrée.
-    
+    Resizes an image for YOLO while preserving the aspect ratio.
+    Adds black padding if necessary to make the image square.
     Args:
         image: Image source (format numpy array)
         target_size: Taille cible (par défaut 640)
     
     Returns:
-        Image redimensionnée avec padding si nécessaire
+        Resized image with padding if necessary
     """
+
     height, width = image.shape[:2]
     
     # Calcul du ratio pour le redimensionnement
@@ -261,16 +249,16 @@ def draw_detections(
     confidences
 ) -> np.ndarray:
     """
-    Dessine les boîtes de détection et les étiquettes sur l'image.
-    
+    Draws detection boxes and labels on the image.
+
     Args:
-        image: Image numpy
-        boxes: Tenseur des boîtes de détection (x1, y1, x2, y2)
-        labels: Liste des noms de classes
-        confidences: Liste des scores de confiance
-    
+    image: Numpy image
+    boxes: Detection box tensor (x1, y1, x2, y2)
+    labels: List of class names
+    confidences: List of confidence scores
+
     Returns:
-        Image avec les détections dessinées
+    Image with detections drawn
     """
     img_with_boxes = image.copy()
     
@@ -315,6 +303,8 @@ def draw_detections(
     return img_with_boxes
 
 
+
+# Here we go!
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
