@@ -1,7 +1,7 @@
 # Readme
 Our project consists of sending photos to a server. They are analyzed with a yolo model. Then the server returns to the client the objects detected on the photo. This allows to gain in performance during detection and to retrieve the photos of the users in order to keep a continuous improvement of the model.
 
-## partie conteneurisation du modele Yolo
+## containerization part of the Yolo model
  *  dockerfile <br />
  *  client.py <br />
  *  flask_server.py <br />
