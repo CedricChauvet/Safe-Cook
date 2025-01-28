@@ -3,11 +3,11 @@ Notre projet consiste à envoyer des photos sur un serveur. Elles sont analysée
 Cela permet de gagner en performance lors de la détection et de récupérer les photos des usagers afin de garder une amélioration continue du modèle.
 
 ## partie conteneurisation du modele Yolo
-dockerfile <br />
-client.py <br />
-flask_server.py <br />
-./images/ pour les essais. <br />
-./mount/ pour le stockage des données. <br />
+ *  dockerfile <br />
+ *  client.py <br />
+ *  flask_server.py <br />
+ *  ./images/ pour les essais. <br />
+ *  ./mount/ pour le stockage des données. <br />
 
 
 ### création de l'image
