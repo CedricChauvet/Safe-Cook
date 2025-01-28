@@ -10,8 +10,8 @@ Our project consists of sending photos to a server. They are analyzed with a yol
 
 
 
-#### Ceci est notre image, pytorch est indispensable pour utiliser Yolo.
-FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
+#### This is our image, pytorch is essential to use Yolo.
+   FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
 
 ### creation du conteneur
  
