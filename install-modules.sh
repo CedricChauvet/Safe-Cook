@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ 
 # Sauvegarde du package.json existant
 echo "🔄 Sauvegarde du package.json actuel..."
 cp package.json package.json.backup
