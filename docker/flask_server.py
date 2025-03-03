@@ -1,3 +1,16 @@
+"""
+This is the server file, it does pretty much everything in the application, 
+it uses the MongoDB database, receives the images and returns the json. It also saves the annotated images in the mount folder
+
+to run the docker run these instructions:
+
+docker build -t docker_safecook .
+docker run -it -p 5000:5000 -v ${PWD}/mount:/mount --name sc_v2 docker_safecook
+
+This is an request "or" algorithm 
+
+"""
+
 import torch
 import cv2
 import os
@@ -8,13 +21,85 @@ from flask import Flask, request, jsonify
 import traceback
 from ultralytics import YOLO
 from collections import Counter
+from pymongo import MongoClient
 
 app = Flask(__name__)
+
+def search_in_db(aliments):
+    """
+    Retourne un json avec les recettes groupées par ordre décroissant de match.
+    """
+
+    if not aliments:
+        raise ValueError("La photo n'a rien détecté")
+
+    # Translate labels in french
+    aliments = ["carotte" if x == "carrot" else x for x in aliments]
+    aliments = ["brocoli" if x == "broccoli" else x for x in aliments]
+    aliments = ["pomme" if x == "apple" else x for x in aliments]
+    aliments = ["orange" if x == "orange" else x for x in aliments]
+
+
+    # Use a set in case there is multiple oranges for instance 
+    aliments= set(aliments)
+    
+    uri = "mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    
+    try:
+        client = MongoClient(uri)
+        db = client['0safe-cook']
+        recipes_collection = db['demo-day']
+
+        # Requête qui fonctionne correctement
+        requete = {
+            "$or": [
+                {"ingredients": {"$regex": aliment, "$options": "i"}} 
+                for aliment in aliments
+            ]
+        }
+
+        resultats = recipes_collection.find(requete)
+        
+        # Liste pour stocker toutes les recettes avec leur nombre de matches
+        recipes_with_matches = []
+        
+        for recipe in resultats:
+            # Compter le nombre d'ingrédients qui matchent
+            matches = sum(
+                1 for aliment in aliments 
+                if any(aliment.lower() in ingr.lower() for ingr in recipe.get('ingredients', []))
+            )
+            
+            if matches > 0:  # Ne garder que les recettes avec au moins une correspondance
+                # Convertir ObjectId en string
+                recipe['_id'] = str(recipe['_id'])
+                
+                # Ajouter le nombre de matches aux informations de la recette
+                recipe['nombre_matches'] = matches
+                recipes_with_matches.append(recipe)
+
+        # Trier les recettes par nombre de matches décroissant
+        recipes_with_matches.sort(key=lambda x: x['nombre_matches'], reverse=True)
+
+        return recipes_with_matches
+
+    except Exception as e:
+        print(f"Une erreur est survenue dans la recherche des recettes : {e}")
+        return []
+
+    finally:
+        if 'client' in locals():
+            client.close()
+
+            
+
+    
 
 
 # Charger le modèle au démarrage
 try:
     model = YOLO("yolo11x.pt")
+    # model = YOLO("yolo11L-seg60.pt") ne detecte rien
     print("Modèle YOLO chargé avec succès")
 except Exception as e:
     print("Erreur fatale lors du chargement du modèle :")
@@ -54,14 +139,11 @@ def detect_objects():
         # Vérification et resize
         if image is None:
             raise ValueError("Échec du décodage de l'image")
-            
+
+
+        # premiere version du resize   
         # image = cv2.resize(image, (640, 640))
-        image = make_square_with_padding(image)
-
-
-
-
-
+        image = resize_for_yolo(image, target_size=640)
         # Vérification de l'image
         if image is None:
             return jsonify({
@@ -93,19 +175,33 @@ def detect_objects():
         boxes = []
         confidences = []
         labels = []
-        
+        aliments = ()
+
+        allowed = ["apple", "broccoli", "orange", "carrot"] # evite de prendre les autres objets de yol
+
+
         for box in results[0].boxes:
+            
             class_name = model.names[int(box.cls)]
-            confidence = float(box.conf.item())
-            bbox = box.xyxy[0]  # Format: x1, y1, x2, y2
-            
-            classes.append(class_name)
-            detections.append((class_name, confidence))
-            boxes.append(bbox)
-            confidences.append(confidence)
-            labels.append(class_name)
-            
+            if class_name in allowed:
+                confidence = float(box.conf.item())
+                bbox = box.xyxy[0]  # Format: x1, y1, x2, y2
+                
+                classes.append(class_name)
+                detections.append((class_name, confidence))
+                boxes.append(bbox)
+                confidences.append(confidence)
+                labels.append(class_name)
+
+        print("les labels", labels)
+        to_json = search_in_db(labels)
+        print("nombre de recettes", len(to_json))
+        for i in to_json:
+            print(i["title"])
+
         class_counts = dict(Counter(classes))
+
+        # Générer un nom de fichier unique
 
         # Générer un nom de fichier unique
         unique_id = uuid.uuid4()
@@ -129,11 +225,12 @@ def detect_objects():
         # classes : liste des classes détectées
         # class_counts : nombre d'instances par classe
         # filename : nom du fichier sauvegardé
-        # peut on ajouter autre chose?
+        # json contient les recettes filtrées apres photo
         return jsonify({
             'classes': classes,
             'class_counts': class_counts,
-            'filename': filename
+            'filename': filename,
+            'to_json': to_json
         })
 
     except Exception as e:
@@ -147,35 +244,44 @@ def detect_objects():
         }), 500
 
 
-def make_square_with_padding(image):
+
+def resize_for_yolo(image, target_size=640):
     """
-    Transforme une image en image carrée en ajoutant des bordures noires.
-    L'image d'origine conserve ses proportions.
+    Redimensionne une image pour YOLO en préservant le ratio d'aspect.
+    Ajoute du padding noir si nécessaire pour obtenir une image carrée.
     
     Args:
-        image: Image source (format numpy array / OpenCV)
+        image: Image source (format numpy array)
+        target_size: Taille cible (par défaut 640)
     
     Returns:
-        Image carrée avec bordures noires
+        Image redimensionnée avec padding si nécessaire
     """
-    # Obtenir les dimensions de l'image
     height, width = image.shape[:2]
     
-    # Déterminer la taille du carré (prendre le plus grand côté)
-    square_size = max(height, width)
+    # Calcul du ratio pour le redimensionnement
+    ratio = float(target_size) / max(height, width)
+    if ratio >= 1:
+        ratio = 1
+        
+    # Nouvelles dimensions en préservant le ratio
+    new_height = int(height * ratio)
+    new_width = int(width * ratio)
     
-    # Créer une image carrée noire
-    square_image = np.zeros((square_size, square_size, 3), dtype=np.uint8)
+    # Redimensionnement de l'image
+    resized = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
     
-    # Calculer les offsets pour centrer l'image
-    x_offset = (square_size - width) // 2
-    y_offset = (square_size - height) // 2
+    # Création d'une image noire de la taille cible
+    square_img = np.zeros((target_size, target_size, 3), dtype=np.uint8)
     
-    # Copier l'image originale au centre
-    square_image[y_offset:y_offset+height, x_offset:x_offset+width] = image
+    # Calcul des offsets pour centrer l'image
+    y_offset = (target_size - new_height) // 2
+    x_offset = (target_size - new_width) // 2
     
-    return square_image
-
+    # Copie de l'image redimensionnée sur le fond noir
+    square_img[y_offset:y_offset+new_height, x_offset:x_offset+new_width] = resized
+    
+    return square_img
 
 def draw_detections(
     image,
@@ -240,3 +346,4 @@ def draw_detections(
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
