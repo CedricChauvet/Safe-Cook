@@ -30,9 +30,6 @@ def search_in_db(aliments):
     return: a json containing the recipes matching the aliment
 
     use mongodb and the instruction find()
-
-
-
     """
     if len(aliments) == 0:
         raise ValueError("La photo n'a rien détecté")

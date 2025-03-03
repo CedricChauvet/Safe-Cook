@@ -26,3 +26,8 @@ COPY flask_server.py /app/flask_server.py
 EXPOSE 5000
 
 CMD ["python", "/app/flask_server.py"]
+
+# europe-west9-docker.pkg.dev/safecook/safecook
+
+# docker tag googlerun_safecook:latest europe-west9-docker.pkg.dev/safecook/safecook/googlerun_safecook:latest
+# docker push europe-west9-docker.pkg.dev/safecook/safecook/googlerun_safecook:latest
