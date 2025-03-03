@@ -3,3 +3,4 @@
 /*.pyc
 bdd_aliments_yolo/
 **/*.jpg
+/SafeCook_0/node_modules/
