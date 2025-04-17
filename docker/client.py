@@ -17,7 +17,7 @@ def detect_objects(image_path):
         # Envoyer la requête, est ce qu'on peut envoyer autre chose
         # dans la requete? user id, etc?
         # response = requests.post('http://localhost:5000/detect', 
-        response = requests.post('http://176.139.25.235:5000/detect', 
+        response = requests.post('http://localhost:5000/detect', 
             json={'image': image_b64}
         )
         
@@ -36,7 +36,7 @@ def detect_objects(image_path):
 
 # Exemple d'utilisation
 if __name__ == '__main__':
-    image_path = "./images/chat_RVB.bmp"
+    image_path = "./images/apple.jpg"
     result = detect_objects(image_path)
     
     if result:

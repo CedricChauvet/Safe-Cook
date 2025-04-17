@@ -24,3 +24,14 @@ FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
 #### les images envoyées au serveur seront enregistrées dans le repertoire ./mount de windows.
 #### pour verifier ce que contient le volume coté docker: docker exec -it sc_v2 ls /mount
 
+
+### pour changer l'image docker apres une nouvelle passe de finetuning YOLO
+
+# Tagger l'image
+docker tag safecookv2:latest europe-west9-docker.pkg.dev/safecook/safecook/servicesafecook:v2
+
+# Pousser l'image
+docker push europe-west9-docker.pkg.dev/safecook/safecook/servicesafecook:v2
+
+# mettre a jour le google run pour garder la meme url
+gcloud run services update servicesafecook --image=europe-west9-docker.pkg.dev/safecook/safecook/servicesafecook:v2 --region=europe-west9
