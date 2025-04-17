@@ -98,7 +98,7 @@ def search_in_db(aliments):
 
 # Charger le modèle au démarrage
 try:
-    model = YOLO("yolo11x.pt")
+    model = YOLO("passe31_model.pt")
     # model = YOLO("yolo11L-seg60.pt") ne detecte rien
     print("Modèle YOLO chargé avec succès")
 except Exception as e:
@@ -177,21 +177,21 @@ def detect_objects():
         labels = []
         aliments = ()
 
-        allowed = ["apple", "broccoli", "orange", "carrot"] # evite de prendre les autres objets de yol
+        # allowed = ["apple", "broccoli", "orange", "carrot"] # evite de prendre les autres objets de yol
 
 
         for box in results[0].boxes:
             
             class_name = model.names[int(box.cls)]
-            if class_name in allowed:
-                confidence = float(box.conf.item())
-                bbox = box.xyxy[0]  # Format: x1, y1, x2, y2
-                
-                classes.append(class_name)
-                detections.append((class_name, confidence))
-                boxes.append(bbox)
-                confidences.append(confidence)
-                labels.append(class_name)
+        
+            confidence = float(box.conf.item())
+            bbox = box.xyxy[0]  # Format: x1, y1, x2, y2
+            
+            classes.append(class_name)
+            detections.append((class_name, confidence))
+            boxes.append(bbox)
+            confidences.append(confidence)
+            labels.append(class_name)
 
         print("les labels", labels)
         to_json = search_in_db(labels)
@@ -219,7 +219,11 @@ def detect_objects():
         filename = f"{unique_id}_with_boxes.jpg"
         filepath = os.path.join(UPLOAD_DIR, filename)
         cv2.imwrite(str(filepath), image_with_boxes)
-
+    
+        # Voir si cette implementatoin fonctionne
+        filename2 = f"test{unique_id}.jpg"
+        filepath2 = os.path.join(UPLOAD_DIR, filename)
+        cv2.imwrite(str(filepath2), image)
 
         # partie renvoyée au client
         # classes : liste des classes détectées
