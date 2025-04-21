@@ -99,8 +99,8 @@ def print_recipe(recipe: MarmitonRecipe):
     #     print(", ".join(recipe.tags))
     """
 
-# url = "https://www.marmiton.org/recettes/"\
-#       "recette_pates-a-la-carbonara_80453.aspx"
-# recipe = get_recipe_page(url)
-# print_recipe(recipe)
+url = "https://www.marmiton.org/recettes/"\
+      "recette_pates-a-la-carbonara_80453.aspx"
+recipe = get_recipe_page(url)
+print_recipe(recipe)
 # print(to_json(recipe))
