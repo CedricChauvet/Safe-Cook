@@ -22,6 +22,7 @@ import traceback
 from ultralytics import YOLO
 from collections import Counter
 from pymongo import MongoClient
+import json
 
 app = Flask(__name__)
 
@@ -98,7 +99,7 @@ def search_in_db(aliments):
 
 # Charger le modèle au démarrage
 try:
-    model = YOLO("passe31_model.pt")
+    model = YOLO("yolobest4.pt")
     # model = YOLO("yolo11L-seg60.pt") ne detecte rien
     print("Modèle YOLO chargé avec succès")
 except Exception as e:
@@ -112,34 +113,36 @@ def detect_objects():
     """
     Endpoint pour la détection de classes d'objets
     """
+    print("une requête est arrivée")
     if model is None:
         return jsonify({
             'error': 'Modèle YOLO non chargé',
             'details': 'Échec du chargement initial du modèle'
         }), 500
 
-    if 'image' not in request.json:
-        return jsonify({'error': 'Pas d\'image fournie'}), 400
-
     try:
-        # Décoder l'image base64
-        image_b64 = request.json['image']
-
-        # Enlever le préfixe data:image si présent
-        if image_b64.startswith('data:image'):
-            # Extraire uniquement la partie base64 après la virgule
-            image_b64 = image_b64.split(',')[1]
-
-        print("Image reçue, décodage en cours...")
-        # Décoder
-        image_bytes = base64.b64decode(image_b64)
+        # Récupérer le fichier image depuis FormData
+        if 'photo' not in request.files:
+            return jsonify({"error": "Aucune image trouvée dans la requête"}), 400
+            
+        image_file = request.files['photo']
+        print(f"Image reçue: {image_file.filename}")
+        
+        # Récupérer les allergies si présentes
+        allergies = []
+        if 'allergies' in request.form:
+            allergies = json.loads(request.form['allergies'])
+            print(f"Allergies reçues: {allergies}")
+        
+        # Convertir le fichier en image OpenCV
+        image_bytes = image_file.read()
         image_np = np.frombuffer(image_bytes, np.uint8)
         image = cv2.imdecode(image_np, cv2.IMREAD_COLOR)
-
-        # Vérification et resize
+        
         if image is None:
-            raise ValueError("Échec du décodage de l'image")
-
+            return jsonify({"error": "Impossible de décoder l'image"}), 400
+        
+        print("Image décodée avec succès")
 
         # premiere version du resize   
         # image = cv2.resize(image, (640, 640))
@@ -222,7 +225,7 @@ def detect_objects():
     
         # Voir si cette implementatoin fonctionne
         filename2 = f"test{unique_id}.jpg"
-        filepath2 = os.path.join(UPLOAD_DIR, filename)
+        filepath2 = os.path.join(UPLOAD_DIR, filename2)
         cv2.imwrite(str(filepath2), image)
 
         # partie renvoyée au client
@@ -349,5 +352,6 @@ def draw_detections(
 
 
 if __name__ == '__main__':
+    print("Démarrage du serveur Flask... v2.1")
     app.run(host='0.0.0.0', port=5000)
 
