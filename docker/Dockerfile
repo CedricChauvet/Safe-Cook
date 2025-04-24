@@ -23,7 +23,7 @@ RUN pip install --no-cache-dir \
 # Copier le script serveur
 COPY flask_server.py /app/flask_server.py
 # COPY yolo11L-seg60.pt yolo11L-seg60.pt
-COPY passe31_model.pt passe31_model.pt
+COPY yolobest4.pt /app/yolobest4.pt
 EXPOSE 5000
 
 CMD ["python", "/app/flask_server.py"]
