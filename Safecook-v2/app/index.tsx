@@ -3,9 +3,11 @@ import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BottomNavBar from './components/BottomNavBar'; // Importer la barre de navigation
-import AllergiesModal from './AllergiesModal'; // Importer le modal des préférences
-import { AllergiesProvider } from './contexts/AllergiesContext'; // Assure-toi que le chemin est correct
+import AllergiesModal from './AllergiesModal'; // Importer le modal des préférences alimentaires
+import { AllergiesProvider } from './contexts/AllergiesContext'; // Etat des allergies
 import recettes from './data/demo-day.json'; 
+import { setLatestRecipes } from './tempData'; //Pour Sauvegarder les données globalement
+
 
 // Définir le composant MainContent à l'intérieur du même fichier
 export default function Index() {
@@ -14,18 +16,19 @@ export default function Index() {
   return (
     <AllergiesProvider>
     <View style={styles.container}>
+
       {/* Section utilisateur (icône de compte) */}
       <TouchableOpacity
         style={styles.iconAccount}
-        onPress={() => setModalVisible(true)}
+        onPress={() => setModalVisible(true)}   // Ouvre le modal des allergies
       >
         <MaterialCommunityIcons name="account" size={70} color="black" />
       </TouchableOpacity>
 
       {/* Modal des allergies */}
       <AllergiesModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
+        visible={modalVisible} // 'visible' indique si le modal est visible ou non (true = affiché, false = caché)
+        onClose={() => setModalVisible(false)}    // Ferme le modal des allergies
         title="Mes habitudes alimentaires">
       </AllergiesModal>
       
@@ -39,13 +42,14 @@ export default function Index() {
         style={styles.tinyLogo}
         source={require('../assets/images/garcon-safecook.png')}
       />
-      
+      {/* Bouton pour accéder à toutes les recettes TEST!!!!!*/} 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push({
-            pathname: 'recipes-V2',
-            params: { recettes: JSON.stringify(recettes) }
-          })}>
+        onPress={() => {
+          setLatestRecipes(recettes); // 1. Sauvegarde les données globalement
+          router.push('recipes-V2');  // 2. Navigation
+        }}
+      >
         <MaterialCommunityIcons name="food-variant" size={70} color="black" />
         <Text>Toutes les recettes</Text>
       </TouchableOpacity>

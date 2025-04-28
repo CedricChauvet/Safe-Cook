@@ -1,38 +1,41 @@
-import React from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  StyleSheet,
-} from 'react-native';
-import { useAllergies } from './contexts/AllergiesContext'; // Import du contexte
+// Ce modal permet de choisir les allergie utilisateur, 
 
-// Props du composant
+import React from 'react';
+import { Modal, View, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+
+// Import de la variable de context, sauvegardée en dur  avec AllergiesContext.tsx
+import { useAllergies } from './contexts/AllergiesContext'; 
+
+
+// Définition de l'interface pour les propriétés (props) du composant AllergiesModal
 interface AllergiesModalProps {
+  // 'visible' indique si le modal est visible ou non (true = affiché, false = caché)
   visible: boolean;
+  // 'onClose' est une fonction appelée pour fermer le modal
   onClose: () => void;
+  // 'title' est le texte du titre affiché en haut du modal
   title: string;
+  // 'children' permet d'insérer du contenu personnalisé à l'intérieur du modal (optionnel)
   children?: React.ReactNode;
 }
 
+// L'objet AllergiesModal est le modal qui va permettre de choisir les allergies de l'utilisateur
+// l'objet herite de AllergiesModalProps
 const AllergiesModal: React.FC<AllergiesModalProps> = ({
   visible,
   onClose,
   title,
   children,
 }) => {
-  // Utilisation du contexte des allergies
-  const { allergies, toggleAllergie } = useAllergies(); // Utilisation du contexte pour récupérer allergies et toggleAllergie
 
-  // Les états des allergies sont maintenant directement extraits du contexte
+  // déclaration des varialble de context
+  const { allergies, toggleAllergie } = useAllergies(); 
+
   const isToggleActive1 = allergies.Gluten;
   const isToggleActive2 = allergies.Lactose;
   const isToggleActive3 = allergies.Arachides;
   const isToggleActive4 = allergies.Végétarien;
 
-  // Les gestionnaires d'événements utilisent la fonction toggleAllergie du contexte
   const handleToggle1 = () => toggleAllergie('Gluten');
   const handleToggle2 = () => toggleAllergie('Lactose');
   const handleToggle3 = () => toggleAllergie('Arachides');
@@ -40,23 +43,24 @@ const AllergiesModal: React.FC<AllergiesModalProps> = ({
 
   return (
     <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
+
+      {/* close AllergiesModal si on touche l'ecran */}
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.overlay} />
       </TouchableWithoutFeedback>
 
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
+          {/* Header du Modal avec le titre */}
           <View style={styles.header}>
             <Text style={styles.headerText}>{title}</Text>
-            <TouchableOpacity style={styles.closeIcon} onPress={onClose}>
-              <Text style={styles.closeIconText}>✕</Text>
-            </TouchableOpacity>
           </View>
-
+          
+            {/*  children est tout le contenu que tu veux afficher à l'intérieur du Modal  */}  
           <View style={styles.contentContainer}>
             {children}
 
-            {/* Toggle Buttons Row */}
+            {/* Toggle  4   Buttons Row */}
             <View style={styles.toggleContainer}>
               <TouchableOpacity
                 style={[styles.toggleButton, isToggleActive1 ? styles.toggleButtonActive : styles.toggleButtonInactive]}
@@ -92,7 +96,6 @@ const AllergiesModal: React.FC<AllergiesModalProps> = ({
                   Arachides
                 </Text>
               </TouchableOpacity>
-
               <TouchableOpacity
                 style={[styles.toggleButton, isToggleActive4 ? styles.toggleButtonActive : styles.toggleButtonInactive]}
                 onPress={handleToggle4}
