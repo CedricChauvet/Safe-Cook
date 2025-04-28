@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Alert, Text } from "react-native";
 import { useRouter, usePathname } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { setLatestRecipes } from '../tempData'; // Ajustez le chemin selon votre structure
 
 
 const BottomNavBar = () => {
@@ -48,18 +49,24 @@ const BottomNavBar = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.iconContainer, isActive('/recipes') && styles.activeIcon]}
-          onPress={() => router.push('/recipes')}
-        >
-          <MaterialCommunityIcons 
-            name="pasta" 
-            size={24} 
-            color={isActive('/recipes') ? "#793d1c" : "white"} 
-          />
-          {/* Exemple de texte dans un bouton */}
-          <Text style={styles.iconText}>Recipes</Text>
-        </TouchableOpacity>
-      </View>
+  style={[styles.iconContainer, isActive('/recipes-V2') && styles.activeIcon]}
+  onPress={() => {
+    // Stocker les données dans tempData
+
+    // Naviguer sans passer de paramètres
+    router.push('/recipes-V2');
+  }}
+  
+
+>
+  <MaterialCommunityIcons 
+    name="pasta" 
+    size={24} 
+    color={isActive('/recipes-V2') ? "#793d1c" : "white"} 
+  />
+  <Text style={styles.iconText}>Recipes</Text>
+</TouchableOpacity>
+    </View>
 
   );
 };
