@@ -2,5 +2,5 @@
 /scrapping/__pycache__
 /*.pyc
 bdd_aliments_yolo/
-**/*.jpg
+
 /SafeCook_v2/node_modules
