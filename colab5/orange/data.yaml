@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['Orange']
+
+roboflow:
+  workspace: cdric-chauvet
+  project: orange_dataset_to_yolo
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/cdric-chauvet/orange_dataset_to_yolo/dataset/1
