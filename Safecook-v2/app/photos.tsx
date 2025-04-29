@@ -8,7 +8,7 @@ import { Button, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } f
 import { Alert } from 'react-native';
 import { useAllergies } from './contexts/AllergiesContext'; 
 import BottomNavBar from './components/BottomNavBar'; // Importer la barre de navigation
-import { AllergiesProvider } from './contexts/AllergiesContext'; // Assurez-vous que le chemin est correct
+import { setLatestRecipes } from './tempData'; //Pour Sauvegarder les données globalement
 
 
 export default function PhotosPage() {
@@ -77,7 +77,7 @@ export default function PhotosPage() {
       }
 
       const data = await response.json();
-      //console.log(data);
+
       // Créer un message formaté avec les détails
       const message =
         'Classes : ' + data.classes.join(', ') + '\n\n' +
@@ -122,11 +122,10 @@ export default function PhotosPage() {
         const data = await uploadPhoto(photo.uri, 'jpg');
         console.log('Photo téléchargée avec succès');
 
-        // Redirection vers la page des recettes après le téléchargement
-        router.push({
-          pathname: '/recette',
-          params: { recette: JSON.stringify(data.to_json) },
-        });
+        setLatestRecipes(data.to_json);
+        setTimeout(() => {
+          router.push('recipes-V2');  // 2. Navigation
+        }); // Petit délai pour s'assurer que les données sont sauvegardées
 
       } catch (error) {
         // console.error('Error taking picture:', error);

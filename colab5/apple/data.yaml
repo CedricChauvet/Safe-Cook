@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['Healty Apple', 'Rotten Apple']
+
+roboflow:
+  workspace: apple-fruit
+  project: apple-fruit-ajaxe
+  version: 3
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/apple-fruit/apple-fruit-ajaxe/dataset/3
