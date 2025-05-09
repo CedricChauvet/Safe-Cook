@@ -18,3 +18,4 @@ the tsx files of the different pages of the app are located in [app](https://git
 https://servicesafecook-981813095604.europe-west9.run.app/detect
 
 ###  HostMachine
+http://176.139.25.235:5000/detect
