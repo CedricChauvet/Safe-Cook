@@ -1,5 +1,3 @@
 # Safe-Cook   bind-mount
-
-Ici on voit les images qui sont envoyées dans le conteneur, un bind mount permet de connecter un dossier dockeur avec un dossier du systeme d'exploitation il s'agit d'un miroir<br />
-Elles sont sauvegardées ici mais elles ne doivent pas etre stockées sur le git, voir .gitignore. <br />
-
+Here we see the images being pushed to the container. A bind mount connects a Docker folder to an operating system folder; this is a mirror.<br />
+They are saved here, but they should not be stored on the Git repository; see .gitignore.<br />
