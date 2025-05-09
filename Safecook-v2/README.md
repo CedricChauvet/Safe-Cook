@@ -6,3 +6,6 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 npx expo start
 
 scan the QRcode with the mobile or access to the localhost
+
+## Files
+the tsx files of the different pages of the app are located in [app](https://github.com/CedricChauvet/Safe-Cook/tree/dev_ML_1.0/Safecook-v2/app)
