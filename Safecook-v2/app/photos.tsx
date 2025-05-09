@@ -64,7 +64,7 @@ export default function PhotosPage() {
       console.log(fileUri.substring(0, 100));
 
       console.log('Envoi de l\'image...');
-      const response = await fetch('https://servicesafecook-981813095604.europe-west9.run.app/detect', {
+      const response = await fetch('http://176.139.25.235:5000/detect', {
         method: 'POST',
         body: formData,
 
