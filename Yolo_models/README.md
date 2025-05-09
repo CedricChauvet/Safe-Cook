@@ -1,3 +1,2 @@
-ici on stockes les meilleurs entrainement
-yolobest4, sur 3 aliments, pomme orange banane
- a l'air excellent mais a tester 
+## YOLO models
+In this folder are stored different models of finetuner of yolo after training. These files have suffixes .pt
