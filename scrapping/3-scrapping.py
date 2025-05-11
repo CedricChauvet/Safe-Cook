@@ -1,5 +1,3 @@
-
-
 """
 cette partie du code recupere toutes les informations sur une recette
 de marmiton herite des fichiers 0,1 et 2 de scrapping.py
@@ -13,7 +11,7 @@ from typing import List, Optional
 extract_ingredients = __import__('0-scrapping').extract_ingredients
 extract_recipe_steps = __import__('1-scrapping').extract_recipe_steps
 get_recipe_details = __import__('2-scrapping').get_recipe_details
-
+get_photo = __import__('2-scrapping').get_photo
 
 @dataclass
 class MarmitonRecipe:
@@ -29,6 +27,8 @@ class MarmitonRecipe:
     tips: List[str]
     tags: List[str]
     url: str
+    photo: str
+
 
 
 def get_recipe_page(url: str) -> Optional[MarmitonRecipe]:
@@ -49,7 +49,7 @@ def get_recipe_page(url: str) -> Optional[MarmitonRecipe]:
     ing_out = extract_ingredients(soup)
     steps = extract_recipe_steps(soup)
     title, note, prep_time, difficulty, cost, servings, = get_recipe_details(soup)
-
+    photo = get_photo(soup)
     return MarmitonRecipe(
         title=title,  # À compléter avec le reste du code
         rating=note,
@@ -62,7 +62,8 @@ def get_recipe_page(url: str) -> Optional[MarmitonRecipe]:
         steps=steps,
         tips=[],
         tags=[],
-        url=url
+        url=url,
+        photo = photo   
     )
 
 
@@ -87,7 +88,7 @@ def print_recipe(recipe: MarmitonRecipe):
     print("\nÉtapes:")
     for i, step in enumerate(recipe.steps, 1):
         print(f"{i}. {step}")
-
+    print("photo", recipe.photo)
     """
     partie inutile pour le moment
     # if recipe.tips:

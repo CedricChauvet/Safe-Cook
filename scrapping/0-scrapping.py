@@ -32,8 +32,7 @@ def extract_ingredients(soup):
 
 
 # Usage
-html_content = "https://www.marmiton.org/recettes/"\
-               "recette_pates-a-la-carbonara_80453.aspx"
+html_content = "https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx"
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
     'AppleWebKit/537.36'
@@ -46,4 +45,3 @@ soup = BeautifulSoup(response.text, 'html.parser')
 ing = extract_ingredients(soup)
 print(ing)
 
-https://www.marmiton.org/recettes/recette_pates-a-la-carbonara_80453.aspx

@@ -35,8 +35,9 @@ def search_in_db(aliments):
         raise ValueError("La photo n'a rien détecté")
 
     # Translate labels in french
-    aliments = ["carotte" if x == "carrot" else x for x in aliments]
-    aliments = ["brocoli" if x == "broccoli" else x for x in aliments]
+    # aliments = ["carotte" if x == "carrot" else x for x in aliments]
+    # aliments = ["brocoli" if x == "broccoli" else x for x in aliments]
+    aliments = ["banane" if x == "banana" else x for x in aliments]
     aliments = ["pomme" if x == "apple" else x for x in aliments]
     aliments = ["orange" if x == "orange" else x for x in aliments]
 
@@ -49,7 +50,7 @@ def search_in_db(aliments):
     try:
         client = MongoClient(uri)
         db = client['0safe-cook']
-        recipes_collection = db['demo-day']
+        recipes_collection = db['v2']
 
         # Requête qui fonctionne correctement
         requete = {
@@ -99,7 +100,7 @@ def search_in_db(aliments):
 
 # Charger le modèle au démarrage
 try:
-    model = YOLO("yolobest4.pt")
+    model = YOLO("3mentors.pt")
     # model = YOLO("yolo11L-seg60.pt") ne detecte rien
     print("Modèle YOLO chargé avec succès")
 except Exception as e:
