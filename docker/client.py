@@ -17,7 +17,8 @@ def detect_objects(image_path):
         # Envoyer la requête, est ce qu'on peut envoyer autre chose
         # dans la requete? user id, etc?
         # response = requests.post('http://localhost:5000/detect', 
-        response = requests.post('https://servicesafecook-981813095604.europe-west9.run.app/detect, 
+        # response = requests.post('https://servicesafecook-981813095604.europe-west9.run.app/detect, 
+        response = requests.post('http://172.18.240.1:5000/detect',
             json={'image': image_b64}  # mauvais...
         )
         

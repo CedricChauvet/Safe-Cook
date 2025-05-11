@@ -16,17 +16,17 @@ def extract_recipe_steps(soup):
     return recipe_steps
 
 
-# # Usage
-# html_content = "https://www.marmiton.org/recettes/"\
-#                "recette_pates-a-la-carbonara_80453.aspx"
-# headers = {
-#     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-#     'AppleWebKit/537.36'
-# }
+# Usage
+html_content = "https://www.marmiton.org/recettes/"\
+               "recette_pates-a-la-carbonara_80453.aspx"
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+    'AppleWebKit/537.36'
+}
 
 
-# response = requests.get(html_content, headers=headers)
-# response.raise_for_status()
-# soup = BeautifulSoup(response.text, 'html.parser')
-# steps = extract_recipe_steps(soup)
-# print(steps)
+response = requests.get(html_content, headers=headers)
+response.raise_for_status()
+soup = BeautifulSoup(response.text, 'html.parser')
+steps = extract_recipe_steps(soup)
+print(steps)

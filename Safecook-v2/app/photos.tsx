@@ -64,7 +64,7 @@ export default function PhotosPage() {
       console.log(fileUri.substring(0, 100));
 
       console.log('Envoi de l\'image...');
-      const response = await fetch('http://176.139.25.235:5000/detect', {
+      const response = await fetch('http://172.18.240.1:5000/detect', {
         method: 'POST',
         body: formData,
 
