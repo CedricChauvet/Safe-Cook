@@ -3,4 +3,4 @@
 bdd_aliments_yolo/
 
 /SafeCook_v2/node_modules
-/video
+/video/*.*
