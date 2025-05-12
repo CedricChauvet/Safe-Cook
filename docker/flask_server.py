@@ -23,42 +23,104 @@ from ultralytics import YOLO
 from collections import Counter
 from pymongo import MongoClient
 import json
+import re
 
 app = Flask(__name__)
+
 
 def search_in_db(aliments):
     """
     Retourne un json avec les recettes groupées par ordre décroissant de match.
     """
-
     if not aliments:
         raise ValueError("La photo n'a rien détecté")
 
-    # Translate labels in french
-    # aliments = ["carotte" if x == "carrot" else x for x in aliments]
-    # aliments = ["brocoli" if x == "broccoli" else x for x in aliments]
-    aliments = ["banane" if x == "banana" else x for x in aliments]
-    aliments = ["pomme" if x == "apple" else x for x in aliments]
-    aliments = ["orange" if x == "orange" else x for x in aliments]
+    # Dictionnaire de traduction EN -> FR
+    translations = {
+        "carrot": "carotte",
+        "broccoli": "brocoli",
+        "banana": "banane",
+        "apple": "pomme",
+        "orange": "orange"
+        # Ajouter d'autres traductions au besoin
+    }
 
-
-    # Use a set in case there is multiple oranges for instance 
-    aliments= set(aliments)
+    # Appliquer les traductions
+    translated_aliments = [translations.get(aliment, aliment) for aliment in aliments]
     
-    uri = "mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    # Utiliser un set pour éliminer les doublons
+    aliments_set = set(translated_aliments)
+    
+    # Dictionnaire pour gérer les pluriels (singulier -> regex pattern)
+    plurals = {
+        "carotte": r"carotte[s]?",
+        "brocoli": r"brocoli[s]?",
+        "banane": r"banane[s]?",
+        "pomme": r"pomme[s]?",
+        "orange": r"orange[s]?",
+        "pomme de terre": r"pomme[s]? de terre[s]?"
+        # Ajouter d'autres pluriels selon besoin
+    }
+    
+    # Dictionnaire des termes exacts à rechercher (avec gestion des pluriels)
+    exact_terms = {
+        "pomme de terre": r"pomme[s]? de terre[s]?"
+        # Ajouter d'autres termes exacts si nécessaire
+    }
+    
+    # Dictionnaire des exclusions
+    exclusions = {
+        "pomme": ["pomme de terre"]
+        # Ajouter d'autres exclusions si nécessaire
+    }
+    
+    # Récupérer les identifiants MongoDB
+    mongodb_uri = os.environ.get("MONGODB_URI", 
+                                "mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
     
     try:
-        client = MongoClient(uri)
+        client = MongoClient(mongodb_uri)
         db = client['0safe-cook']
         recipes_collection = db['v2']
 
-        # Requête qui fonctionne correctement
-        requete = {
-            "$or": [
-                {"ingredients": {"$regex": aliment, "$options": "i"}} 
-                for aliment in aliments
-            ]
-        }
+        # Construire une requête qui gère les cas particuliers et les pluriels
+        query_conditions = []
+        
+        for aliment in aliments_set:
+            # Obtenir le pattern regex qui gère le pluriel
+            pattern = plurals.get(aliment, f"{re.escape(aliment)}[s]?")
+            
+            # Vérifier s'il s'agit d'un terme exact à rechercher
+            if aliment in exact_terms:
+                # Rechercher exactement ce terme (avec gestion du pluriel)
+                exact_pattern = exact_terms[aliment]
+                query_conditions.append(
+                    {"ingredients": {"$regex": f"\\b{exact_pattern}\\b", "$options": "i"}}
+                )
+            else:
+                # Condition d'inclusion standard pour cet aliment (avec pluriel)
+                inclusion = {"ingredients": {"$regex": f"\\b{pattern}\\b", "$options": "i"}}
+                
+                # Ajouter des conditions d'exclusion si nécessaire
+                if aliment in exclusions:
+                    for excluded in exclusions[aliment]:
+                        # Obtenir le pattern d'exclusion avec gestion du pluriel
+                        excl_pattern = plurals.get(excluded, f"{re.escape(excluded)}[s]?")
+                        
+                        # Créer une requête qui inclut l'aliment mais exclut l'expression spécifique
+                        condition = {
+                            "$and": [
+                                inclusion,
+                                {"ingredients": {"$not": {"$regex": f"\\b{excl_pattern}\\b", "$options": "i"}}}
+                            ]
+                        }
+                        query_conditions.append(condition)
+                else:
+                    # Si pas d'exclusion, juste inclure l'aliment
+                    query_conditions.append(inclusion)
+        
+        # Construire la requête finale avec un $or entre toutes les conditions
+        requete = {"$or": query_conditions}
 
         resultats = recipes_collection.find(requete)
         
@@ -66,18 +128,47 @@ def search_in_db(aliments):
         recipes_with_matches = []
         
         for recipe in resultats:
-            # Compter le nombre d'ingrédients qui matchent
-            matches = sum(
-                1 for aliment in aliments 
-                if any(aliment.lower() in ingr.lower() for ingr in recipe.get('ingredients', []))
-            )
+            # Compter le nombre d'ingrédients qui matchent précisément
+            matches = 0
+            matching_ingredients = []
+            
+            for ingr in recipe.get('ingredients', []):
+                for aliment in aliments_set:
+                    # Obtenir le pattern avec gestion du pluriel
+                    pattern = plurals.get(aliment, f"{re.escape(aliment)}[s]?")
+                    
+                    # Gestion spéciale pour les termes exacts
+                    if aliment in exact_terms:
+                        exact_pattern = exact_terms[aliment]
+                        if re.search(f"\\b{exact_pattern}\\b", ingr, re.IGNORECASE):
+                            matches += 1
+                            matching_ingredients.append(ingr)
+                            break
+                    else:
+                        # Vérifier si l'ingrédient contient l'aliment mais pas ses exclusions
+                        if re.search(f"\\b{pattern}\\b", ingr, re.IGNORECASE):
+                            # Vérifier les exclusions
+                            should_exclude = False
+                            if aliment in exclusions:
+                                for excluded in exclusions[aliment]:
+                                    # Pattern d'exclusion avec pluriel
+                                    excl_pattern = plurals.get(excluded, f"{re.escape(excluded)}[s]?")
+                                    if re.search(f"\\b{excl_pattern}\\b", ingr, re.IGNORECASE):
+                                        should_exclude = True
+                                        break
+                            
+                            if not should_exclude:
+                                matches += 1
+                                matching_ingredients.append(ingr)
+                                break
             
             if matches > 0:  # Ne garder que les recettes avec au moins une correspondance
                 # Convertir ObjectId en string
                 recipe['_id'] = str(recipe['_id'])
                 
-                # Ajouter le nombre de matches aux informations de la recette
+                # Ajouter le nombre de matches et les ingrédients correspondants
                 recipe['nombre_matches'] = matches
+                recipe['matching_ingredients'] = matching_ingredients
                 recipes_with_matches.append(recipe)
 
         # Trier les recettes par nombre de matches décroissant
@@ -92,10 +183,6 @@ def search_in_db(aliments):
     finally:
         if 'client' in locals():
             client.close()
-
-            
-
-    
 
 
 # Charger le modèle au démarrage
