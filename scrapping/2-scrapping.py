@@ -79,16 +79,27 @@ def get_recipe_details(soup):
         return None
 
 
-# # Usage
-# html_content = "https://www.marmiton.org/recettes/"\
-#                "recette_pates-a-la-carbonara_80453.aspx"
-# headers = {
-#     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-#     'AppleWebKit/537.36'
-# }
-# response = requests.get(html_content, headers=headers)
-# response.raise_for_status()
-# soup = BeautifulSoup(response.text, 'html.parser')
-# recipe = get_recipe_details(soup)
+def get_photo(soup):
+    try:
+        # Trouver l'élément img avec la classe 'lazyload recipe-media-viewer-picture'
+        img = soup.find('img', class_='lazyload recipe-media-viewer-picture')
 
-# print(recipe)
+        # Extraire l'URL de l'attribut data-src
+        image_url = img['data-src']
+        print("imageurl", image_url)
+        return image_url
+    except:
+        return "https://cdn.pixabay.com/photo/2012/04/12/22/25/warning-sign-30915_960_720.png"
+# Usage
+html_content = "https://www.marmiton.org/recettes/"\
+               "recette_pates-a-la-carbonara_80453.aspx"
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+    'AppleWebKit/537.36'
+}
+response = requests.get(html_content, headers=headers)
+response.raise_for_status()
+soup = BeautifulSoup(response.text, 'html.parser')
+recipe = get_recipe_details(soup)
+
+print(recipe)
