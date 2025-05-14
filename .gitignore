@@ -1,6 +1,6 @@
 /scrapping/__pycache__
 /*.pyc
 bdd_aliments_yolo/
-
+*.mp4
 /SafeCook_v2/node_modules
 /video/*.*
