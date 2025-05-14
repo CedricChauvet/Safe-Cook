@@ -21,9 +21,9 @@ RUN pip install --no-cache-dir \
     pymongo
     
 # Copier le script serveur
-COPY flask_server.py /app/flask_server.py
+COPY server.py /app/server.py
 # COPY yolo11L-seg60.pt yolo11L-seg60.pt
 COPY 3mentors.pt /app/3mentors.pt
 EXPOSE 5000
 
-CMD ["python", "/app/flask_server.py"]
+CMD ["python", "/app/server.py"]

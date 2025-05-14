@@ -234,7 +234,7 @@ def detect_objects():
 
         # premiere version du resize   
         # image = cv2.resize(image, (640, 640))
-        image = resize_for_yolo(image, target_size=640)
+        image = resize_for_yolo(image, target_size=640)  #ATTENTION, peut etre a enlever ....
         # Vérification de l'image
         if image is None:
             return jsonify({
@@ -258,7 +258,7 @@ def detect_objects():
         image_tensor = image_tensor.unsqueeze(0)
 
         # Détecter les objets, bien choisir le seuil de confiance
-        results = model(image_tensor, conf=0.5)
+        results = model(image_tensor, conf=0.25)
 
         # Traitement des détections
         detections = []
