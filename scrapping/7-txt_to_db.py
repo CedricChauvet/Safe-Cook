@@ -63,7 +63,7 @@ def to_json(recipe: MarmitonRecipe):
         "tips": recipe.tips,
         "tags": recipe.tags,
         "url": recipe.url,
-        "photo": None
+        "photo": recipe.photo
     }
 def into_db(urls):
     # Connexion à MongoDB
@@ -74,7 +74,7 @@ def into_db(urls):
 
 
     db = client['0safe-cook']  # Nom de la base de données
-    recipes_mix = db['sans_huile_mix']  # Nom de la collection
+    recipes_mix = db['v2']  # Nom de la collection
 
     # Création d'un index unique sur le champ 'title'
     recipes_mix.create_index([('title', ASCENDING)], unique=True)
@@ -89,10 +89,10 @@ def into_db(urls):
         try:
             result = recipes_mix.insert_one(recipe_json)
                     # Mettre à jour le champ 'photo' pour ce document
-            recipes_mix.update_one(
-            {"_id": result.inserted_id},  # Filtre : le document avec cet ID
-            {"$set": {"photo": f"./data/photo/{str(result.inserted_id)}.jpg"}}  # Mise à jour du champ 'photo'
-        )
+#            recipes_mix.update_one(
+#            {"_id": result.inserted_id},  # Filtre : le document avec cet ID
+#            {"$set": {"photo": f"./data/photo/{str(result.inserted_id)}.jpg"}}  # Mise à jour du champ 'photo'
+#        )
             
             
             
@@ -107,7 +107,7 @@ def main():
 
 
     # Spécifiez le chemin du répertoire
-    path = './bdd_txt/sans_huile_mix'
+    path = './bdd_txt/v2'
 
     # Utilisez glob pour trouver tous les fichiers .txt
     fichiers_txt = glob.glob(os.path.join(path, '*.txt'))
