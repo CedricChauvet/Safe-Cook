@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 /scrapping/__pycache__
 /*.pyc
 bdd_aliments_yolo/
 *.mp4
 /SafeCook_v2/node_modules
 /video/*.*
+=======
+/docker/mount/*.jpg
+/scrapping/__pycache__
+/*.pyc
+bdd_aliments_yolo/
+
+/SafeCook_v2/node_modules
+>>>>>>> 1ec5e9f8dc583ce73f55e5d6cfd113b3ee7e576f
