@@ -16,3 +16,4 @@ There is some photos annotated in [mount](https://github.com/CedricChauvet/Safe-
 
 DEMO
  [DEMO](https://drive.google.com/file/d/1b9BywnsaVGygB5vCjDK96oCC3Zw9TlbQ/view?usp=sharing) 
+[![Voir la vidéo](media/thumb_video.png)](https://drive.google.com/file/d/1b9BywnsaVGygB5vCjDK96oCC3Zw9TlbQ/view?usp=sharing)
