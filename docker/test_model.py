@@ -1,64 +1,83 @@
 """
-Verification du modele Yolo
-"""
+Vérification du modèle YOLO
 
+Ce script teste le chargement d'un modèle YOLO via la librairie ultralytics,
+affiche les informations basiques du modèle, et gère les erreurs éventuelles.
+"""
 
 import os
 import sys
 import traceback
 from ultralytics import YOLO
 
-def test_yolo_model(model_path):
-    print(f"Début du test de chargement du modèle: {model_path}")
-    print(f"Vérification de l'existence du fichier: {os.path.exists(model_path)}")
-    
-    if os.path.exists(model_path):
-        print(f"Taille du fichier: {os.path.getsize(model_path) / (1024 * 1024):.2f} MB")
-    
+
+def test_yolo_model(model_path: str) -> bool:
+    """
+    Teste le chargement d'un modèle YOLO et affiche des informations sur le modèle.
+
+    Args:
+        model_path (str): Chemin vers le fichier du modèle YOLO (.pt)
+
+    Returns:
+        bool: True si le modèle a été chargé avec succès, False sinon.
+    """
+    print(f"Démarrage du test pour le modèle : {model_path}")
+
+    # Vérifier si le fichier du modèle existe
+    file_exists = os.path.exists(model_path)
+    print(f"Le fichier existe : {file_exists}")
+
+    if file_exists:
+        file_size_mb = os.path.getsize(model_path) / (1024 * 1024)
+        print(f"Taille du fichier : {file_size_mb:.2f} MB")
+
     try:
-        print("Tentative de chargement du modèle...")
+        print("Chargement du modèle YOLO en cours...")
         model = YOLO(model_path)
-        print("Modèle chargé avec succès!")
-        
-        # Afficher des informations sur le modèle
-        print("\n--- Résumé du modèle ---")
-        print(f"Type de modèle: {type(model)}")
-        print(f"Noms de classes disponibles: {model.names}")
-        print(f"Nombre de classes: {len(model.names)}")
-        
-        # Afficher les paramètres du modèle si disponibles
+        print("Modèle chargé avec succès !\n")
+
+        # Affichage des informations principales du modèle
+        print("--- Résumé du modèle ---")
+        print(f"Type du modèle : {type(model)}")
+        print(f"Noms des classes : {model.names}")
+        print(f"Nombre de classes : {len(model.names)}")
+
+        # Essayer d'afficher le nombre de paramètres si possible
         if hasattr(model, 'model'):
             try:
                 num_params = sum(p.numel() for p in model.model.parameters())
-                print(f"Nombre de paramètres: {num_params:,}")
-            except:
-                print("Impossible d'obtenir le nombre de paramètres")
-        
+                print(f"Nombre de paramètres : {num_params:,}")
+            except Exception:
+                print("Impossible de récupérer le nombre de paramètres du modèle.")
+
         print("--- Fin du résumé ---")
         return True
-    
-    except Exception as e:
-        print(f"ERREUR lors du chargement du modèle: {e}")
-        print("Détails de l'erreur:")
+
+    except Exception as error:
+        print(f"ERREUR lors du chargement du modèle : {error}")
+        print("Traceback détaillé :")
         print(traceback.format_exc())
         return False
 
+
 if __name__ == "__main__":
-    # Chemin du modèle (utilisez le chemin où se trouve votre modèle)
-    model_path = "yolobest4.pt"
-    
-    # Si un argument est fourni, utilisez-le comme chemin
+    # Chemin par défaut vers le modèle
+    model_file_path = "yolobest4.pt"
+
+    # Si un argument est passé en ligne de commande, l'utiliser comme chemin
     if len(sys.argv) > 1:
-        model_path = sys.argv[1]
-    
-    print(f"Python version: {sys.version}")
-    print(f"Ultralytics version: {YOLO.__version__ if hasattr(YOLO, '__version__') else 'inconnu'}")
-    
-    # Tester le chargement du modèle
-    success = test_yolo_model(model_path)
-    
-    if success:
-        print("\nTest réussi: Le modèle a été chargé correctement.")
+        model_file_path = sys.argv[1]
+
+    # Affichage des versions Python et ultralytics
+    print(f"Version Python : {sys.version}")
+    ultralytics_version = getattr(YOLO, '__version__', 'inconnue')
+    print(f"Version Ultralytics : {ultralytics_version}")
+
+    # Lancer le test de chargement du modèle
+    is_successful = test_yolo_model(model_file_path)
+
+    if is_successful:
+        print("\nTest réussi : le modèle a été chargé correctement.")
     else:
-        print("\nTest échoué: Impossible de charger le modèle.")
-        sys.exit(1)  # Sortie avec code d'erreur
+        print("\nTest échoué : impossible de charger le modèle.")
+        sys.exit(1)  # Quitter avec un code d'erreur
