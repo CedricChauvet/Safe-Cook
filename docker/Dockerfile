@@ -22,8 +22,12 @@ RUN pip install --no-cache-dir \
     
 # Copier le script serveur
 COPY server.py /app/server.py
-# COPY yolo11L-seg60.pt yolo11L-seg60.pt
+
+
+# Copier le modele Yolo
 COPY 3mentors.pt /app/3mentors.pt
+
+# ouvrir le Port
 EXPOSE 5000
 
 CMD ["python", "/app/server.py"]

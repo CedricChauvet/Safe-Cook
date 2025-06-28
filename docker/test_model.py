@@ -1,3 +1,8 @@
+"""
+Verification du modele Yolo
+"""
+
+
 import os
 import sys
 import traceback
