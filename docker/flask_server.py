@@ -23,22 +23,15 @@ from ultralytics import YOLO
 from collections import Counter
 from pymongo import MongoClient
 import json
-<<<<<<< HEAD
 import re
 
 app = Flask(__name__)
 
 
-=======
-
-app = Flask(__name__)
-
->>>>>>> 1ec5e9f8dc583ce73f55e5d6cfd113b3ee7e576f
 def search_in_db(aliments):
     """
     Retourne un json avec les recettes groupées par ordre décroissant de match.
     """
-<<<<<<< HEAD
     if not aliments:
         raise ValueError("La photo n'a rien détecté")
 
@@ -128,37 +121,6 @@ def search_in_db(aliments):
         
         # Construire la requête finale avec un $or entre toutes les conditions
         requete = {"$or": query_conditions}
-=======
-
-    if not aliments:
-        raise ValueError("La photo n'a rien détecté")
-
-    # Translate labels in french
-    # aliments = ["carotte" if x == "carrot" else x for x in aliments]
-    # aliments = ["brocoli" if x == "broccoli" else x for x in aliments]
-    aliments = ["banane" if x == "banana" else x for x in aliments]
-    aliments = ["pomme" if x == "apple" else x for x in aliments]
-    aliments = ["orange" if x == "orange" else x for x in aliments]
-
-
-    # Use a set in case there is multiple oranges for instance 
-    aliments= set(aliments)
-    
-    uri = "mongodb+srv://9184:f9XGDwYrIBnUnNkw@cluster0.ufblf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-    
-    try:
-        client = MongoClient(uri)
-        db = client['0safe-cook']
-        recipes_collection = db['v2']
-
-        # Requête qui fonctionne correctement
-        requete = {
-            "$or": [
-                {"ingredients": {"$regex": aliment, "$options": "i"}} 
-                for aliment in aliments
-            ]
-        }
->>>>>>> 1ec5e9f8dc583ce73f55e5d6cfd113b3ee7e576f
 
         resultats = recipes_collection.find(requete)
         
@@ -166,7 +128,6 @@ def search_in_db(aliments):
         recipes_with_matches = []
         
         for recipe in resultats:
-<<<<<<< HEAD
             # Compter le nombre d'ingrédients qui matchent précisément
             matches = 0
             matching_ingredients = []
@@ -200,26 +161,14 @@ def search_in_db(aliments):
                                 matches += 1
                                 matching_ingredients.append(ingr)
                                 break
-=======
-            # Compter le nombre d'ingrédients qui matchent
-            matches = sum(
-                1 for aliment in aliments 
-                if any(aliment.lower() in ingr.lower() for ingr in recipe.get('ingredients', []))
-            )
->>>>>>> 1ec5e9f8dc583ce73f55e5d6cfd113b3ee7e576f
             
             if matches > 0:  # Ne garder que les recettes avec au moins une correspondance
                 # Convertir ObjectId en string
                 recipe['_id'] = str(recipe['_id'])
                 
-<<<<<<< HEAD
                 # Ajouter le nombre de matches et les ingrédients correspondants
                 recipe['nombre_matches'] = matches
                 recipe['matching_ingredients'] = matching_ingredients
-=======
-                # Ajouter le nombre de matches aux informations de la recette
-                recipe['nombre_matches'] = matches
->>>>>>> 1ec5e9f8dc583ce73f55e5d6cfd113b3ee7e576f
                 recipes_with_matches.append(recipe)
 
         # Trier les recettes par nombre de matches décroissant
@@ -235,13 +184,6 @@ def search_in_db(aliments):
         if 'client' in locals():
             client.close()
 
-<<<<<<< HEAD
-=======
-            
-
-    
-
->>>>>>> 1ec5e9f8dc583ce73f55e5d6cfd113b3ee7e576f
 
 # Charger le modèle au démarrage
 try:
@@ -292,11 +234,7 @@ def detect_objects():
 
         # premiere version du resize   
         # image = cv2.resize(image, (640, 640))
-<<<<<<< HEAD
         image = resize_for_yolo(image, target_size=640)  #ATTENTION, peut etre a enlever ....
-=======
-        image = resize_for_yolo(image, target_size=640)
->>>>>>> 1ec5e9f8dc583ce73f55e5d6cfd113b3ee7e576f
         # Vérification de l'image
         if image is None:
             return jsonify({

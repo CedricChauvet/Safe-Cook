@@ -1,0 +1,272 @@
+[{
+  "_id": {
+    "$oid": "6783db89f3fcd6346ad8cdbf"
+  },
+  "title": "Salade de quinoa",
+  "rating": 4.5,
+  "review_count": -1,
+  "prep_time": "30 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "4 personnes",
+  "ingredients": [
+    " sel",
+    "2 tomates",
+    "1verre quinoa",
+    "0.5 concombre",
+    "20feuilles menthe",
+    "1 échalote",
+    " huile d'olive",
+    " jus de citron"
+  ],
+  "steps": [
+    "Faire cuire le quinoa 15 minutes dans l'eau bouillante. Une fois cuit, refroidissez-le en le rincant a l'eau froide et laissez-le s'égoutter dans une passoire.",
+    "Pendant que le quinoa cuit, rincez les tomates, retirez les pépins et le jus qui s'en écoule et coupez les tomates en tous petits cubes.",
+    "Epluchez le demi-concombre, enlevez les graines et coupez-le, lui aussi, en tous petits dés. Coupez très finement la menthe et l'échalote.",
+    "Mélangez tous les légumes avec le quinoa froid. Assaisonnez avec du jus de citron, du sel et de l'huile d'olive !"
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_salade-de-quinoa_29581.aspx",
+  "photo": "./data/vegan_mix/photo/6783db89f3fcd6346ad8cdbf.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783db89f3fcd6346ad8cdc0"
+  },
+  "title": "Samossas de légumes",
+  "rating": 4.7,
+  "review_count": -1,
+  "prep_time": "1 h",
+  "difficulty": "facile",
+  "cost": "moyen",
+  "servings": "8 personnes ",
+  "ingredients": [
+    "2cuillèresàsoupe coriandre",
+    "1cuillèreàcafé cumin",
+    "1 poivron rouge",
+    "175g carotte",
+    "1 oignon",
+    "20cl huile",
+    "1gousse ail",
+    "225g pomme de terre",
+    "100g petits pois",
+    "2cuillèresàsoupe pâte de curry",
+    "3cuillèresàsoupe chutney",
+    "16feuilles filo"
+  ],
+  "steps": [
+    "Dans une poêle, chauffer 2 cuillers à soupe d'huile.",
+    "Faire revenir l'oignon et l'ail 1 min. Ajouter les carottes, les pommes de terre et le poivron. Remuer 5 min.",
+    "Ajouter le cumin et la pâte de curry. Remuer 2 min.",
+    "Délayer avec 4 cuiller à soupe d'eau, couvrir et laisser mijoter 5 min à feu doux.",
+    "Incorporer les petits pois, le chutney et la coriandre. Oter du feu.",
+    "Couper les feuilles de filo en deux dans la longueur. Les huiler au pinceau.",
+    "Déposer un peu de farce dans un coin et refermer en triangle.",
+    "Faire dorer les samosas 5 par 5 dans le reste d'huile bouillante, 2 min de chaque côté et bien les égoutter."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_samossas-de-legumes_46288.aspx",
+  "photo": "./data/vegan_mix/photo/6783db89f3fcd6346ad8cdc0.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783db89f3fcd6346ad8cdc1"
+  },
+  "title": "Salade de concombres et melons à la menthe",
+  "rating": 4.4,
+  "review_count": -1,
+  "prep_time": "10 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "4 personnes",
+  "ingredients": [
+    " sel",
+    " poivre",
+    "2 melons",
+    "2 concombres",
+    "10feuilles menthe"
+  ],
+  "steps": [
+    "Eplucher les concombres, ôter les grains puis couper en cubes d'1 cm, faire la même chose avec les melons.",
+    "Mettre le tout dans un saladier saler et poivrer légèrement, ajouter la menthe ciselée et mélanger.",
+    "Tenir 1 heure au frais puis servir en entrée."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_salade-de-concombres-et-melons-a-la-menthe_31646.aspx",
+  "photo": "./data/vegan_mix/photo/6783db89f3fcd6346ad8cdc1.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783db89f3fcd6346ad8cdc2"
+  },
+  "title": "Salade de lentilles pour l'été",
+  "rating": 4.6,
+  "review_count": -1,
+  "prep_time": "50 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "4 personnes",
+  "ingredients": [
+    " poivre",
+    " sel",
+    " vinaigre",
+    " persil",
+    "2 oignons",
+    "2 tomates",
+    "250g lentilles",
+    " huile d'olive"
+  ],
+  "steps": [
+    "Il faut cuire d'abord les lentilles à l'eau pendant 20 min, bien vérifier leur cuisson et les égoutter ensuite.",
+    "Emincer les oignons, découper les tomates, et mélanger le tout avec les lentilles.",
+    "Ajouter ensuite un peu de persil haché, un bon filet de huile d'olive et du vinaigre.",
+    "Ajouter enfin du sel et du poivre selon le goût.",
+    "Cette salade se mange froide ou tiède."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_salade-de-lentilles-pour-l-ete_170891.aspx",
+  "photo": "./data/vegan_mix/photo/6783db89f3fcd6346ad8cdc2.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783db89f3fcd6346ad8cdc3"
+  },
+  "title": "Coleslaw de chou rouge, carotte et pomme",
+  "rating": 5,
+  "review_count": -1,
+  "prep_time": "20 min",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "2 personnes",
+  "ingredients": [
+    "3 carottes",
+    "200g chou rouge",
+    "1 pomme",
+    "2cuillèresàsoupe huile d'olive",
+    "1cuillèreàsoupe jus de citron",
+    " sel et poivre",
+    " ciboulette"
+  ],
+  "steps": [
+    "Hacher le chou en fines lamelles.",
+    "Éplucher les carottes et la pomme. Les râper finement.",
+    "Mélanger le chou rouge, les carottes et la pomme ensemble. Hacher la ciboulette et en parsemer les crudités.",
+    "Dans un bol, mélanger l'huile d'olive et le jus de citron, saler et poivrer. Servir à côté de la salade pour assaisonner."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_coleslaw-de-chou-rouge-carotte-et-pomme_529825.aspx",
+  "photo": "./data/vegan_mix/photo/6783db89f3fcd6346ad8cdc3.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783db89f3fcd6346ad8cdc4"
+  },
+  "title": "Roulades d'aubergine vegan",
+  "rating": 5,
+  "review_count": -1,
+  "prep_time": "45 min",
+  "difficulty": "facile",
+  "cost": "bon marché",
+  "servings": "20 pièces",
+  "ingredients": [
+    "0.25botte persil",
+    "1cuillèreàcafé sel",
+    "1cuillèreàsoupe purée",
+    "2cuillèresàsoupe vinaigre balsamique",
+    "1cuillèreàsoupe levure",
+    "2 aubergines",
+    "100g graines de tournesol",
+    "5cuillèresàsoupe crème végétale",
+    "1gousse ail"
+  ],
+  "steps": [
+    "Préparation des aubergines.",
+    "Laver les aubergines et couper les extrémités.",
+    "Couper des tranches fines dans le sens de la longueur.",
+    "Dans une poêle chaude huilée, faire cuire des deux côtés les tranches d'aubergine.",
+    "Réserver.",
+    "Préparation de la persillade.",
+    "Mixer tous les ingrédients restant afin d'obtenir une sauce crémeuse, qui ne doit pas être trop liquide.",
+    "Assemblage.",
+    "Déposer une cuillère à café de la persillade à l'extrémité d'une tranche et rouler. Procéder ainsi pour toutes les tranches."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_roulades-d-aubergine-vegan_345913.aspx",
+  "photo": "./data/vegan_mix/photo/6783db89f3fcd6346ad8cdc4.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783db8af3fcd6346ad8cdc5"
+  },
+  "title": "Melon en salade",
+  "rating": 4.7,
+  "review_count": -1,
+  "prep_time": "30 min",
+  "difficulty": "facile",
+  "cost": "bon marché",
+  "servings": "4 personnes",
+  "ingredients": [
+    " sel",
+    " poivre",
+    "2cuillèresàsoupe huile",
+    "200g tomates cerise",
+    "2 melons",
+    "1cuillèreàsoupe graines de courge",
+    "1cuillèreàsoupe jus de citron",
+    "1cuillèreàsoupe basilic"
+  ],
+  "steps": [
+    "Couper les melons en deux en les taillant en dentelle, épépiner, faire de boules à la cuillère parisienne, réserver.",
+    "Griller les graines de courge dans une poêle sèche, réserver.",
+    "Couper les tomates cerises en quartiers.",
+    "Mélanger les trois éléments dans un plat, ensuite remplir les demis melons.",
+    "Dans un plat creux, mélanger le jus de citron, l'huile de graines de courge et les feuilles de basilic ciselées, sel et poivre selon son goût et napper la salade.",
+    "Servir frais.",
+    "Convient très bien pour accompagner certaines grillades ou comme entrée."
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_melon-en-salade_50153.aspx",
+  "photo": "./data/vegan_mix/photo/6783db8af3fcd6346ad8cdc5.jpg"
+},
+{
+  "_id": {
+    "$oid": "6783db8af3fcd6346ad8cdc6"
+  },
+  "title": "Pois chiches en salade",
+  "rating": 4.9,
+  "review_count": -1,
+  "prep_time": "2h15",
+  "difficulty": "très facile",
+  "cost": "bon marché",
+  "servings": "3 personnes",
+  "ingredients": [
+    "1cuillèreàcafé Ras el Hanout",
+    "1cuillèreàcafé cumin",
+    "1 oignon",
+    "1 tomates cerise",
+    "400g pois chiches",
+    "1demi concombre",
+    "1 citron",
+    "2cuillèresàsoupe huile d'olive",
+    "3brins ciboulette",
+    "0.5bouquet menthe",
+    " sel et poivre"
+  ],
+  "steps": [
+    "Rincer les pois chiches et les mettre dans un saladier.",
+    "Peler le concombre et le couper en petits dés.\nCouper les tomates cerises en petits dés également. \nEplucher et émincer finement l'oignon.\nCiseler les brins de ciboulette et de menthe.",
+    "Assembler tous les ingrédients dans le saladier, assaisonner avec l’huile, le citron, les épices.",
+    "Mettre au frais pendant au moins 2 heures avant de déguster !"
+  ],
+  "tips": [],
+  "tags": [],
+  "url": "https://www.marmiton.org/recettes/recette_pois-chiches-en-salade_359584.aspx",
+  "photo": "./data/vegan_mix/photo/6783db8af3fcd6346ad8cdc6.jpg"
+}]
