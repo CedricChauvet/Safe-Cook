@@ -1,67 +1,72 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import BottomNavBar from './components/BottomNavBar'; // Importer la barre de navigation
-import AllergiesModal from './AllergiesModal'; // Importer le modal des préférences alimentaires
-import { AllergiesProvider } from './contexts/AllergiesContext'; // Etat des allergies
-import recettes from './data/demo-day.json'; 
-import { setLatestRecipes } from './tempData'; //Pour Sauvegarder les données globalement
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
-// Définir le composant MainContent à l'intérieur du même fichier
-export default function Index() {
+import AllergiesModal from './AllergiesModal';
+import BottomNavBar from './components/BottomNavBar';
+
+import { AllergiesProvider } from './contexts/AllergiesContext';
+import recettes from './data/demo-day.json';
+import { setLatestRecipes } from './tempData';
+
+/**
+ * Composant principal affichant l'accueil de l'application SafeCook.
+ * Gère l'accès au modal des préférences alimentaires et à la navigation vers les recettes.
+ */
+export default function IndexScreen() {
   const router = useRouter();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  /** Ouvre le modal des préférences alimentaires */
+  const openAllergyModal = () => setIsModalVisible(true);
+
+  /** Ferme le modal des préférences alimentaires */
+  const closeAllergyModal = () => setIsModalVisible(false);
+
+  /** Gère la navigation vers l’écran des recettes */
+  const handleShowAllRecipes = () => {
+    setLatestRecipes(recettes); // Sauvegarde globale
+    router.push('recipes-V2');  // Navigation
+  };
+
   return (
     <AllergiesProvider>
-    <View style={styles.container}>
+      <View style={styles.container}>
+        {/* Bouton icône utilisateur */}
+        <TouchableOpacity style={styles.iconAccount} onPress={openAllergyModal}>
+          <MaterialCommunityIcons name="account" size={70} color="black" />
+        </TouchableOpacity>
 
-      {/* Section utilisateur (icône de compte) */}
-      <TouchableOpacity
-        style={styles.iconAccount}
-        onPress={() => setModalVisible(true)}   // Ouvre le modal des allergies
-      >
-        <MaterialCommunityIcons name="account" size={70} color="black" />
-      </TouchableOpacity>
+        {/* Modal des allergies */}
+        <AllergiesModal
+          visible={isModalVisible}
+          onClose={closeAllergyModal}
+          title="Mes habitudes alimentaires"
+        />
 
-      {/* Modal des allergies */}
-      <AllergiesModal
-        visible={modalVisible} // 'visible' indique si le modal est visible ou non (true = affiché, false = caché)
-        onClose={() => setModalVisible(false)}    // Ferme le modal des allergies
-        title="Mes habitudes alimentaires">
-      </AllergiesModal>
-      
-      {/* Titre de l'application */}
-      <View>
+        {/* Titre principal */}
         <Text style={styles.title}>SafeCook</Text>
-      </View>
 
-      {/* Image de l'application */}
-      <Image
-        style={styles.tinyLogo}
-        source={require('../assets/images/garcon-safecook.png')}
-      />
-      {/* Bouton pour accéder à toutes les recettes TEST!!!!!*/} 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          setLatestRecipes(recettes); // 1. Sauvegarde les données globalement
-          router.push('recipes-V2');  // 2. Navigation
-        }}
-      >
-        <MaterialCommunityIcons name="food-variant" size={70} color="black" />
-        <Text>Toutes les recettes</Text>
-      </TouchableOpacity>
-      
-      {/* Composant de barre de navigation */}
-      <BottomNavBar />
-    </View>
+        {/* Image mascotte */}
+        <Image
+          style={styles.tinyLogo}
+          source={require('../assets/images/garcon-safecook.png')}
+        />
+
+        {/* Bouton "Toutes les recettes" */}
+        <TouchableOpacity style={styles.button} onPress={handleShowAllRecipes}>
+          <MaterialCommunityIcons name="food-variant" size={70} color="black" />
+          <Text>Toutes les recettes</Text>
+        </TouchableOpacity>
+
+        {/* Barre de navigation en bas */}
+        <BottomNavBar />
+      </View>
     </AllergiesProvider>
   );
-};
-
-// Le composant principal qui enveloppe MainContent avec le provider
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -92,4 +97,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     alignItems: 'center',
-}});
+  },
+});

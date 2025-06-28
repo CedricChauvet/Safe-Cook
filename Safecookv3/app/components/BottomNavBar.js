@@ -1,8 +1,7 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Alert, Text } from "react-native";
-import { useRouter, usePathname } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { setLatestRecipes } from '../tempData'; // Ajustez le chemin selon votre structure
+import { usePathname, useRouter } from 'expo-router';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 
 const BottomNavBar = () => {

@@ -1,118 +1,105 @@
-// Ce modal permet de choisir les allergie utilisateur, 
-
 import React from 'react';
-import { Modal, View, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet} from 'react-native';
 
-// Import de la variable de context, sauvegardée en dur  avec AllergiesContext.tsx
-import { useAllergies } from './contexts/AllergiesContext'; 
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
+import { useAllergies } from './contexts/AllergiesContext';
 
-
-// Définition de l'interface pour les propriétés (props) du composant AllergiesModal
+/**
+ * Interface définissant les props acceptées par le composant AllergiesModal.
+ */
 interface AllergiesModalProps {
-  // 'visible' indique si le modal est visible ou non (true = affiché, false = caché)
-  visible: boolean;
-  // 'onClose' est une fonction appelée pour fermer le modal
-  onClose: () => void;
-  // 'title' est le texte du titre affiché en haut du modal
-  title: string;
-  // 'children' permet d'insérer du contenu personnalisé à l'intérieur du modal (optionnel)
-  children?: React.ReactNode;
+  visible: boolean;         // Contrôle la visibilité du modal
+  onClose: () => void;      // Fonction appelée pour fermer le modal
+  title: string;            // Titre affiché dans l'en-tête du modal
+  children?: React.ReactNode; // (Optionnel) Contenu personnalisé inséré dans le modal
 }
 
-// L'objet AllergiesModal est le modal qui va permettre de choisir les allergies de l'utilisateur
-// l'objet herite de AllergiesModalProps
+// Liste des allergies disponibles à afficher sous forme de boutons
+const allergieOptions = ['Gluten', 'Lactose', 'Arachides', 'Végétarien'];
+
+/**
+ * Composant modal permettant à l'utilisateur de choisir ses préférences alimentaires ou allergies.
+ */
 const AllergiesModal: React.FC<AllergiesModalProps> = ({
   visible,
   onClose,
   title,
   children,
 }) => {
+  // Récupère les allergies et la fonction de toggle depuis le contexte global
+  const { allergies, toggleAllergie } = useAllergies();
 
-  // déclaration des varialble de context
-  const { allergies, toggleAllergie } = useAllergies(); 
+  /**
+   * Fonction utilitaire pour générer dynamiquement un bouton de toggle pour une allergie donnée.
+   * @param label - Nom de l'allergie (clé du contexte)
+   * @returns JSX d'un bouton tactile affichant l'état activé/désactivé
+   */
+  const renderToggle = (label: string) => {
+    const isActive = allergies[label]; // Vérifie si l'allergie est active
+    return (
+      <TouchableOpacity
+        key={label}
+        style={[
+          styles.toggleButton,
+          isActive ? styles.toggleButtonActive : styles.toggleButtonInactive,
+        ]}
+        onPress={() => toggleAllergie(label)} // Inverse l'état de l'allergie dans le contexte
+      >
+        <Text
+          style={[
+            styles.toggleButtonText,
+            isActive ? styles.toggleTextActive : styles.toggleTextInactive,
+          ]}
+        >
+          {label}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
-  const isToggleActive1 = allergies.Gluten;
-  const isToggleActive2 = allergies.Lactose;
-  const isToggleActive3 = allergies.Arachides;
-  const isToggleActive4 = allergies.Végétarien;
-
-  const handleToggle1 = () => toggleAllergie('Gluten');
-  const handleToggle2 = () => toggleAllergie('Lactose');
-  const handleToggle3 = () => toggleAllergie('Arachides');
-  const handleToggle4 = () => toggleAllergie('Végétarien');
-
+  /**
+   * Composant visuel retourné, affichant :
+   * - un fond semi-transparent (TouchableWithoutFeedback pour fermer)
+   * - une boîte modale centrée contenant le titre, les enfants, et les toggles
+   */
   return (
-    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
-
-      {/* close AllergiesModal si on touche l'ecran */}
+    <Modal animationType="slide" transparent visible={visible} onRequestClose={onClose}>
+      {/* Ferme le modal si on touche l'extérieur */}
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.overlay} />
       </TouchableWithoutFeedback>
 
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          {/* Header du Modal avec le titre */}
+          {/* En-tête du modal avec le titre */}
           <View style={styles.header}>
             <Text style={styles.headerText}>{title}</Text>
           </View>
-          
-            {/*  children est tout le contenu que tu veux afficher à l'intérieur du Modal  */}  
+
+          {/* Contenu principal du modal */}
           <View style={styles.contentContainer}>
             {children}
 
-            {/* Toggle  4   Buttons Row */}
-            <View style={styles.toggleContainer}>
-              <TouchableOpacity
-                style={[styles.toggleButton, isToggleActive1 ? styles.toggleButtonActive : styles.toggleButtonInactive]}
-                onPress={handleToggle1}
-              >
-                <Text
-                  style={[styles.toggleButtonText, isToggleActive1 ? styles.toggleTextActive : styles.toggleTextInactive]}
-                >
-                  Gluten
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.toggleButton, isToggleActive2 ? styles.toggleButtonActive : styles.toggleButtonInactive]}
-                onPress={handleToggle2}
-              >
-                <Text
-                  style={[styles.toggleButtonText, isToggleActive2 ? styles.toggleTextActive : styles.toggleTextInactive]}
-                >
-                  Lactose
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.toggleContainer}>
-              <TouchableOpacity
-                style={[styles.toggleButton, isToggleActive3 ? styles.toggleButtonActive : styles.toggleButtonInactive]}
-                onPress={handleToggle3}
-              >
-                <Text
-                  style={[styles.toggleButtonText, isToggleActive3 ? styles.toggleTextActive : styles.toggleTextInactive]}
-                >
-                  Arachides
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.toggleButton, isToggleActive4 ? styles.toggleButtonActive : styles.toggleButtonInactive]}
-                onPress={handleToggle4}
-              >
-                <Text
-                  style={[styles.toggleButtonText, isToggleActive4 ? styles.toggleTextActive : styles.toggleTextInactive]}
-                >
-                  Végétarien
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {/* Génère dynamiquement 2 boutons par ligne */}
+            {Array.from({ length: allergieOptions.length / 2 }).map((_, rowIndex) => (
+              <View key={rowIndex} style={styles.toggleContainer}>
+                {renderToggle(allergieOptions[rowIndex * 2])}
+                {renderToggle(allergieOptions[rowIndex * 2 + 1])}
+              </View>
+            ))}
           </View>
         </View>
       </View>
     </Modal>
   );
 };
+
 
 const styles = StyleSheet.create({
   overlay: {
@@ -152,13 +139,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
     fontSize: 18,
-  },
-  closeIcon: {
-    padding: 5,
-  },
-  closeIconText: {
-    fontSize: 18,
-    fontWeight: 'bold',
   },
   contentContainer: {
     padding: 15,

@@ -9,18 +9,17 @@ def detect_objects(image_path):
     """
     try:
         # Encoder l'image en base64
-        with open(image_path, 'rb') as image_file:
-            image_b64 = base64.b64encode(image_file.read()).decode('utf-8')
-
-        print(image_b64[:100:])
+        with open(image_path, 'rb') as img_file:
+            files = {'photo': ('image.jpg', img_file, 'image/jpeg')}
+            response = requests.post(url = 'http://localhost:5000/detect', files=files)
         
         # Envoyer la requête, est ce qu'on peut envoyer autre chose
         # dans la requete? user id, etc?
         # response = requests.post('http://localhost:5000/detect', 
-        # response = requests.post('https://servicesafecook-981813095604.europe-west9.run.app/detect, 
-        response = requests.post('http://172.18.240.1:5000/detect',
-            json={'image': image_b64}  # mauvais...
-        )
+        #response = requests.post('https://servicesafecook-981813095604.europe-west9.run.app/detect, 
+        #response = requests.post('http://176.139.25.235:5000/detect',
+        #    json={'image': image_b64}  # mauvais...
+        # )
         
         # Vérifier le statut de la réponse. Si 200, OK
         if response.status_code != 200:
@@ -37,7 +36,7 @@ def detect_objects(image_path):
 
 # Exemple d'utilisation
 if __name__ == '__main__':
-    image_path = "./images/apple.jpg"
+    image_path = "./images/fruit1.jpeg"
     result = detect_objects(image_path)
     
     if result:

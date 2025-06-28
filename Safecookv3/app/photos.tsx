@@ -1,160 +1,151 @@
-import React from 'react';
-
+import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { useRouter } from 'expo-router';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { Alert } from 'react-native';
-import { useAllergies } from './contexts/AllergiesContext'; 
-import BottomNavBar from './components/BottomNavBar'; // Importer la barre de navigation
-import { setLatestRecipes } from './tempData'; //Pour Sauvegarder les données globalement
+import React, { useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
+import BottomNavBar from './components/BottomNavBar';
+import { useAllergies } from './contexts/AllergiesContext';
+import { setLatestRecipes } from './tempData';
 
+/**
+ * Écran principal pour prendre une photo et détecter des éléments
+ * en fonction des allergies renseignées par l'utilisateur.
+ */
 export default function PhotosPage() {
   const router = useRouter();
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [photo, setPhoto] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-  const cameraRef = useRef(null);
+  const cameraRef = useRef<any>(null); // Type de CameraView si disponible
+  const { allergies } = useAllergies();
 
-  const { allergies } = useAllergies(); // Utilisation du contexte pour récupérer les allergies
-  console.log('État des allergies dans PhotosPage:', allergies);
-  if (!permission) {
-    return <View />;
-  }
+  if (!permission) return <View />;
 
   if (!permission.granted) {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Button onPress={requestPermission} title="Grant permission" />
       </View>
     );
   }
 
-  async function uploadPhoto(fileUri: string, imageType = 'jpg') {
+  /**
+   * Prépare les données du formulaire pour l'envoi (image + allergies).
+   * @param fileUri URI du fichier image à envoyer
+   * @param imageType Type MIME de l'image (par défaut: 'jpg')
+   */
+  const prepareFormData = (fileUri: string, imageType: string) => {
+    const formData = new FormData();
+    const activeAllergies = Object.keys(allergies).filter(key => allergies[key]);
+
+    formData.append('photo', {
+      uri: fileUri,
+      type: `image/${imageType}`,
+      name: `photo.${imageType}`,
+    });
+
+    formData.append('allergies', JSON.stringify(activeAllergies));
+    formData.append('user_id', '123456'); // Exemple fixe, à remplacer dynamiquement
+
+    return { formData, activeAllergies };
+  };
+
+  /**
+   * Formate le message à afficher avec les résultats de la détection.
+   * @param data Données retournées par l'API
+   * @param allergies Liste des allergies actives
+   */
+  const formatDetectionMessage = (data: any, allergies: string[]): string => {
+    return (
+      'Classes : ' + data.classes.join(', ') + '\n\n' +
+      'Comptage :\n' +
+      Object.entries(data.class_counts)
+        .map(([label, count]) => `${label}: ${count}`)
+        .join('\n') + '\n\n' +
+      'Fichier : ' + data.filename + '\n\n' +
+      'Allergies actives : ' + (allergies.length > 0 ? allergies.join(', ') : 'Aucune')
+    );
+  };
+
+  /**
+   * Envoie la photo au serveur Flask pour détection.
+   * @param fileUri URI de la photo prise
+   * @param imageType Type de l'image (par défaut: 'jpg')
+   */
+  const uploadPhoto = async (fileUri: string, imageType = 'jpg') => {
+    if (!fileUri) throw new Error('URI de photo manquant');
+    setIsUploading(true);
+
+    const { formData, activeAllergies } = prepareFormData(fileUri, imageType);
+
     try {
-
-
-      console.log(fileUri)
-      // Vérifier que l'URI existe
-      if (!fileUri) {
-        throw new Error('URI de photo manquant');
-  
-      }
-      const formData = new FormData();
-      formData.append('photo', {
-        uri: fileUri,
-        type: `image/${imageType}`,
-        name: `photo.${imageType}`
-      });
-      
-      console.log('Image traitée avec succès');
-      console.log('Type de fileUri:', typeof fileUri);
-      console.log('URI complet:', fileUri);
-      console.log('FormData contenu:', JSON.stringify(formData));
-      setIsUploading(true);
-      // Créer un objet avec les allergies actives
-      const allergiesActives = Object.keys(allergies).filter(key => allergies[key]);
-      formData.append('allergies', JSON.stringify(allergiesActives));
-
-      // Envoyer l'image
-      console.log(fileUri.substring(0, 100));
-
-      console.log('Envoi de l\'image...');
-
-      const response = await fetch('http://172.18.240.1:5000/detect', {
+      const response = await fetch('http://192.168.1.192:5000/detect', {
         method: 'POST',
         body: formData,
-
       });
-      console.log('Réponse reçue');
-
 
       if (!response.ok) {
+        console.error(await response.text());
         throw new Error(`Erreur serveur: ${response.status}`);
       }
 
       const data = await response.json();
-
-      // Créer un message formaté avec les détails
-      const message =
-        'Classes : ' + data.classes.join(', ') + '\n\n' +
-        'Comptage : \n' +
-        Object.entries(data.class_counts)
-          .map(([classe, count]) => `${classe}: ${count}`)
-          .join('\n') + '\n\n' +
-        'Fichier : ' + data.filename + '\n\n' +
-        'Allergies actives : ' + 
-        (allergiesActives.length > 0 ? allergiesActives.join(', ') : 'Aucune');
-
-      Alert.alert(
-        'Résultats de détection',
-        message
-      );
-
+      Alert.alert('Résultats de détection', formatDetectionMessage(data, activeAllergies));
       return data;
 
     } catch (error) {
-      // console.error('Erreur détaillée:', error);
+      console.error('Erreur lors de l\'upload :', error);
       throw new Error('Erreur lors de l\'envoi de l\'image');
+
     } finally {
       setIsUploading(false);
     }
-  }
+  };
 
+  /**
+   * Déclenche la prise de photo et lance automatiquement l'envoi.
+   */
+  const takePicture = async () => {
+    if (!cameraRef.current) return;
 
+    try {
+      const photo = await cameraRef.current.takePictureAsync({
+        quality: 1,
+        base64: false,
+        exif: false,
+        imageType: 'jpg',
+      });
 
+      const data = await uploadPhoto(photo.uri, 'jpg');
+      setLatestRecipes(data.to_json);
 
-  async function takePicture() {
-    if (cameraRef.current) {
-      try {
-        const photo = await cameraRef.current.takePictureAsync({
-          quality: 1,
-          base64: false, // Ne convertit pas en base64
-          exif: false,
-          imageType: 'jpg',
-          
-        });
-        // Upload automatique après la prise de photo
+      setTimeout(() => {
+        router.push('recipes-V2');
+      });
 
-        console.log('En cours de téléchargement de la photo...');
-        const data = await uploadPhoto(photo.uri, 'jpg');
-        console.log('Photo téléchargée avec succès');
-
-        setLatestRecipes(data.to_json);
-        setTimeout(() => {
-          router.push('recipes-V2');  // 2. Navigation
-        }); // Petit délai pour s'assurer que les données sont sauvegardées
-
-      } catch (error) {
-        // console.error('Error taking picture:', error);
-        throw new Error('Erreur lors de la prise de photo');
-      }
+    } catch (error) {
+      console.error('Erreur lors de la prise de photo :', error);
+      throw new Error('Erreur lors de la prise de photo');
     }
-  }
+  };
 
   return (
-    
     <View style={styles.container}>
-      <CameraView
-        style={styles.camera}
-        ref={cameraRef}
-        type={facing}
-      >
+      <CameraView style={styles.camera} ref={cameraRef} type={facing}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={takePicture}
-            disabled={isUploading}
-          >
-            {isUploading ? (
-              <ActivityIndicator size="large" color="#ffffff" />
-            ) : (
-              <Text style={styles.text}>snap</Text>
-            )}
+          <TouchableOpacity style={styles.button} onPress={takePicture} disabled={isUploading}>
+            {isUploading
+              ? <ActivityIndicator size="large" color="#ffffff" />
+              : <Text style={styles.text}>snap</Text>}
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -164,17 +155,9 @@ export default function PhotosPage() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  message: {
-    textAlign: 'center',
-    paddingBottom: 10,
-  },
-  camera: {
-    flex: 1,
-  },
+  container: { flex: 1, justifyContent: 'center' },
+  message: { textAlign: 'center', paddingBottom: 10 },
+  camera: { flex: 1 },
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
