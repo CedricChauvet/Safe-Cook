@@ -1,47 +1,40 @@
 import React from 'react';
-
 import {
   Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native';
 import { useAllergies } from './contexts/AllergiesContext';
 
-/**
- * Interface définissant les props acceptées par le composant AllergiesModal.
- */
 interface AllergiesModalProps {
-  visible: boolean;         // Contrôle la visibilité du modal
-  onClose: () => void;      // Fonction appelée pour fermer le modal
-  title: string;            // Titre affiché dans l'en-tête du modal
-  children?: React.ReactNode; // (Optionnel) Contenu personnalisé inséré dans le modal
+  visible: boolean;
+  onClose: () => void;
+  title: string;
+  children?: React.ReactNode;
+  currentUserId: number; // on peut éventuellement supprimer ce prop si non utilisé
 }
 
-// Liste des allergies disponibles à afficher sous forme de boutons
-const allergieOptions = ['Gluten', 'Lactose', 'Arachides', 'Végétarien'];
+const allergieOptions = [
+  { label: 'Gluten', id: 1 },
+  { label: 'Lactose', id: 2 },
+  { label: 'Arachides', id: 3 },
+  { label: 'Végétarien', id: 4 },
+];
 
-/**
- * Composant modal permettant à l'utilisateur de choisir ses préférences alimentaires ou allergies.
- */
 const AllergiesModal: React.FC<AllergiesModalProps> = ({
   visible,
   onClose,
   title,
   children,
 }) => {
-  // Récupère les allergies et la fonction de toggle depuis le contexte global
   const { allergies, toggleAllergie } = useAllergies();
 
-  /**
-   * Fonction utilitaire pour générer dynamiquement un bouton de toggle pour une allergie donnée.
-   * @param label - Nom de l'allergie (clé du contexte)
-   * @returns JSX d'un bouton tactile affichant l'état activé/désactivé
-   */
-  const renderToggle = (label: string) => {
-    const isActive = allergies[label]; // Vérifie si l'allergie est active
+  const renderToggle = (label: keyof typeof allergies) => {
+    const isActive = allergies[label];
+
     return (
       <TouchableOpacity
         key={label}
@@ -49,7 +42,10 @@ const AllergiesModal: React.FC<AllergiesModalProps> = ({
           styles.toggleButton,
           isActive ? styles.toggleButtonActive : styles.toggleButtonInactive,
         ]}
-        onPress={() => toggleAllergie(label)} // Inverse l'état de l'allergie dans le contexte
+        onPress={() => {
+          console.log('🟢 Toggle pressed:', label);
+          toggleAllergie(label);
+        }}
       >
         <Text
           style={[
@@ -63,34 +59,26 @@ const AllergiesModal: React.FC<AllergiesModalProps> = ({
     );
   };
 
-  /**
-   * Composant visuel retourné, affichant :
-   * - un fond semi-transparent (TouchableWithoutFeedback pour fermer)
-   * - une boîte modale centrée contenant le titre, les enfants, et les toggles
-   */
   return (
     <Modal animationType="slide" transparent visible={visible} onRequestClose={onClose}>
-      {/* Ferme le modal si on touche l'extérieur */}
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.overlay} />
       </TouchableWithoutFeedback>
 
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          {/* En-tête du modal avec le titre */}
           <View style={styles.header}>
             <Text style={styles.headerText}>{title}</Text>
           </View>
 
-          {/* Contenu principal du modal */}
           <View style={styles.contentContainer}>
             {children}
 
-            {/* Génère dynamiquement 2 boutons par ligne */}
+            {/* Affiche les boutons 2 par 2 */}
             {Array.from({ length: allergieOptions.length / 2 }).map((_, rowIndex) => (
               <View key={rowIndex} style={styles.toggleContainer}>
-                {renderToggle(allergieOptions[rowIndex * 2])}
-                {renderToggle(allergieOptions[rowIndex * 2 + 1])}
+                {renderToggle(allergieOptions[rowIndex * 2].label as keyof typeof allergies)}
+                {renderToggle(allergieOptions[rowIndex * 2 + 1].label as keyof typeof allergies)}
               </View>
             ))}
           </View>
@@ -100,78 +88,64 @@ const AllergiesModal: React.FC<AllergiesModalProps> = ({
   );
 };
 
-
 const styles = StyleSheet.create({
   overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    backgroundColor: '#00000066',
   },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    marginHorizontal: 20,
   },
   modalView: {
-    width: '80%',
     backgroundColor: 'white',
-    borderRadius: 20,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    borderRadius: 12,
+    padding: 20,
     elevation: 5,
+    width: '100%',
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    backgroundColor: '#f8f8f8',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    marginBottom: 10,
   },
   headerText: {
-    fontWeight: 'bold',
     fontSize: 18,
+    fontWeight: 'bold',
   },
   contentContainer: {
-    padding: 15,
+    marginTop: 10,
   },
   toggleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
+    marginVertical: 8,
   },
   toggleButton: {
     flex: 1,
-    padding: 10,
+    paddingVertical: 10,
     marginHorizontal: 5,
-    borderRadius: 5,
+    borderRadius: 8,
+    borderWidth: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   toggleButtonActive: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#4caf50',
+    borderColor: '#388e3c',
   },
   toggleButtonInactive: {
-    backgroundColor: '#f1f1f1',
-    borderWidth: 1,
-    borderColor: '#ddd',
+    backgroundColor: '#fff',
+    borderColor: '#ccc',
   },
   toggleButtonText: {
-    fontWeight: '500',
+    fontSize: 16,
   },
   toggleTextActive: {
     color: 'white',
+    fontWeight: 'bold',
   },
   toggleTextInactive: {
-    color: '#666',
+    color: '#333',
   },
 });
 

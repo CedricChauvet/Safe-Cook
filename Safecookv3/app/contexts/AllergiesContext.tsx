@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// AllergiesContext.tsx
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 type Allergies = {
   Gluten: boolean;
@@ -11,60 +12,107 @@ type Allergies = {
 type AllergiesContextType = {
   allergies: Allergies;
   toggleAllergie: (nom: keyof Allergies) => void;
+  loading: boolean;
 };
 
 const AllergiesContext = createContext<AllergiesContextType | undefined>(undefined);
 
+const allergyMap: Record<keyof Allergies, number> = {
+  Gluten: 1,
+  Lactose: 2,
+  Arachides: 3,
+  Végétarien: 4,
+};
+
 export const AllergiesProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
+  console.log('🟢 AllergiesProvider user:', user);
   const [allergies, setAllergies] = useState<Allergies>({
     Gluten: false,
     Lactose: false,
     Arachides: false,
     Végétarien: false,
   });
+  const [loading, setLoading] = useState(false);
 
-  // Charger les allergies depuis AsyncStorage au démarrage
   useEffect(() => {
-    const loadAllergies = async () => {
+    if (!user?.id) {
+      console.log('🔴 Aucun user.id, fetch allergies ignoré');
+      return;
+    }
+
+    const fetchAllergies = async () => {
+      setLoading(true);
+      console.log('🔄 Chargement des allergies pour l’utilisateur :', user.id);
+
       try {
-        const savedAllergies = await AsyncStorage.getItem('allergies');
-        if (savedAllergies) {
-          console.log('Allergies chargées depuis AsyncStorage:', JSON.parse(savedAllergies));
-          setAllergies(JSON.parse(savedAllergies));
+        const res = await fetch(`http://192.168.1.192:3000/user/${user.id}/allergies`);
+
+        if (!res.ok) {
+          console.error('❌ Erreur récupération allergies :', res.status);
+          return;
         }
-      } catch (error) {
-        console.error('Erreur lors du chargement des allergies:', error);
+
+        const data = await res.json();
+        console.log('✅ Allergies récupérées :', data);
+
+        const allergiesState: Allergies = {
+          Gluten: data.allergyIds.includes(allergyMap.Gluten),
+          Lactose: data.allergyIds.includes(allergyMap.Lactose),
+          Arachides: data.allergyIds.includes(allergyMap.Arachides),
+          Végétarien: data.allergyIds.includes(allergyMap.Végétarien),
+        };
+
+        setAllergies(allergiesState);
+      } catch (err) {
+        console.error('❌ Erreur réseau lors du chargement des allergies :', err);
+      } finally {
+        setLoading(false);
       }
     };
-    
-    loadAllergies();
-  }, []);
 
-  const toggleAllergie = async (nom: keyof Allergies) => {
+    fetchAllergies();
+  }, [user?.id]);
+
+  const toggleAllergie = async (label: keyof Allergies) => {
+    console.log('🔵 toggleAllergie user:', user);
+    if (!user?.id) {
+      console.warn('⚠️ Tentative de modification sans utilisateur connecté');
+      return;
+    }
+
+    const allergyId = allergyMap[label];
+
+    // Optimistic update
+    setAllergies(prev => ({ ...prev, [label]: !prev[label] }));
+
     try {
-      const newAllergies = {
-        ...allergies,
-        [nom]: !allergies[nom],
-      };
-      
-      setAllergies(newAllergies);
-      
-      // Sauvegarder les allergies dans AsyncStorage
-      await AsyncStorage.setItem('allergies', JSON.stringify(newAllergies));
-      console.log('Allergies sauvegardées dans AsyncStorage:', newAllergies);
-    } catch (error) {
-      console.error('Erreur lors de la sauvegarde des allergies:', error);
+      const response = await fetch('http://192.168.1.192:3000/user/toggle-allergy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, allergyId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || 'Erreur lors de la mise à jour des allergies');
+        // Revert changement
+        setAllergies(prev => ({ ...prev, [label]: !prev[label] }));
+      }
+    } catch (e) {
+      alert('Erreur réseau ou serveur');
+      setAllergies(prev => ({ ...prev, [label]: !prev[label] }));
     }
   };
-  
+
   return (
-    <AllergiesContext.Provider value={{ allergies, toggleAllergie }}>
+    <AllergiesContext.Provider value={{ allergies, toggleAllergie, loading }}>
       {children}
     </AllergiesContext.Provider>
   );
 };
 
-// Hook personnalisé pour accéder facilement au contexte
 export const useAllergies = () => {
   const context = useContext(AllergiesContext);
   if (!context) {

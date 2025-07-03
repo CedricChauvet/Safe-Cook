@@ -1,33 +1,59 @@
-// App.tsx ou le composant parent approprié
+// App.tsx
 import React from 'react';
-import { View } from 'react-native';
+import { View, Button } from 'react-native';
 import { AllergiesProvider } from './contexts/AllergiesContext';
-import HalfScreenModal from './AllergiesModal'; // importer les preference
-// Importez d'autres composants selon vos besoins
-
-const App = () => {
+import AllergiesModal from './AllergiesModal';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import AuthModal from './AuthModal';
+const AppContent = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [authModalVisible, setAuthModalVisible] = React.useState(false);
+  const { user, loading } = useAuth();
+
+  const openAllergiesModal = () => {
+    if (!user) {
+      setAuthModalVisible(true);
+    } else {
+      setModalVisible(true);
+    }
+  };
+
+  const handleLoginSuccess = (email: string) => {
+    setAuthModalVisible(false);
+    setModalVisible(true);
+  };
+
+  if (loading) {
+    return null;
+  }
 
   return (
-    <AllergiesProvider>
-      <View style={{ flex: 1 }}>
-        {/* Votre contenu d'application */}
-        
-        {/* Exemple d'utilisation du modal */}
-        <HalfScreenModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          title="Préférences alimentaires"
-          toggleallergie1="Gluten"
-          toggleallergie2="Lactose"
-          toggleallergie3="Arachide"
-          toggleVegetarien="Végétarien"
-        />
-        
-        {/* Bouton pour ouvrir le modal, etc. */}
-      </View>
-    </AllergiesProvider>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Button title="Modifier mes allergies" onPress={openAllergiesModal} />
+
+      <AllergiesModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        title="Préférences alimentaires"
+        currentUserId={user ? user.id : 0}
+      />
+
+      <AuthModal
+        visible={authModalVisible}
+        onClose={() => setAuthModalVisible(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
+    </View>
   );
 };
+
+// ✅ CORRECT ORDER
+const App = () => (
+  <AuthProvider>
+    <AllergiesProvider>
+      <AppContent />
+    </AllergiesProvider>
+  </AuthProvider>
+);
 
 export default App;

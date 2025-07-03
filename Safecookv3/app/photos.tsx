@@ -13,6 +13,7 @@ import {
 
 import BottomNavBar from './components/BottomNavBar';
 import { useAllergies } from './contexts/AllergiesContext';
+import { useAuth } from './contexts/AuthContext';
 import { setLatestRecipes } from './tempData';
 
 /**
@@ -24,8 +25,9 @@ export default function PhotosPage() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [isUploading, setIsUploading] = useState(false);
-  const cameraRef = useRef<any>(null); // Type de CameraView si disponible
+  const cameraRef = useRef<any>(null);
   const { allergies } = useAllergies();
+  const { user } = useAuth();
 
   if (!permission) return <View />;
 
@@ -38,11 +40,6 @@ export default function PhotosPage() {
     );
   }
 
-  /**
-   * Prépare les données du formulaire pour l'envoi (image + allergies).
-   * @param fileUri URI du fichier image à envoyer
-   * @param imageType Type MIME de l'image (par défaut: 'jpg')
-   */
   const prepareFormData = (fileUri: string, imageType: string) => {
     const formData = new FormData();
     const activeAllergies = Object.keys(allergies).filter(key => allergies[key]);
@@ -54,16 +51,21 @@ export default function PhotosPage() {
     });
 
     formData.append('allergies', JSON.stringify(activeAllergies));
-    formData.append('user_id', '123456'); // Exemple fixe, à remplacer dynamiquement
+
+    // Récupération dynamique du userId
+    const userId = user?.id;
+    console.log('🟢 User ID used for upload:', userId);
+
+    if (!userId) {
+      Alert.alert('Erreur', 'Utilisateur non connecté. Veuillez vous connecter.');
+      throw new Error('Utilisateur non connecté');
+    }
+
+    formData.append('user_id', userId.toString());
 
     return { formData, activeAllergies };
   };
 
-  /**
-   * Formate le message à afficher avec les résultats de la détection.
-   * @param data Données retournées par l'API
-   * @param allergies Liste des allergies actives
-   */
   const formatDetectionMessage = (data: any, allergies: string[]): string => {
     return (
       'Classes : ' + data.classes.join(', ') + '\n\n' +
@@ -76,67 +78,72 @@ export default function PhotosPage() {
     );
   };
 
-  /**
-   * Envoie la photo au serveur Flask pour détection.
-   * @param fileUri URI de la photo prise
-   * @param imageType Type de l'image (par défaut: 'jpg')
-   */
-  const uploadPhoto = async (fileUri: string, imageType = 'jpg') => {
-    if (!fileUri) throw new Error('URI de photo manquant');
-    setIsUploading(true);
+const uploadPhoto = async (fileUri: string, allergies: Allergies, imageType = 'jpg') => {
+  if (!fileUri) throw new Error('URI de photo manquant');
+  setIsUploading(true);
 
-    const { formData, activeAllergies } = prepareFormData(fileUri, imageType);
+  const activeAllergies = Object.keys(allergies).filter(key => allergies[key]);
 
-    try {
-      const response = await fetch('http://192.168.1.192:5000/detect', {
-        method: 'POST',
-        body: formData,
-      });
+  const formData = new FormData();
+  formData.append('photo', {
+    uri: fileUri,
+    type: `image/${imageType}`,
+    name: `photo.${imageType}`,
+  });
+  formData.append('allergies', JSON.stringify(activeAllergies));
+  formData.append('user_id', '123456'); // à adapter dynamiquement
 
-      if (!response.ok) {
-        console.error(await response.text());
-        throw new Error(`Erreur serveur: ${response.status}`);
-      }
+  try {
+    const response = await fetch('http://192.168.1.192:5000/detect', {
+      method: 'POST',
+      body: formData,
+    });
 
-      const data = await response.json();
-      Alert.alert('Résultats de détection', formatDetectionMessage(data, activeAllergies));
-      return data;
-
-    } catch (error) {
-      console.error('Erreur lors de l\'upload :', error);
-      throw new Error('Erreur lors de l\'envoi de l\'image');
-
-    } finally {
-      setIsUploading(false);
+    if (!response.ok) {
+      console.error(await response.text());
+      throw new Error(`Erreur serveur: ${response.status}`);
     }
-  };
 
-  /**
-   * Déclenche la prise de photo et lance automatiquement l'envoi.
-   */
-  const takePicture = async () => {
-    if (!cameraRef.current) return;
+    const data = await response.json();
+    Alert.alert('Résultats de détection', formatDetectionMessage(data, activeAllergies));
+    return data;
 
-    try {
-      const photo = await cameraRef.current.takePictureAsync({
-        quality: 1,
-        base64: false,
-        exif: false,
-        imageType: 'jpg',
-      });
+  } catch (error) {
+    console.error('Erreur lors de l\'upload :', error);
+    throw new Error('Erreur lors de l\'envoi de l\'image');
 
-      const data = await uploadPhoto(photo.uri, 'jpg');
-      setLatestRecipes(data.to_json);
+  } finally {
+    setIsUploading(false);
+  }
+};
 
-      setTimeout(() => {
-        router.push('recipes-V2');
-      });
 
-    } catch (error) {
-      console.error('Erreur lors de la prise de photo :', error);
-      throw new Error('Erreur lors de la prise de photo');
-    }
-  };
+
+
+
+const takePicture = async () => {
+  if (!cameraRef.current) return;
+
+  try {
+    const photo = await cameraRef.current.takePictureAsync({
+      quality: 1,
+      base64: false,
+      exif: false,
+      imageType: 'jpg',
+    });
+
+    const data = await uploadPhoto(photo.uri, allergies, 'jpg');
+    setLatestRecipes(data.to_json);
+
+    setTimeout(() => {
+      router.push('recipes-V2');
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de la prise de photo :', error);
+    throw new Error('Erreur lors de la prise de photo');
+  }
+};
 
   return (
     <View style={styles.container}>
