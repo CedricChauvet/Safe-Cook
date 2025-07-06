@@ -35,7 +35,6 @@ const AppContent = () => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         title="Préférences alimentaires"
-        currentUserId={user ? user.id : 0}
       />
 
       <AuthModal

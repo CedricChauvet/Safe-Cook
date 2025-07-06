@@ -1,4 +1,3 @@
-// Dans App.tsx ou à la racine de ton projet
 import React from 'react';
 import { AllergiesProvider } from './contexts/AllergiesContext'; 
 import { AuthProvider } from './contexts/AuthContext';

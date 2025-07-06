@@ -31,8 +31,8 @@ const toggleForm = () => {
 };
 const handleAuth = async () => {
   const endpoint = isSignUp
-    ? 'http://192.168.1.192:3000/auth/signup'
-    : 'http://192.168.1.192:3000/auth/signin';
+    ? 'https://backend-service-981813095604.europe-west1.run.app/auth/signup'
+    : 'https://backend-service-981813095604.europe-west1.run.app/auth/signin';
 
   try {
     const response = await fetch(endpoint, {

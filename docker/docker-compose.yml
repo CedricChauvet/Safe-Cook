@@ -1,0 +1,44 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: safecook-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: safecook
+      MYSQL_USER: safecook
+      MYSQL_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./backend
+    container_name: safecook-backend
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: mysql
+      DB_USER: safecook
+      DB_PASSWORD: rootpassword
+      DB_NAME: safecook
+
+  mlserver:
+    build: ./mlserver
+    container_name: safecook-mlserver
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    runtime: nvidia
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+    ports:
+      - "5000:5000"
+
+volumes:
+  mysql-data: {}

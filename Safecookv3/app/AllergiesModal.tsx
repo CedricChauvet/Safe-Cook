@@ -8,13 +8,14 @@ import {
   View,
 } from 'react-native';
 import { useAllergies } from './contexts/AllergiesContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface AllergiesModalProps {
   visible: boolean;
   onClose: () => void;
   title: string;
   children?: React.ReactNode;
-  currentUserId: number; // on peut éventuellement supprimer ce prop si non utilisé
+
 }
 
 const allergieOptions = [
@@ -28,7 +29,7 @@ const AllergiesModal: React.FC<AllergiesModalProps> = ({
   visible,
   onClose,
   title,
-  children,
+  children,a
 }) => {
   const { allergies, toggleAllergie } = useAllergies();
 
@@ -60,31 +61,32 @@ const AllergiesModal: React.FC<AllergiesModalProps> = ({
   };
 
   return (
-    <Modal animationType="slide" transparent visible={visible} onRequestClose={onClose}>
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View style={styles.overlay} />
-      </TouchableWithoutFeedback>
+ <Modal animationType="fade" transparent visible={visible} onRequestClose={onClose}>
+  <TouchableWithoutFeedback onPress={onClose}>
+    <View style={styles.fullScreenOverlay}>
+      <TouchableWithoutFeedback>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>{title}</Text>
+            </View>
 
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>{title}</Text>
-          </View>
+            <View style={styles.contentContainer}>
+              {children}
 
-          <View style={styles.contentContainer}>
-            {children}
-
-            {/* Affiche les boutons 2 par 2 */}
-            {Array.from({ length: allergieOptions.length / 2 }).map((_, rowIndex) => (
-              <View key={rowIndex} style={styles.toggleContainer}>
-                {renderToggle(allergieOptions[rowIndex * 2].label as keyof typeof allergies)}
-                {renderToggle(allergieOptions[rowIndex * 2 + 1].label as keyof typeof allergies)}
-              </View>
-            ))}
+              {Array.from({ length: allergieOptions.length / 2 }).map((_, rowIndex) => (
+                <View key={rowIndex} style={styles.toggleContainer}>
+                  {renderToggle(allergieOptions[rowIndex * 2].label as keyof typeof allergies)}
+                  {renderToggle(allergieOptions[rowIndex * 2 + 1].label as keyof typeof allergies)}
+                </View>
+              ))}
+            </View>
           </View>
         </View>
-      </View>
-    </Modal>
+      </TouchableWithoutFeedback>
+    </View>
+  </TouchableWithoutFeedback>
+</Modal>
   );
 };
 
@@ -93,20 +95,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#00000066',
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 20,
-  },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 20,
-    elevation: 5,
-    width: '100%',
-  },
-  header: {
+  fullScreenOverlay: {
+  flex: 1,
+  backgroundColor: '#00000066',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+centeredView: {
+  width: '90%',
+},
+
+modalView: {
+  backgroundColor: 'white',
+  borderRadius: 12,
+  padding: 20,
+  elevation: 5,
+  width: '100%',
+},
+header: {
     marginBottom: 10,
   },
   headerText: {

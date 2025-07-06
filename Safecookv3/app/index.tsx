@@ -61,7 +61,7 @@ export default function IndexScreen() {
   onClose={() => setAuthModalVisible(false)}
   onLoginSuccess={handleLoginSuccess} // 👈 ajoute ceci
 />
-             <Text style={{ marginBottom: 10, fontSize: 16 }}>
+             <Text style={{ marginBottom: 50, fontSize: 16 }}>
           {userEmail ? `Bonjour ${userEmail}` : 'Veuillez vous connecter'}
         </Text>
         
@@ -78,7 +78,7 @@ export default function IndexScreen() {
         {/* Bouton "Toutes les recettes" */}
         <TouchableOpacity style={styles.button} onPress={handleShowAllRecipes}>
           <MaterialCommunityIcons name="food-variant" size={70} color="black" />
-          <Text>Toutes les recettes</Text>
+          <Text>Recettes du mois</Text>
         </TouchableOpacity>
 
         {/* Barre de navigation en bas */}

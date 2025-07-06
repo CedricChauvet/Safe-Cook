@@ -5,6 +5,7 @@ import BottomNavBar from './components/BottomNavBar';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getLatestRecipes } from './tempData'; // Ajustez le chemin
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Composant distinct pour chaque recette avec son propre état
 const RecipeCard = ({ item }) => {
@@ -120,11 +121,11 @@ const recipes = () => {
     }
   }, []);
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Liste des Recettes</Text>
+    <SafeAreaView style={styles.container}>   
+     <Text style={styles.header}>Liste des Recettes</Text>
       <FlatList
         data={recettesData}
-        keyExtractor={(item, index) => {
+        keyExtractor={(item, index) => {  
           if (item._id && typeof item._id !== 'object') {
             return item._id.toString();
           }
@@ -134,14 +135,13 @@ const recipes = () => {
       />
 
       <BottomNavBar />
-    </View>
+  </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
     backgroundColor: '#f3ddbbff',
   },
   header: {

@@ -91,10 +91,10 @@ const uploadPhoto = async (fileUri: string, allergies: Allergies, imageType = 'j
     name: `photo.${imageType}`,
   });
   formData.append('allergies', JSON.stringify(activeAllergies));
-  formData.append('user_id', '123456'); // à adapter dynamiquement
+  formData.append('user_id', '1'); // à adapter dynamiquement
 
   try {
-    const response = await fetch('http://192.168.1.192:5000/detect', {
+    const response = await fetch('https://yolo-service-981813095604.europe-west1.run.app/detect', {
       method: 'POST',
       body: formData,
     });

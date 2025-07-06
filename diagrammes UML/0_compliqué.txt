@@ -1,0 +1,61 @@
+@startuml SafeCookApp
+
+' Définition des composants principaux
+package "Screens" {
+  component "IndexScreen (index.tsx)" as IndexScreen
+  component "PhotosPage (photos.tsx)" as PhotosPage
+  component "Recipes (recipes.tsx)" as Recipes
+}
+
+package "Components" {
+  component "AllergiesModal"
+  component "AuthModal"
+  component "BottomNavBar (bottomnavbar.js)" as BottomNavBar
+  component "RecipeCard (recipes.tsx)"
+}
+
+package "Contexts" {
+  component "AllergiesProvider / useAllergies"
+  component "AuthContext / useAuth"
+}
+
+package "Data" {
+  component "recettes (demo-day.json)"
+  component "tempData (setLatestRecipes / getLatestRecipes)"
+}
+
+' Relations entre composants et contextes
+IndexScreen --> AllergiesModal : utilise
+IndexScreen --> AuthModal : utilise
+IndexScreen --> BottomNavBar : utilise
+IndexScreen --> AllergiesProvider : enveloppe
+IndexScreen --> recettes : charge depuis fichier JSON
+IndexScreen --> tempData : setLatestRecipes(recettes)
+
+PhotosPage --> BottomNavBar : utilise
+PhotosPage --> useAllergies : accède aux allergies
+PhotosPage --> useAuth : accède à user
+PhotosPage --> tempData : setLatestRecipes(data)
+PhotosPage --> CameraView : utilise la caméra
+
+BottomNavBar --> useRouter : navigation
+BottomNavBar --> usePathname : état actif des icônes
+
+Recipes --> BottomNavBar : utilise
+Recipes --> tempData : getLatestRecipes()
+Recipes --> RecipeCard : rend la liste
+RecipeCard --> Modal : affiche détails recette
+RecipeCard --> MaterialCommunityIcons : icônes (like, stars, etc)
+
+AllergiesProvider --> AllergiesContext : fournit le contexte allergies
+AuthContext --> AuthProvider : fournit le contexte user
+
+' Navigation
+IndexScreen --> "recipes-V2" : router.push()
+IndexScreen --> PhotosPage : via BottomNavBar
+PhotosPage --> "recipes-V2" : router.push()
+BottomNavBar --> IndexScreen
+BottomNavBar --> PhotosPage
+BottomNavBar --> Recipes
+
+@enduml

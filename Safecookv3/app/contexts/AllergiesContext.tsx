@@ -46,7 +46,7 @@ export const AllergiesProvider = ({ children }: { children: ReactNode }) => {
       console.log('🔄 Chargement des allergies pour l’utilisateur :', user.id);
 
       try {
-        const res = await fetch(`http://192.168.1.192:3000/user/${user.id}/allergies`);
+        const res = await fetch(`https://backend-service-981813095604.europe-west1.run.app/user/${user.id}/allergies`);
 
         if (!res.ok) {
           console.error('❌ Erreur récupération allergies :', res.status);
@@ -87,7 +87,7 @@ export const AllergiesProvider = ({ children }: { children: ReactNode }) => {
     setAllergies(prev => ({ ...prev, [label]: !prev[label] }));
 
     try {
-      const response = await fetch('http://192.168.1.192:3000/user/toggle-allergy', {
+      const response = await fetch('https://backend-service-981813095604.europe-west1.run.app/user/toggle-allergy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, allergyId }),
